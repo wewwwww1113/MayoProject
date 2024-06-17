@@ -34,15 +34,14 @@ import lombok.ToString;
 //@EqualsAndHashCode // equals와 hashcode 메소드 
 @Data //@Getter @Setter @RequiredArgsConstructor @ToString @EqualsAndHashCode.  가 포함된 어노테이션
 public class Member {
-	private String userId;	//	USER_ID	VARCHAR2(30 BYTE)
-	private String userPwd;//	USER_PWD	VARCHAR2(100 BYTE)
-	private String userName;	//	USER_NAME	VARCHAR2(15 BYTE)
-	private String email;//	EMAIL	VARCHAR2(100 BYTE)
-	private String gender;//	GENDER	VARCHAR2(1 BYTE)
-	private String age;//	AGE	NUMBER - String으로 작성해서 "" 빈문자열을 전달받을 수 있도록 처리 
-	private String phone;//	PHONE	VARCHAR2(13 BYTE)
-	private String address;//	ADDRESS	VARCHAR2(100 BYTE)
-	private Date enrollDate;//	ENROLL_DATE	DATE
-	private Date modifyDate;//		MODIFY_DATE	DATE
-	private String status;//	STATUS	VARCHAR2(1 BYTE)
+	private String memberNo;	
+	private String memberNick;
+	private String memberId;	
+	private String memberPwd;
+	private String gender;
+	private String birthDate; 
+	private Date enrollDate;
+	private Date modifyDate;
+	private String status;
+	private String isAdmin;
 }

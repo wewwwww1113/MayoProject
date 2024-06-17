@@ -16,8 +16,8 @@
 	<bean class="org.apache.commons.dbcp2.BasicDataSource" id="dataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
-		<property name="username" value="SPRING"/>
-		<property name="password" value="SPRING"/>
+		<property name="username" value="MAYO"/>
+		<property name="password" value="MAYO"/>
 	</bean>
 	
 	<!-- 2단계 mybatis에서 제공하는 sql명령어 실행을 위한 도구 등록 -->

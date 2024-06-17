@@ -1,67 +1,192 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>참지마요 회원가입</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .container h2 {
+            text-align: center;
+            color: #333;
+        }
+        .container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .container form label {
+            margin: 10px 0 5px;
+            font-size: 14px;
+            color: #555;
+        }
+        .container form input, 
+        .container form select {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .container form .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .container form .button-container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .container form .button-container .join-button {
+            background-color: #00bcd4;
+            color: white;
+        }
+        .container form .button-container .cancel-button {
+            background-color: #ffc107;
+            color: white;
+        }
+        .check-availability {
+            display: flex;
+            align-items: center;
+        }
+        .check-availability button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #00bcd4;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .email-input {
+            display: flex;
+            align-items: center;
+        }
+        .email-input input {
+            margin: 0 5px;
+            flex: 1;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#check-username').click(function() {
+                var username = $('#username').val();
+                if (username !== '') {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'checkUsername.jsp',
+                        data: { username: username },
+                        success: function(response) {
+                            if (response.trim() === 'available') {
+                                alert('사용 가능한 아이디입니다.');
+                            } else {
+                                alert('이미 사용 중인 아이디입니다.');
+                            }
+                        },
+                        error: function() {
+                            alert('서버 오류가 발생했습니다.');
+                        }
+                    });
+                } else {
+                    alert('아이디를 입력해주세요.');
+                }
+            });
 
+            var yearSelect = $('#year');
+            var currentYear = new Date().getFullYear();
+            for (var year = currentYear; year >= 1900; year--) {
+                yearSelect.append($('<option>', { value: year, text: year }));
+            }
+
+            var monthSelect = $('#month');
+            for (var month = 1; month <= 12; month++) {
+                monthSelect.append($('<option>', { value: month, text: month }));
+            }
+
+            var daySelect = $('#day');
+            for (var day = 1; day <= 31; day++) {
+                daySelect.append($('<option>', { value: day, text: day }));
+            }
+
+            $('form').on('submit', function(e) {
+                var password = $('#password').val();
+                var confirmPassword = $('#confirm-password').val();
+                var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,10}$/;
+
+                if (!passwordPattern.test(password)) {
+                    alert('비밀번호는 영문과 숫자를 포함하여 4~10글자이어야 합니다.');
+                    e.preventDefault();
+                } else if (password !== confirmPassword) {
+                    alert('비밀번호가 일치하지 않습니다.');
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-	<%@include file="../common/header.jsp" %>
-	
-	
-	
-	<div class="content">
-		<br> <br>
-		<div class="innerOuter">
-			<h2>회원가입</h2>
-			<br>
-			
-			<form action="insert.me" method="post">
-				<div class="form-group">
-					<label for="enrollUserId">* ID</label>
-					<input type="text" id="enrollUserId" name="userId" class="form-control"> <br>
-					
-					<label for="enrollUserPwd">* PASSWORD</label>
-					<input type="password" id="enrollUserPwd" name="userPwd" class="form-control"> <br>
-					
-					<label for="checkPwd">* PASSWORD CHECK</label>
-					<input type="password" id="pwdCheck" class="form-control"> <br>
-					
-					<label for="userName">* NAME</label>
-					<input type="text" id="userName" name="userName" class="form-control"> <br>
-					
-					<label for="email"> &nbsp; EMAIL</label>
-					<input type="email" id="email" name="email" class="form-control"> <br>
-					
-					<label for="age"> &nbsp; AGE</label>
-					<input type="number" id="age" name="age" class="form-control"> <br>
-					
-					<label for="phone"> &nbsp; PHONE</label>
-					<input type="tel" id="phone" name="phone" class="form-control" placeholder="(-)없이 입력"> <br>
-					
-					<label for="address"> &nbsp; ADDRESS</label>
-					<input type="text" id="address" name="address" class="form-control"> <br>
-					
-					<label for=""> &nbsp; GENDER</label> &nbsp;&nbsp;
-					<input type="radio" id="male" value="M" name="gender" checked>
-					<label for="male">남자</label> &nbsp;&nbsp;
-					<input type="radio" id="female" value="F" name="gender">
-					<label for="female">여자</label> &nbsp;&nbsp;
-				</div>
-				<div class="btns" align="center">
-					<button type="submit" class="btn btn-primary">회원가입</button>
-					<button type="reset" class="btn btn-danger">초기화</button>
-				</div>
-			</form>
-		
-		
-		</div>
-	</div>
-	
-	
-	
-	<%@include file="../common/footer.jsp" %>
+    <div class="container">
+        <h2>참지마요 회원가입</h2>
+        <form action="insert.me" method="post">
+            <label for="username">아이디</label>
+            <div class="check-availability">
+                <input type="text" id="username" name="memberId" placeholder="아이디 (영문 6~20자)" required>
+                <button type="button" id="check-username">중복 확인</button>
+            </div>
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="memberPwd" placeholder="영문, 숫자  4~10글자" required>
+            <label for="confirm-password">비밀번호 확인</label>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="비밀번호 재입력" required>
+            <label for="name">이름</label>
+            <input type="text" id="name" name="memberNick" placeholder="이름을 입력해주세요" required>
+            <label for="gender">성별</label>
+            <select id="gender" name="gender" required>
+                <option value="">성별을 선택하세요</option>
+                <option value="male">남성</option>
+                <option value="female">여성</option>
+            </select>
+            <label for="email">이메일 주소</label>
+            <div class="email-input">
+                <input type="text" id="email" name="email" placeholder="이메일 주소" required>
+                <span>@</span>
+                <input type="text" id="email-domain" name="email-domain" value="naver.com" required>
+            </div>
+            <label for="birthdate">생년월일</label>
+            <div>
+                <select id="year" name="year" required>
+                    <option value="">년도</option>
+                </select>
+                <select id="month" name="month" required>
+                    <option value="">월</option>
+                </select>
+                <select id="day" name="day" required>
+                    <option value="">일</option>
+                </select>
+            </div>
+            <div class="button-container">
+                <button type="submit" class="join-button">가입하기</button>
+                <button type="button" class="cancel-button">가입취소</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

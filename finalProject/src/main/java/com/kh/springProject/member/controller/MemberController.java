@@ -241,7 +241,7 @@ public class MemberController {
 		//만약 비밀번호가 맞지 않더라도 조회가 되어있다.
 		//matches 메소드를 이용하여 사용자에게 성공 실패 화면 선택해주기
 		
-		if(loginUser == null || !bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) { //로그인 실패 
+		if(loginUser == null || !bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) { //로그인 실패 
 			//ModelAndView 객체에 데이터를 담는 메소드는 addObject() 메소드를 사용한다.
 			mv.addObject("errorMsg", "로그인 실패!!"); 
 			//view페이지에 대한 정보도 담아준다 이때 사용하는 메소드는 setViewName() 메소드를 사용한다.
@@ -274,52 +274,23 @@ public class MemberController {
 	}
 	
 	//회원정보 등록 메소드 (post방식)
-	@PostMapping("insert.me")
-	public String insertMember(Member m
-							  ,HttpSession session
-							  ,Model model) {
-		//한글 깨짐은 인코딩처리하기 
-		//web.xml에 인코딩 필터 등록
-		//나이를 입력하지 않았을 경우 int자료형에 "" 빈문자열이 대입되려는 문제 발생 
-		//Member VO에 age 필드를 String으로 작업하기 
-		//커맨드객체방식으로 주입받기 위해서 
-		
-		//비밀번호가 사용자가 입력한 그대로 데이터베이스에 저장되는 상황 
-		//비밀번호를 암호화하여 저장하기.
-		//비밀번호 암호화 작업 방식 Bcrypt 방식으로 진행
-		//1)spring-security Dependency에서 제공하는 기능을 사용할것
-		//2)BCryptPasswordEncoder 클래스를 xml파일에 bean으로 등록하기
-		//3)web.xml에 해당 spring-security.xml파일 읽을 수 있도록 등록
-		
-		
-		//암호화 사용 전에는 Member m 을 그대로 전달했음 
-		//암호화작업을 추가하면 Member m 에 담겨있던 password를 추출해서 암호화처리 후 
-		//다시 대입하여 전달한다.
-		
-		//암호화 처리 전 평문 출력
-		//System.out.println(m.getUserPwd());
-		
-		//암호화 작업하기 
-		//bcryptPasswordEncoder의 메소드인 encode() 사용하기 
-		String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
-		//System.out.println(encPwd);
-		
-		//암호화 작업된 비밀번호를 m에 넣어놓기
-		m.setUserPwd(encPwd);
-		//암호화작업은 같은 평문이여도 매번 다른 암호문이 반환된다. 이때 자리수는 60자리 
-		int result = memberService.insertMember(m);
-		
-		if(result>0) {
-			//성공하면 회원가입 성공! 메세지와 함께 메인페이지로 이동
-			session.setAttribute("alertMsg", "회원가입성공");
-			return "redirect:/";
-		}else {
-			//실패하면 회원가입 실패 메세지와 함께 에러페이지로 이동
-			model.addAttribute("errorMsg", "회원가입 실패");
-			return "common/errorPage";
-		}
-		
-	}
+	 @PostMapping("insert.me")
+	    public ModelAndView insertMember(Member member, HttpSession session, ModelAndView mv) {
+	        String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
+	        member.setMemberPwd(encPwd);
+
+	        int result = memberService.insertMember(member);
+
+	        if (result > 0) {
+	            session.setAttribute("alertMsg", "회원가입 성공!");
+	            mv.setViewName("redirect:/");
+	        } else {
+	            mv.addObject("errorMsg", "회원가입 실패");
+	            mv.setViewName("common/errorPage");
+	        }
+
+	        return mv;
+	    }
 	
 	
 	//마이페이지 이동 메소드
@@ -328,6 +299,7 @@ public class MemberController {
 		//마이페이지로 이동 하는 메소드 
 		return "member/myPage";
 	}
+	
 	
 	//정보수정 메소드
 	@RequestMapping("update.me")
@@ -353,8 +325,12 @@ public class MemberController {
 			//실패시 에러페이지 이동
 			model.addAttribute("errorMsg", "정보 수정 실패!");
 			return "common/errorPage";
+			
 		}
+		
 	}
+	
+	
 	
 	
 	

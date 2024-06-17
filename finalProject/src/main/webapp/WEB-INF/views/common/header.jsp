@@ -199,7 +199,7 @@ nav > ul > li:hover ul{opacity:1; }
              <li>로그인
                 <ul>
                     <li>로그인하기</li>
-                    <li>회원가입</li>
+                   <li><a href="${pageContext.request.contextPath}/insert.me">회원가입</a></li>
                     <li>아이디 찾기</li>
                     <li>비밀번호 찾기!</li>
                 </ul>

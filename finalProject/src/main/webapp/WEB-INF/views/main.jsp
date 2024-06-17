@@ -1,20 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>메인 페이지</title>
 </head>
 <body>
-<%-- 	<%@include file="common/header.jsp" %> --%>
-	<%@include file="/WEB-INF/views/common/header.jsp" %>
-	
-		
-	
-	<%@include file="common/footer.jsp"%>
-	
-	
+    <%@include file="/WEB-INF/views/common/header.jsp" %>
+    
+    <div class="container">
+        <h1>메인 페이지</h1>
+       
+    </div>
 
+    <%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

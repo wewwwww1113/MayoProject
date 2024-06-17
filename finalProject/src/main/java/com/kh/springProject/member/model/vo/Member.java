@@ -27,7 +27,7 @@ import lombok.ToString;
  * 
  * */
 @NoArgsConstructor //기본생성자
-@AllArgsConstructor //모든 필드 매개변수로 갖는 생성자
+@AllArgsConstructor //모든 필드 매개변수로 갖는 생성자.
 //@Setter //setter 메소드
 //@Getter //getter 메소드
 //@ToString //toString 메소드

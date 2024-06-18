@@ -181,9 +181,9 @@ nav > ul > li:hover ul{opacity:1; }
                     <li>상세 4</li>
                 </ul>
             </li>
-            <li>메뉴 3
+            <li>리뷰게시판
                 <ul>
-                    <li>상세 1</li>
+                    <li><a href="list.re">리뷰 목록</a></li>
                     <li>상세 2</li>
                 </ul>
             </li>

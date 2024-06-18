@@ -38,6 +38,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	
 	<!-- 
 		base-package 에서 설정된 패키지와 그 이하 패키지를 감시하여 등록 가능한 도구 (Component) 를 모두 찾아
 		등록시켜주는 설정

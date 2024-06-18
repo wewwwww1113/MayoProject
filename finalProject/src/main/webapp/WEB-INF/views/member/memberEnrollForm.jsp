@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -139,54 +140,69 @@
                     alert('비밀번호가 일치하지 않습니다.');
                     e.preventDefault();
                 }
+
+                var year = $('#year').val();
+                var month = $('#month').val();
+                var day = $('#day').val();
+                var birthDate = year + ('0' + month).slice(-2) + ('0' + day).slice(-2);
+                $('#birthDate').val(birthDate);
             });
         });
     </script>
 </head>
 <body>
     <div class="container">
-        <h2>참지마요 회원가입</h2>
-        <form action="insert.me" method="post">
-            <label for="username">아이디</label>
-            <div class="check-availability">
-                <input type="text" id="username" name="memberId" placeholder="아이디 (영문 6~20자)" required>
-                <button type="button" id="check-username">중복 확인</button>
-            </div>
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" name="memberPwd" placeholder="영문, 숫자  4~10글자" required>
-            <label for="confirm-password">비밀번호 확인</label>
-            <input type="password" id="confirm-password" name="confirm-password" placeholder="비밀번호 재입력" required>
-            <label for="name">이름</label>
-            <input type="text" id="name" name="memberNick" placeholder="이름을 입력해주세요" required>
-            <label for="gender">성별</label>
-            <select id="gender" name="gender" required>
-                <option value="">성별을 선택하세요</option>
-                <option value="male">남성</option>
-                <option value="female">여성</option>
-            </select>
-            <label for="email">이메일 주소</label>
-            <div class="email-input">
-                <input type="text" id="email" name="email" placeholder="이메일 주소" required>
-                <span>@</span>
-                <input type="text" id="email-domain" name="email-domain" value="naver.com" required>
-            </div>
-            <label for="birthdate">생년월일</label>
-            <div>
-                <select id="year" name="year" required>
-                    <option value="">년도</option>
-                </select>
-                <select id="month" name="month" required>
-                    <option value="">월</option>
-                </select>
-                <select id="day" name="day" required>
-                    <option value="">일</option>
-                </select>
-            </div>
-            <div class="button-container">
-                <button type="submit" class="join-button">가입하기</button>
-                <button type="button" class="cancel-button">가입취소</button>
-            </div>
-        </form>
+        <c:choose>
+            <c:when test="${not empty loginUser}">
+                <p>이미 로그인된 상태입니다. 로그아웃 후 다시 시도해주세요.</p>
+                <button onclick="location.href='logout.me'">로그아웃</button>
+            </c:when>
+            <c:otherwise>
+                <h2>참지마요 회원가입</h2>
+                <form action="insert.me" method="post">
+                    <label for="username">아이디</label>
+                    <div class="check-availability">
+                        <input type="text" id="username" name="memberId" placeholder="아이디 (영문 6~20자)" required>
+                        <button type="button" id="check-username">중복 확인</button>
+                    </div>
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" name="memberPwd" placeholder="영문, 숫자  4~10글자" required>
+                    <label for="confirm-password">비밀번호 확인</label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="비밀번호 재입력" required>
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="memberNick" placeholder="이름을 입력해주세요" required>
+                    <label for="gender">성별</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">성별을 선택하세요</option>
+                        <option value="male">남성</option>
+                        <option value="female">여성</option>
+                    </select>
+                    <label for="email">이메일 주소</label>
+                    <div class="email-input">
+                        <input type="text" id="email" name="email" placeholder="이메일 주소" required>
+                        <span>@</span>
+                        <input type="text" id="email-domain" name="email-domain" value="naver.com" required>
+                    </div>
+                    <label for="birthdate">생년월일</label>
+                    <div>
+                        <select id="year" name="year" required>
+                            <option value="">년도</option>
+                        </select>
+                        <select id="month" name="month" required>
+                            <option value="">월</option>
+                        </select>
+                        <select id="day" name="day" required>
+                            <option value="">일</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="birthDate" name="birthDate">
+                    <div class="button-container">
+                        <button type="submit" class="join-button">가입하기</button>
+                        <button type="button" class="cancel-button" onclick="location.href='cancel.page'">가입취소</button>
+                    </div>
+                </form>
+            </c:otherwise>
+        </c:choose>
     </div>
 </body>
 </html>

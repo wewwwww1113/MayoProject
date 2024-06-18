@@ -101,7 +101,7 @@
             			var inputObj = $("<input>"); 
             			var filePath = $("<input>");
             			//생성된 form 태그와 input태그에 필요한 속성과 값을 채워 준뒤 form안에 input 넣기 
-            			formObj.prop("action","delete.bo").prop("method","post");
+            			formObj.prop("action","delete.re").prop("method","post");
             			
             			//input 태그에 type과 name과 value 설정하기 (전달할 데이터)
             			inputObj.prop("type","hidden").prop("name","reviewNo").prop("value","${r.reviewNo}");
@@ -141,11 +141,11 @@
                 	$("#replyArea button").click(function(){
                 		
                 		$.ajax({
-                			url : "insertReply.bo",
+                			url : "insertReply.re",
                 			type : "post",
                 			data : {
                 				refBno : ${r.reviewNo},
-                				replyWriter : "${loginUser.userId}",
+                				replyWriter : "${loginUser.memberId}",
                 				replyContent : $("#content").val()
                 			},
                 			success : function(result){
@@ -174,7 +174,7 @@
             	function replyList(){
             		
             		$.ajax({
-            			url : "replyList.bo",
+            			url : "replyList.re",
             			data : {
             				reviewNo : ${r.reviewNo}
             			},

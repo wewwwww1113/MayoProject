@@ -44,14 +44,16 @@ public class ReviewDao {
 	
 	//게시글 작성
 	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
-		// TODO Auto-generated method stub
+		
+		System.out.println(1);
+		
 		return sqlSession.insert("reviewMapper.insertReview", r);
 	}
 	
 	//게시글 수정
 	public int updateReview(SqlSessionTemplate sqlSession, Review r) {
 		// TODO Auto-generated method stub
-		return sqlSession.update("reviewMapper.updateBoard",r);
+		return sqlSession.update("reviewMapper.updateReview",r);
 	}
 
 	//게시글 삭제

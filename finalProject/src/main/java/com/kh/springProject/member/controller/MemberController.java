@@ -91,4 +91,27 @@ public class MemberController {
     public String loginForm() {
         return "member/loginForm";
     }
+    
+    @GetMapping("/enrollCheckForm")
+    public String enrollCheckForm() {
+        return "member/enrollCheckForm";
+    }
+    
+    @GetMapping("findIdPwd.me")
+    public String findIdPwd() {
+        return "member/findIdPwd";
+    }
+    @RequestMapping(value = "findId.me", method = RequestMethod.POST)
+    public ModelAndView findId(Member member, ModelAndView mv) {
+        String foundId = memberService.findMemberId(member);
+        
+        if (foundId != null) {
+            mv.addObject("foundId", foundId);
+            mv.setViewName("member/showId");
+        } else {
+            mv.addObject("errorMsg", "아이디를 찾을 수 없습니다.");
+            mv.setViewName("common/errorPage");
+        }
+        return mv;
+    }
 }

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -139,7 +139,6 @@ a {
 
 .con-min-width {
     min-width:320px;
-}
 
 html, body {
     overflow-x:hidden;
@@ -148,13 +147,12 @@ html, body {
 
 body {background:rgb(255, 255, 255);}
 
-header {	
-	background:-webkit-linear-gradient(rgb(91, 143, 255) 50px,rgba(40, 139, 143, 0.2) 50px);
-	transition: 0.3s ease-in;
-	height:50px;
-	overflow:hidden;
+header {    
+    background:-webkit-linear-gradient(rgb(91, 143, 255) 50px,rgba(40, 139, 143, 0.2) 50px);
+    transition: 0.3s ease-in;
+    height:50px;
+    overflow:hidden;
 }
-
 
 nav {width:960px; margin:0 auto;}
 nav > ul > li {float:left; line-height:50px; margin-right:130px; position: relative;}
@@ -198,7 +196,7 @@ nav > ul > li:hover ul{opacity:1; }
             </li>
              <li>로그인
                 <ul>
-                    <li>로그인하기</li>
+                   <li><a href="${pageContext.request.contextPath}/loginForm.me">로그인하기</a></li>
                    <li><a href="${pageContext.request.contextPath}/insert.me">회원가입</a></li>
                     <li>아이디 찾기</li>
                     <li>비밀번호 찾기!</li>
@@ -219,10 +217,7 @@ nav > ul > li:hover ul{opacity:1; }
     .mouseleave(function(){
         $header.stop().animate({height:'50px'},200);
     })
-    
-    
-});
-
+  });
 </script>
 
 </body>

@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,11 +11,23 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #e0f7fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding-top: 60px; /* 헤더 높이만큼 패딩 추가 */
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #003366;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            z-index: 1000;
+        }
+        .header a {
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
         }
         .container {
             background-color: white;
@@ -22,6 +35,8 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
+            margin: 100px auto 0;
+            
         }
         .container h2 {
             text-align: center;
@@ -56,7 +71,7 @@
             cursor: pointer;
         }
         .container form .button-container .join-button {
-            background-color: #00bcd4;
+            background-color: blue;
             color: white;
         }
         .container form .button-container .cancel-button {
@@ -72,7 +87,7 @@
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
-            background-color: #00bcd4;
+            background-color: blue;
             color: white;
             font-size: 14px;
             cursor: pointer;

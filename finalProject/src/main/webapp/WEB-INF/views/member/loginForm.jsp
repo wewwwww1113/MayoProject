@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 <!DOCTYPE html>
-
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -12,11 +12,23 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #e0f7fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding-top: 60px; /* 헤더 높이만큼 패딩 추가 */
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #003366;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            z-index: 1000;
+        }
+        .header a {
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
         }
         .container {
             background-color: white;
@@ -25,6 +37,9 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
             text-align: center;
+            margin: 100px auto 0;
+            
+            
         }
         .container h2 {
             margin-bottom: 20px;
@@ -63,7 +78,7 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            background-color: #00bcd4;
+            background-color: blue;
             color: white;
             font-size: 16px;
             cursor: pointer;
@@ -103,7 +118,6 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <c:choose>
             <c:when test="${not empty loginUser}">
@@ -128,7 +142,7 @@
                     <button type="submit" class="login-button">로그인</button>
                 </form>
                 <div class="additional-links">
-                    <a href="findIdPwd.jsp">아이디 찾기</a> / <a href="findIdPwd.jsp">비밀번호 찾기</a> / <a href="${pageContext.request.contextPath}/insert.me">회원가입</a>
+                    <a href="${pageContext.request.contextPath}/findIdPwd.me">아이디 찾기</a> / <a href="findIdPwd.jsp">비밀번호 찾기</a> / <a href="${pageContext.request.contextPath}/enrollCheckForm">회원가입</a>
                 </div>
                 <div class="social-login-buttons">
                     <button class="kakao-login">카카오 계정으로 로그인</button>

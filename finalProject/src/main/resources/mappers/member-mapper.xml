@@ -77,4 +77,13 @@
          WHERE MEMBER_ID = #{memberId}
            AND STATUS = 'Y'
     </delete>
+    
+    <select id="findMemberId" parameterType="member" resultType="string">
+        SELECT member_id
+        FROM member
+        WHERE MEMBER_NICK = #{memberNick}
+          AND birth_date = #{birthDate}
+    </select>
+    
+    
 </mapper>

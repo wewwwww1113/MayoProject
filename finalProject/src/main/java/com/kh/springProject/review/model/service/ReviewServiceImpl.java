@@ -31,57 +31,63 @@ public class ReviewServiceImpl implements ReviewService {
 	//게시글 목록 조회
 	@Override
 	public ArrayList<Review> selectList(PageInfo pi) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return reviewDao.selectList(sqlSession,pi);
 	}
 
 	//게시글 작성
 	@Override
-	public int insertBoard(Review r) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertReview(Review r) {
+		
+		return reviewDao.insertReview(sqlSession,r);
+
 	}
 
 	//게시글 상세 조회
 	@Override
-	public Review selectBoard(int boardNo) {
-		// TODO Auto-generated method stub
-		return null;
+	public Review selectReview(int reviewNo) {
+		
+		return reviewDao.selectReview(sqlSession,reviewNo);
+
+
 	}
 
 	//게시글 조회수 증가
 	@Override
-	public int increaseCount(int boardNo) {
+	public int increaseCount(int reviewNo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return reviewDao.increaseCount(sqlSession, reviewNo);
 	}
 
 	//게시글 수정
 	@Override
-	public int updateBoard(Review rv) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateReview(Review r) {
+	
+		return reviewDao.updateReview(sqlSession,r);
+
 	}
 
 	//게시글 삭제
 	@Override
-	public int deleteBoard(int boardNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteReview(int reviewNo) {
+		
+		return reviewDao.deleteReview(sqlSession, reviewNo);
+
 	}
 
 	//댓글 작성
 	@Override
-	public int insertReply(Reply reply) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertReply(Reply r) {
+	
+		return reviewDao.insertReply(sqlSession,r);
+
 	}
 
 	//댓글 목록 조회
 	@Override
-	public ArrayList<Reply> replyList(int boardNo) {
+	public ArrayList<Reply> replyList(int reviewNo) {
 		// TODO Auto-generated method stub
-		return null;
+		return reviewDao.replyList(sqlSession,reviewNo);
 	}
 
 	//게시글 조회수 top5 조회

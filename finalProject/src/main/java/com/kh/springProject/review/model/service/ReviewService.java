@@ -16,21 +16,21 @@ public interface ReviewService {
 		ArrayList<Review> selectList(PageInfo pi);//PageInfo(페이징 처리에 필요한 데이터 객체)전달
 		
 		//게시글 작성
-		int insertBoard(Review r);
+		int insertReview(Review r);
 		//게시글 상세 조회
-		Review selectBoard(int boardNo);
+		Review selectReview(int reviewNo);
 		//게시글 조회수 증가
-		int increaseCount(int boardNo);
+		int increaseCount(int reviewNo);
 		//게시글 수정 
-		int updateBoard(Review rv);
+		int updateReview(Review rv);
 		//게시글 삭제
-		int deleteBoard(int boardNo);
+		int deleteReview(int reviewNo);
 		
 		//댓글 작성
-		int insertReply(Reply reply);
+		int insertReply(Reply r);
 		
 		//댓글 목록 조회
-		ArrayList<Reply> replyList(int boardNo);
+		ArrayList<Reply> replyList(int reviewNo);
 		
 		//게시글 조회수 top5 조회
 		ArrayList<Review> selectTopList();

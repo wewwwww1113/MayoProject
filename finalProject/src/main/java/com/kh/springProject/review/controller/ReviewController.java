@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,6 +26,8 @@ import com.kh.springProject.common.template.Pagination;
 import com.kh.springProject.review.model.service.ReviewService;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 public class ReviewController {
@@ -96,40 +99,35 @@ public class ReviewController {
 	
 	
 	
-	//게시글 등록 메소드
-		@PostMapping("insert.bo")
-		public String insertBoard(Review r
-															 ,MultipartFile upfile
-															 ,HttpSession session) {
+	//게시글 등록 메소ㄷ
+		@PostMapping("insert.re")
+		public String insertReview(Review r
+								 ,MultipartFile upfile
+								 ,HttpSession session) {
 			
 			if(!upfile.getOriginalFilename().equals("")) {
+
 				
-				
-				//하단에 메소드로 만든 파일업로드 메소드  
+				//만들어놓은 파일업로드 메소드 사용하기 
 				String changeName = saveFile(upfile,session);
 				
-				//Review < - 변경된 파일명과 원본 파일명 담아주기
+				//Review에 변경된 파일명과 원본 파일명 담아주기
 				r.setOriginName(upfile.getOriginalFilename());
 				r.setChangeName("resources/uploadFiles/"+changeName);
-				
+
 			}
-			
 			
 			int result = reviewService.insertReview(r);
 			
-			if(result>0) { //게시글 작성 성공
+			if(result>0) {//게시글 작성 성공
 				session.setAttribute("alertMsg", "게시글 작성 성공!");
-			}else {  //게시글 작성 실패
+			}else { //게시글 작성 실패
 				session.setAttribute("alertMsg", "게시글 작성 실패!");
 			}
 			
-			System.out.println(result);
-			
 			return "redirect:/list.re";
-			
-			
-			
 		}
+
 
 		
 		
@@ -227,49 +225,8 @@ public class ReviewController {
 			
 			return mv;
 		}
-
-		
-		//댓글 목록 조회
-		@ResponseBody
-		@RequestMapping(value="replyList.re",produces="application/json;charset=UTF-8")
-		public ArrayList<Reply> replyList(int reviewNo) {
-			
-			ArrayList<Reply> rList = reviewService.replyList(reviewNo);
-			
-			return rList;
-		}
-
-		//댓글작성
-		@ResponseBody
-		@RequestMapping("insertReply.re")
-		public int insertReply(Reply r) {
-			
-			System.out.println(r);
-			
-			int result = reviewService.insertReply(r);
-			
-			return result;
-		}
-
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
 		//파일 업로드 처리 메소드(재활용)
 		public String saveFile(MultipartFile upfile
 							  ,HttpSession session) {
@@ -304,10 +261,49 @@ public class ReviewController {
 				e.printStackTrace();
 			}
 			
+		
+			
 			return changeName;
 			
 			
 		}
+
+			
+		
+		//댓글 목록 조회
+		@ResponseBody
+		@RequestMapping(value="replyList.re",produces="application/json;charset=UTF-8")
+		public ArrayList<Reply> replyList(int reviewNo) {
+			
+			ArrayList<Reply> rList = reviewService.replyList(reviewNo);
+			
+			return rList;
+		}
+
+		//댓글작성
+		@ResponseBody
+		@RequestMapping("insertReply.re")
+		public int insertReply(Reply r) {
+			
+			System.out.println(r);
+			
+			int result = reviewService.insertReply(r);
+			
+			return result;
+		}
+
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	
+			
+
 
 	
 	

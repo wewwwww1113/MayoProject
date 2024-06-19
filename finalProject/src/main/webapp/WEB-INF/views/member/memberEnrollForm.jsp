@@ -146,12 +146,8 @@
             $('form').on('submit', function(e) {
                 var password = $('#password').val();
                 var confirmPassword = $('#confirm-password').val();
-                var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,10}$/;
-
-                if (!passwordPattern.test(password)) {
-                    alert('비밀번호는 영문과 숫자를 포함하여 4~10글자이어야 합니다.');
-                    e.preventDefault();
-                } else if (password !== confirmPassword) {
+                
+                if (password !== confirmPassword) {
                     alert('비밀번호가 일치하지 않습니다.');
                     e.preventDefault();
                 }

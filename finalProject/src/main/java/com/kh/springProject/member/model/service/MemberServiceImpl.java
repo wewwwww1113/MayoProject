@@ -36,4 +36,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.findMemberId(sqlSession, m);
 		
 	}
-}
+
+	public boolean deleteMember(String memberId, String memberPwd) {
+		
+		return memberDao.deleteMember(sqlSession, memberId);
+	}
+	  
+
+	}

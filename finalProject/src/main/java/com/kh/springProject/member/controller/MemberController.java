@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.springProject.member.model.service.MemberService;
@@ -114,4 +116,37 @@ public class MemberController {
         }
         return mv;
     }
+    
+    @GetMapping("deleteMember")
+    public String deleteMember() {
+        return "member/deleteMember";
+    }
+    @RequestMapping(value = "/deleteAccount.me", method = RequestMethod.POST)
+    public String deleteAccount(Member member, HttpSession session, Model model) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            return "redirect:/loginForm.me";
+        }
+
+        // 비밀번호 확인
+        if (!bcryptPasswordEncoder.matches(member.getMemberPwd(), loginUser.getMemberPwd())) {
+            model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
+            return "member/deleteMember";
+        }
+
+        boolean isDeleted = memberService.deleteMember(loginUser.getMemberId(), member.getMemberPwd());
+
+        if (isDeleted) {
+            session.invalidate();
+            return "redirect:/"; // 메인 페이지로 리다이렉트
+        } else {
+            model.addAttribute("error", "탈퇴에 실패했습니다.");
+            return "member/deleteMember";
+        }
+    }
 }
+
+    
+
+   

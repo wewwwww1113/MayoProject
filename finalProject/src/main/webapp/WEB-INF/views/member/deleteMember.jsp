@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>아이디 찾기</title>
+    <title>회원 탈퇴</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -70,55 +70,50 @@
             cursor: pointer;
         }
         .container form .button-container .submit-button {
-            background-color: blue;
+            background-color: red;
             color: white;
         }
         .container form .button-container .cancel-button {
             background-color: #ffc107;
             color: white;
         }
-        .email-input {
-            display: flex;
-            align-items: center;
-        }
-        .email-input input {
-            margin: 0 5px;
-            flex: 1;
-        }
-        .email-input select {
-            margin-left: 5px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>아이디 찾기</h2>
-        <form action="${pageContext.request.contextPath}/findId.me" method="post">
+        <h2>회원 탈퇴</h2>
+        <c:if test="${not empty error}">
+            <p style="color:red;">${error}</p>
+        </c:if>
+        <form id="deleteForm" action="${pageContext.request.contextPath}/deleteAccount.me" method="post">
             <div class="form-group">
-                <label for="name">이름</label>
-                <input type="text" id="name" name="memberNick" placeholder="이름을 입력하세요" required>
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="memberPwd" placeholder="비밀번호를 입력하세요" required>
             </div>
-            <label for="email">이메일 주소</label>
-            <div class="email-input">
-                <input type="text" id="email" name="email" placeholder="이메일 주소" required>
-                <span>@</span>
-                <select id="email-domain" name="email-domain" required>
-                    <option value="naver.com">naver.com</option>
-                    <option value="gmail.com">gmail.com</option>
-                    <option value="daum.net">daum.net</option>
-                    <option value="outlook.com">outlook.com</option>
-                    <option value="nate.com">nate.com</option>
-                </select>
+            <div class="form-group">
+                <label for="confirmPassword">비밀번호 확인</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요" required>
             </div>
             <div class="button-container">
-                <button type="submit" class="submit-button">아이디 찾기</button>
+                <button type="button" class="submit-button" onclick="confirmDelete()">회원 탈퇴</button>
                 <button type="button" class="cancel-button" onclick="location.href='cancel.page'">취소</button>
             </div>
         </form>
     </div>
+
+    <script>
+        function confirmDelete() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+            
+            if (password === confirmPassword) {
+                if (confirm("정말 삭제하시겠습니까?")) {
+                    document.getElementById("deleteForm").submit();
+                }
+            } else {
+                alert("비밀번호가 일치하지 않습니다.");
+            }
+        }
+    </script>
 </body>
 </html>

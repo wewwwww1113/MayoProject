@@ -183,8 +183,8 @@ nav > ul > li:hover ul{opacity:1; }
             </li>
             <li>리뷰게시판
                 <ul>
-                    <li><a href="list.re">리뷰 목록</a></li>
-                    <li>상세 2</li>
+                    <li><a href="list.re">리뷰 </a></li>
+                    <li><a href="list2.ra">랭킹</a></li>
                 </ul>
             </li>
             <li>메뉴 4

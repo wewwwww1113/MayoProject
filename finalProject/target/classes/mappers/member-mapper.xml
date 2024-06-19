@@ -11,6 +11,7 @@
         <result column="MEMBER_PWD" property="memberPwd"/>
         <result column="GENDER" property="gender"/>
         <result column="BIRTH_DATE" property="birthDate"/>
+        <result column="EMAIL" property="email"/>
         <result column="ENROLL_DATE" property="enrollDate"/>
         <result column="MODIFY_DATE" property="modifyDate"/>
         <result column="STATUS" property="status"/>
@@ -24,6 +25,7 @@
              MEMBER_PWD,
              GENDER,
              BIRTH_DATE,
+             EMAIL,
              ENROLL_DATE,
              MODIFY_DATE,
              STATUS,
@@ -41,6 +43,7 @@
                        MEMBER_PWD,
                        GENDER,
                        BIRTH_DATE,
+                       EMAIL,
                        ENROLL_DATE,
                        MODIFY_DATE,
                        STATUS,
@@ -52,6 +55,7 @@
             #{memberPwd},
             #{gender},
             #{birthDate},
+            #{email},
             SYSDATE,
             SYSDATE,
             'Y',  
@@ -65,6 +69,7 @@
                MEMBER_PWD = #{memberPwd},
                GENDER = #{gender},
                BIRTH_DATE = #{birthDate},
+               EMAIL = #{email},
                MODIFY_DATE = SYSDATE,
                STATUS = #{status},
                IS_ADMIN = #{isAdmin}
@@ -72,18 +77,23 @@
            AND STATUS = 'Y'
     </update>
 
+     <!-- 비밀번호 확인 쿼리 -->
+    <select id="checkPassword" parameterType="String" resultType="String">
+        SELECT MEMBER_PWD FROM MEMBER WHERE MEMBER_ID = #{memberId}
+    </select>
+
+    <!-- 회원 탈퇴 쿼리 -->
     <delete id="deleteMember" parameterType="String">
-        DELETE FROM MEMBER
-         WHERE MEMBER_ID = #{memberId}
-           AND STATUS = 'Y'
+        DELETE FROM MEMBER WHERE MEMBER_ID = #{memberId}
     </delete>
     
-    <select id="findMemberId" parameterType="member" resultType="string">
-        SELECT member_id
-        FROM member
-        WHERE MEMBER_NICK = #{memberNick}
-          AND birth_date = #{birthDate}
-    </select>
+
     
+  <select id="findMemberId" parameterType="Member" resultType="String">
+    SELECT MEMBER_ID
+    FROM MEMBER
+    WHERE MEMBER_NICK = #{memberNick}
+      AND EMAIL = #{email}
+</select>
     
 </mapper>

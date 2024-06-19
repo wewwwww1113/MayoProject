@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -194,21 +194,33 @@ nav > ul > li:hover ul{opacity:1; }
                     <li>상세 3</li>
                 </ul>
             </li>
-             <li>로그인
-                <ul>
-                   <li><a href="${pageContext.request.contextPath}/loginForm.me">로그인하기</a></li>
-                   <li><a href="${pageContext.request.contextPath}/enrollCheckForm">회원가입</a></li>
-                </ul>
-            </li>
-
+            <c:choose>
+                <c:when test="${not empty loginUser}">
+                    <li style="margin-left:auto;">
+                        <c:out value="${loginUser.memberNick}"/>님 환영!
+                        <ul>
+                            <li><a href="${pageContext.request.contextPath}/mypage.me">마이페이지</a></li>
+                            <li><a href="${pageContext.request.contextPath}/logout.me">로그아웃</a></li>
+                        </ul>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li>로그인
+                        <ul>
+                            <li><a href="${pageContext.request.contextPath}/loginForm.me">로그인하기</a></li>
+                            
+                        </ul>
+                    </li>
+                </c:otherwise>
+            </c:choose>
         </ul>
     </nav>
 </header>
 
 <script>
   $(function(){
-   var $firstmenu = $('nav > ul > li'),
-       $header = $('header');
+    var $firstmenu = $('nav > ul > li'),
+        $header = $('header');
     $firstmenu.mouseenter(function(){
        $header.stop().animate({height:'300px'},200);
     })

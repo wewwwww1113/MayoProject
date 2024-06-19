@@ -100,6 +100,13 @@
             margin: 0 5px;
             flex: 1;
         }
+        .email-input select {
+            margin-left: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -146,8 +153,12 @@
             $('form').on('submit', function(e) {
                 var password = $('#password').val();
                 var confirmPassword = $('#confirm-password').val();
-                
-                if (password !== confirmPassword) {
+                var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,10}$/;
+
+                if (!passwordPattern.test(password)) {
+                    alert('비밀번호는 영문과 숫자를 포함하여 4~10글자이어야 합니다.');
+                    e.preventDefault();
+                } else if (password !== confirmPassword) {
                     alert('비밀번호가 일치하지 않습니다.');
                     e.preventDefault();
                 }
@@ -192,7 +203,14 @@
                     <div class="email-input">
                         <input type="text" id="email" name="email" placeholder="이메일 주소" required>
                         <span>@</span>
-                        <input type="text" id="email-domain" name="email-domain" value="naver.com" required>
+                        <select id="email-domain" name="email-domain" required>
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="gmail.com">daum.net</option>
+                            <option value="gmail.com">outlook.com</option>
+                            <option value="gmail.com">nate.com</option>
+                            
+                        </select>
                     </div>
                     <label for="birthdate">생년월일</label>
                     <div>

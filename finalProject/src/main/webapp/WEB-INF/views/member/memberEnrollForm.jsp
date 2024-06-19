@@ -100,6 +100,13 @@
             margin: 0 5px;
             flex: 1;
         }
+        .email-input select {
+            margin-left: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -196,7 +203,14 @@
                     <div class="email-input">
                         <input type="text" id="email" name="email" placeholder="이메일 주소" required>
                         <span>@</span>
-                        <input type="text" id="email-domain" name="email-domain" value="naver.com" required>
+                        <select id="email-domain" name="email-domain" required>
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="gmail.com">daum.net</option>
+                            <option value="gmail.com">outlook.com</option>
+                            <option value="gmail.com">nate.com</option>
+                            
+                        </select>
                     </div>
                     <label for="birthdate">생년월일</label>
                     <div>

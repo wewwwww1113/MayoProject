@@ -24,4 +24,11 @@ public class MemberDao {
 		 return sqlSession.selectOne("memberMapper.findMemberId", m);
 		
 	}
+
+
+	 public boolean deleteMember(SqlSessionTemplate sqlSession, String memberId) {
+	        int result = sqlSession.delete("memberMapper.deleteMember", memberId);
+	        return result > 0;
+	    }
+	    
 }

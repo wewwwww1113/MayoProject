@@ -1,5 +1,7 @@
 package com.kh.springProject.member.model.service;
 
+import org.mybatis.spring.SqlSessionTemplate;
+
 import com.kh.springProject.member.model.vo.Member;
 
 public interface MemberService {
@@ -15,4 +17,10 @@ public interface MemberService {
 	
 	//아이디찾기 기능
 	String findMemberId(Member m);
+
+	//회원 탈퇴 기능
+	boolean deleteMember(String memberId, String memberPwd);
+	
+
+
 }

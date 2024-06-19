@@ -4,12 +4,7 @@ import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
 
 /*
  * Lombok(롬복)
@@ -28,20 +23,17 @@ import lombok.ToString;
  * */
 @NoArgsConstructor //기본생성자
 @AllArgsConstructor //모든 필드 매개변수로 갖는 생성자.
-//@Setter //setter 메소드
-//@Getter //getter 메소드
-//@ToString //toString 메소드
-//@EqualsAndHashCode // equals와 hashcode 메소드 
-@Data //@Getter @Setter @RequiredArgsConstructor @ToString @EqualsAndHashCode.  가 포함된 어노테이션
+@Data // @Getter @Setter @RequiredArgsConstructor @ToString @EqualsAndHashCode 가 포함된 어노테이션
 public class Member {
-	private String memberNo;	
-	private String memberNick;
-	private String memberId;	
-	private String memberPwd;
-	private String gender;
-	private String birthDate; 
-	private Date enrollDate;
-	private Date modifyDate;
-	private String status;
-	private String isAdmin;
+    private String memberNo;    
+    private String memberNick;
+    private String memberId;    
+    private String memberPwd;
+    private String gender;
+    private String birthDate;
+    private String email; // 새로 추가된 필드
+    private Date enrollDate;
+    private Date modifyDate;
+    private String status;
+    private String isAdmin;
 }

@@ -8,11 +8,6 @@
 </head>
 <body>
     <%@include file="/WEB-INF/views/common/header.jsp" %>
-    
-    <div class="container">
-        <h1>메인 페이지</h1>
-       
-    </div>
 	<%@include file="/WEB-INF/views/map/testView.jsp"%>
     <%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

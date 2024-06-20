@@ -55,7 +55,7 @@ public class MapController {
 //    @GetMapping("/list.ma")
     public List<Map> getAllToilets(Map m) {
     	List<Map> list = mapService.getAllToilets(m);
-    	System.out.println(list);
+    	
         return list;
     }
 }

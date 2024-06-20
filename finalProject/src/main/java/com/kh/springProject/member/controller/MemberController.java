@@ -1,7 +1,10 @@
 package com.kh.springProject.member.controller;
 
+import java.io.IOException;
 import javax.servlet.http.HttpSession;
-
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,14 +14,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.kh.springProject.member.model.service.MemberService;
 import com.kh.springProject.member.model.vo.Member;
+import com.kh.springProject.tst.NaverLoginBO;
 
 @Controller
 public class MemberController {
+    private NaverLoginBO naverLoginBO;
+    private String apiResult = null;
 
     @Autowired
     private MemberService memberService;
@@ -26,17 +31,47 @@ public class MemberController {
     @Autowired
     private BCryptPasswordEncoder bcryptPasswordEncoder;
 
-    @RequestMapping(value = "login.me", method = RequestMethod.POST)
-    public ModelAndView loginMember(Member m, ModelAndView mv, HttpSession session) {
-        Member loginUser = memberService.loginMember(m);
+    @Autowired
+    public MemberController(NaverLoginBO naverLoginBO) {
+        this.naverLoginBO = naverLoginBO;
+    }
 
-        if (loginUser == null || !bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
-            mv.addObject("errorMsg", "로그인 실패!!");
-            mv.setViewName("common/errorPage");
-        } else {
-            session.setAttribute("alertMsg", "로그인 성공!!");
-            session.setAttribute("loginUser", loginUser);
+    @RequestMapping(value = "login.me", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView login(Model model, HttpSession session, Member m, ModelAndView mv,
+                              @RequestParam(value = "code", required = false) String code,
+                              @RequestParam(value = "state", required = false) String state) throws IOException, ParseException {
+        if (code != null && state != null) {
+            // 네이버 로그인 콜백 처리
+            OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
+            apiResult = naverLoginBO.getUserProfile(oauthToken);
+
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(apiResult);
+            JSONObject jsonObj = (JSONObject) obj;
+            JSONObject responseObj = (JSONObject) jsonObj.get("response");
+            String nickname = (String) responseObj.get("nickname");
+
+            session.setAttribute("sessionId", nickname);
+            model.addAttribute("result", apiResult);
+
             mv.setViewName("redirect:/");
+        } else if (m.getMemberId() != null && m.getMemberPwd() != null) {
+            // 일반 로그인 처리
+            Member loginUser = memberService.loginMember(m);
+
+            if (loginUser == null || !bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
+                mv.addObject("errorMsg", "로그인 실패!!");
+                mv.setViewName("common/errorPage");
+            } else {
+                session.setAttribute("alertMsg", "로그인 성공!!");
+                session.setAttribute("loginUser", loginUser);
+                mv.setViewName("redirect:/");
+            }
+        } else {
+            // 로그인 폼으로 이동
+            String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+            model.addAttribute("url", naverAuthUrl);
+            mv.setViewName("member/loginForm");
         }
         return mv;
     }
@@ -44,6 +79,7 @@ public class MemberController {
     @RequestMapping("logout.me")
     public String logoutMember(HttpSession session) {
         session.removeAttribute("loginUser");
+        session.invalidate();
         return "redirect:/";
     }
 
@@ -74,7 +110,7 @@ public class MemberController {
         return "member/myPage";
     }
 
-    @RequestMapping("update.me")
+    @PostMapping("update.me")
     public String updateMember(Member m, Model model, HttpSession session) {
         int result = memberService.updateMember(m);
 
@@ -89,24 +125,20 @@ public class MemberController {
         }
     }
 
-    @GetMapping("loginForm.me")
-    public String loginForm() {
-        return "member/loginForm";
-    }
-    
-    @GetMapping("/enrollCheckForm")
+    @GetMapping("enrollCheckForm.me")
     public String enrollCheckForm() {
         return "member/enrollCheckForm";
     }
-    
+
     @GetMapping("findIdPwd.me")
     public String findIdPwd() {
         return "member/findIdPwd";
     }
-    @RequestMapping(value = "findId.me", method = RequestMethod.POST)
+
+    @PostMapping("findId.me")
     public ModelAndView findId(Member member, ModelAndView mv) {
         String foundId = memberService.findMemberId(member);
-        
+
         if (foundId != null) {
             mv.addObject("foundId", foundId);
             mv.setViewName("member/showId");
@@ -116,12 +148,13 @@ public class MemberController {
         }
         return mv;
     }
-    
-    @GetMapping("deleteMember")
+
+    @GetMapping("deleteMember.me")
     public String deleteMember() {
         return "member/deleteMember";
     }
-    @RequestMapping(value = "/deleteAccount.me", method = RequestMethod.POST)
+
+    @PostMapping("deleteAccount.me")
     public String deleteAccount(Member member, HttpSession session, Model model) {
         Member loginUser = (Member) session.getAttribute("loginUser");
 
@@ -129,7 +162,6 @@ public class MemberController {
             return "redirect:/loginForm.me";
         }
 
-        // 비밀번호 확인
         if (!bcryptPasswordEncoder.matches(member.getMemberPwd(), loginUser.getMemberPwd())) {
             model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
             return "member/deleteMember";
@@ -139,14 +171,28 @@ public class MemberController {
 
         if (isDeleted) {
             session.invalidate();
-            return "redirect:/"; // 메인 페이지로 리다이렉트
+            return "redirect:/";
         } else {
             model.addAttribute("error", "탈퇴에 실패했습니다.");
             return "member/deleteMember";
         }
     }
+
+    // 네이버 콜백 처리
+    @RequestMapping(value = "/callback", method = { RequestMethod.GET, RequestMethod.POST })
+    public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session) throws IOException, ParseException {
+        OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
+        apiResult = naverLoginBO.getUserProfile(oauthToken);
+
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(apiResult);
+        JSONObject jsonObj = (JSONObject) obj;
+        JSONObject responseObj = (JSONObject) jsonObj.get("response");
+        String nickname = (String) responseObj.get("nickname");
+
+        session.setAttribute("sessionId", nickname);
+        model.addAttribute("result", apiResult);
+
+        return "redirect:/";
+    }
 }
-
-    
-
-   

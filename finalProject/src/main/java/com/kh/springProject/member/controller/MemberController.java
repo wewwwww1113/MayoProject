@@ -29,6 +29,7 @@ public class MemberController {
     @RequestMapping(value = "login.me", method = RequestMethod.POST)
     public ModelAndView loginMember(Member m, ModelAndView mv, HttpSession session) {
         Member loginUser = memberService.loginMember(m);
+        
 
         if (loginUser == null || !bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
             mv.addObject("errorMsg", "로그인 실패!!");

@@ -45,6 +45,7 @@
 		      ,TOILET_DIAPER
 		      ,TOILET_UPDATE
 		FROM TOILET
+		ORDER BY TOILET_NO ASC
 		
 	</select>
 	

@@ -35,6 +35,39 @@ public class ReviewController {
 	@Autowired
 	private ReviewService reviewService;
 	
+	
+	
+	
+	
+	// 비동기 통신 테스트용
+	@GetMapping("test.re")
+	public String test() {
+		
+		return "review/reviewTest";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//목록 페이지 이동
 	@RequestMapping("list.re")
 	public String boardList(@RequestParam(value="currentPage",defaultValue="1")int currentPage

@@ -85,15 +85,6 @@
         .social-login-buttons {
             margin-top: 20px;
         }
-        .social-login-buttons button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
         .social-login-buttons .kakao-login {
             background-color: #ffeb3b;
             color: black;
@@ -112,6 +103,9 @@
         }
         .additional-links a:hover {
             text-decoration: underline;
+        }
+        #naver_id_login {
+            text-align: center;
         }
     </style>
     <script>
@@ -182,11 +176,14 @@
                     <button type="submit" class="login-button">로그인</button>
                 </form>
                 <div class="additional-links">
-                    <a href="${pageContext.request.contextPath}/findIdPwd.me">아이디 찾기</a> / <a href="findIdPwd.jsp">비밀번호 찾기</a> / <a href="${pageContext.request.contextPath}/enrollCheckForm">회원가입</a>
+                    <a href="${pageContext.request.contextPath}/findIdPwd.me">아이디 찾기</a> / <a href="findIdPwd.jsp">비밀번호 찾기</a> / <a href="${pageContext.request.contextPath}/enrollCheckForm.me">회원가입</a>
                 </div>
                 <div class="social-login-buttons">
-                    <button class="kakao-login">카카오 계정으로 로그인</button>
-                    <button class="naver-login">네이버 계정으로 로그인</button>
+                    <div id="naver_id_login">
+                        <a href="${url}">
+                            <img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png"/>
+                        </a>
+                    </div>
                 </div>
             </c:otherwise>
         </c:choose>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapMapper">
+		
+		<resultMap type="toiletMap" id="mapResultSet">
+		<result column="TOILET_NO" property="toiletNo"/>
+		<result column="TOILET_NAME" property="toiletName"/>
+		<result column="TOILET_ADDRESS" property="toiletAddress"/>
+		<result column="TOILET_MH_B" property="toiletMhB"/>
+		<result column="TOILET_MH_S" property="toiletMhS"/>
+		<result column="TOILET_WH_B" property="toiletWhB"/>
+		<result column="TOILET_OPEN" property="toiletOpen"/>
+		<result column="LATITUDE" property="latitude"/>
+		<result column="LONGITUDE" property="longitude"/>
+		<result column="TOILET_SEAT" property="toiletSeat"/>
+		<result column="TOILET_SAFEBELL" property="toiletSafeBell"/>
+		<result column="TOILET_DIAPER" property="toiletDiaper"/>
+		<result column="TOILET_UPDATE" property="toiletUpdate"/>
+	</resultMap>
+		
+		
+		
+		
+		<select id="listCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM TOILET
+	</select>
+	
+	
+	<select id="selectAllToilets" resultMap="mapResultSet">
+		SELECT TOILET_NO
+		      ,TOILET_NAME
+		      ,TOILET_ADDRESS
+		      ,TOILET_MH_B
+		      ,TOILET_MH_S
+		      ,TOILET_WH_B
+		      ,TOILET_OPEN
+		      ,LATITUDE
+		      ,LONGITUDE
+		      ,TOILET_SEAT
+		      ,TOILET_SAFEBELL
+		      ,TOILET_DIAPER
+		      ,TOILET_UPDATE
+		FROM TOILET
+		
+	</select>
+	
+	
+	
+</mapper>

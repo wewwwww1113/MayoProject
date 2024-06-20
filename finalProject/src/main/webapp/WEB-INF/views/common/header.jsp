@@ -155,11 +155,14 @@ header {
 }
 
 nav {width:960px; margin:0 auto;}
+nav > ul {display: flex; align-items: center;}
 nav > ul > li {float:left; line-height:50px; margin-right:130px; position: relative;}
 nav > ul > li ul{ width:100%; opacity:0; position: absolute; transition:0.3s 0.2s;}
 nav > ul > li ul li{white-space:nowrap;}
 
 nav > ul > li:hover ul{opacity:1; }
+
+.login-menu { margin-left: auto; }
 
   </style>
 </head>
@@ -185,6 +188,7 @@ nav > ul > li:hover ul{opacity:1; }
                 <ul>
                     <li><a href="list.re">리뷰 </a></li>
                     <li><a href="list2.ra">랭킹</a></li>
+                    <li><a href="test.re">비동기통신 테스트</a></li>
                 </ul>
             </li>
             <li>메뉴 4
@@ -196,7 +200,7 @@ nav > ul > li:hover ul{opacity:1; }
             </li>
             <c:choose>
                 <c:when test="${not empty loginUser}">
-                    <li style="margin-left:auto;">
+                    <li class="login-menu">
                         <c:out value="${loginUser.memberNick}"/>님 환영!
                         <ul>
                             <li><a href="${pageContext.request.contextPath}/mypage.me">마이페이지</a></li>
@@ -205,30 +209,28 @@ nav > ul > li:hover ul{opacity:1; }
                     </li>
                 </c:when>
                 <c:otherwise>
-                    <li>로그인
+                    <li class="login-menu">로그인
                         <ul>
-                            <li><a href="${pageContext.request.contextPath}/loginForm.me">로그인하기</a></li>
-                            
+                            <li><a href="${pageContext.request.contextPath}/login.me">로그인하기</a></li>
                         </ul>
                     </li>
                 </c:otherwise>
             </c:choose>
         </ul>
     </nav>
-</header>
+  </header>
 
-<script>
-  $(function(){
-    var $firstmenu = $('nav > ul > li'),
-        $header = $('header');
-    $firstmenu.mouseenter(function(){
-       $header.stop().animate({height:'300px'},200);
-    })
-    .mouseleave(function(){
-        $header.stop().animate({height:'50px'},200);
-    })
-  });
-</script>
-
+  <script>
+    $(function(){
+        var $firstmenu = $('nav > ul > li'),
+            $header = $('header');
+        $firstmenu.mouseenter(function(){
+           $header.stop().animate({height:'300px'},200);
+        })
+        .mouseleave(function(){
+            $header.stop().animate({height:'50px'},200);
+        });
+    });
+  </script>
 </body>
 </html>

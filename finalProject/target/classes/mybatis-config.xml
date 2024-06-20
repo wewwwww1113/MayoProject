@@ -11,6 +11,7 @@
  		<typeAlias type="com.kh.springProject.member.model.vo.Member" alias="Member"/>
  		<typeAlias type="com.kh.springProject.review.model.vo.Review" alias="Review"/>
  		<typeAlias type="com.kh.springProject.review.model.vo.Reply" alias="Reply"/>
+ 		<typeAlias type="com.kh.springProject.map.model.vo.Map" alias="toiletMap"/>
  	</typeAliases>
  	
  	

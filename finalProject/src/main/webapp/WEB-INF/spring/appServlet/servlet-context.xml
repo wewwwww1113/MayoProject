@@ -45,6 +45,10 @@
 	 -->
 	
 	<context:component-scan base-package="com.kh.springProject" />
+
+	
+	<beans:bean id="naverLoginBO" class="com.kh.springProject.tst.NaverLoginBO" />
+
 	
 	
 	

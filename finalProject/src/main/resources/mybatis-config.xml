@@ -9,12 +9,15 @@
  	
  	<typeAliases>
  		<typeAlias type="com.kh.springProject.member.model.vo.Member" alias="Member"/>
- 		<typeAlias type="com.kh.springProject.review.model.vo.Review" alias="Review"/>
- 		<typeAlias type="com.kh.springProject.review.model.vo.Reply" alias="Reply"/>
  		<typeAlias type="com.kh.springProject.freeBoard.model.vo.fbReply" alias="fbReply"/>
  		<typeAlias type="com.kh.springProject.map.model.vo.Map" alias="toiletMap"/>
  		<typeAlias type="com.kh.springProject.freeBoard.model.vo.freeBoard" alias="freeBoard"/>
+<<<<<<< HEAD
+ 		<typeAlias type="com.kh.springProject.review.model.vo.ReviewLikes" alias="ReviewLikes"/>
+ 		
+=======
  		<typeAlias type="com.kh.springProject.csBoard.model.vo.csBoard" alias="csBoard"/>
+>>>>>>> refs/remotes/origin/main
  	</typeAliases>
  	
  	

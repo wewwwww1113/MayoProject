@@ -30,5 +30,18 @@ public class MemberDao {
 	        int result = sqlSession.delete("memberMapper.deleteMember", memberId);
 	        return result > 0;
 	    }
+
+	public Member getMemberByUsername(SqlSessionTemplate sqlSession, String memberNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("memberMapper.findMemberNo",memberNo);
+	}
+
+	public int MemberId(SqlSessionTemplate sqlSession, Member mem) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("memberMapper.reviewMemberId",mem);
+	}
+
+	
+	
 	    
 }

@@ -41,6 +41,20 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.deleteMember(sqlSession, memberId);
 	}
+
+	
+	//리뷰 - 멤버아이디
+	@Override
+	public int reviewMemberNo(Member mem) {
+		// TODO Auto-generated method stub
+		return memberDao.MemberId(sqlSession, mem);
+	}
+
+	
+
+	
+
+
 	  
 
 	}

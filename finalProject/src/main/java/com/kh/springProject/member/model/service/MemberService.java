@@ -20,7 +20,14 @@ public interface MemberService {
 
 	//회원 탈퇴 기능
 	boolean deleteMember(String memberId, String memberPwd);
+
+	//리뷰 - 멤버 아이디
+	int reviewMemberNo(Member mem);
+
+
 	
 
+	
+	
 
 }

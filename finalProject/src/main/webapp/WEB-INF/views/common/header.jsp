@@ -186,9 +186,7 @@ nav > ul > li:hover ul{opacity:1; }
             </li>
             <li>리뷰게시판
                 <ul>
-                    <li><a href="list.re">리뷰 </a></li>
-                    <li><a href="list2.ra">랭킹</a></li>
-                    <li><a href="test.re">비동기통신 테스트</a></li>
+                    <li><a href="board.re">리뷰게시판</a></li>
                 </ul>
             </li>
             <li>메뉴 4

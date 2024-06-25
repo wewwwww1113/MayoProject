@@ -74,7 +74,8 @@ public class FreeBoardServiceImp implements FreeBoardService {
 	@Override
 	public ArrayList<freeBoard> selectTopList() {
 		// TODO Auto-generated method stub
-		return fboardDao.selectTopList(sqlSession);
+		return null;
 	}
+
 
 }

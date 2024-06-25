@@ -62,10 +62,7 @@ public class FreeBoardDao {
 	public int insertReply(SqlSessionTemplate sqlSession, fbReply r) {
 		return sqlSession.insert("freeMapper.insertReply",r);
 	}
-
-	public ArrayList<freeBoard> selectTopList(SqlSessionTemplate sqlSession) {
-		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("freeMapper.selectTopList");
-	}
-
+	
 }
+
+

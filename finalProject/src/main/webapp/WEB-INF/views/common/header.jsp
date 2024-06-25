@@ -194,7 +194,7 @@ nav > ul > li:hover ul{opacity:1; }
             <li>메뉴 4
                 <ul>
                     <li><a href="list.fr">자유 게시판</a></li>
-                    <li>상세 2</li>
+                    <li><a href="list.cs">고객 센터</li>
                     <li>상세 3</li>
                 </ul>
             </li>

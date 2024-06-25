@@ -14,6 +14,7 @@
  		<typeAlias type="com.kh.springProject.freeBoard.model.vo.fbReply" alias="fbReply"/>
  		<typeAlias type="com.kh.springProject.map.model.vo.Map" alias="toiletMap"/>
  		<typeAlias type="com.kh.springProject.freeBoard.model.vo.freeBoard" alias="freeBoard"/>
+ 		<typeAlias type="com.kh.springProject.csBoard.model.vo.csBoard" alias="csBoard"/>
  	</typeAliases>
  	
  	

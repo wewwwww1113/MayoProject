@@ -62,6 +62,7 @@
                     <button type="reset" class="btn btn-danger">취소하기</button>
                 </div>
             </form>
+            
         </div>
         <br><br>
 

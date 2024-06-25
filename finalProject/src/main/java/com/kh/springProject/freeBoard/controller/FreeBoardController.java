@@ -285,6 +285,9 @@ public class FreeBoardController {
 		return result;
 		
 	}
+	
+	
+	
 
 	/*
 	 * //조회수 top5 목록 조회

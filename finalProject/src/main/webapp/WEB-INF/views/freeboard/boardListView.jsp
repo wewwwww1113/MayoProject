@@ -9,35 +9,112 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
+        body {
+            background-color: #e3f2fd; /* Soft blue background */
+            font-family: Arial, sans-serif;
+        }
+
         .content {
-            background-color:rgb(247, 245, 245);
-            width:80%;
-            margin:auto;
+            background-color: #ffffff; /* White content background */
+            width: 80%;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            padding: 20px;
         }
+
         .innerOuter {
-            border:1px solid lightgray;
-            width:80%;
-            margin:auto;
-            padding:5% 10%;
-            background-color:white;
+            border: 1px solid #ced4da; /* Light gray border */
+            width: 80%;
+            margin: auto;
+            padding: 5% 10%;
+            background-color: #f8f9fa; /* Very light gray background */
+            border-radius: 8px;
         }
 
-        #boardList {text-align:center;}
-        #boardList>tbody>tr:hover {cursor:pointer;}
+        h2 {
+            color: #0275d8; /* Soft blue for the title */
+            text-align: center;
+        }
 
-        #pagingArea {width:fit-content; margin:auto;}
-        
+        #boardList {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #boardList>tbody>tr:hover {
+            cursor: pointer;
+            background-color: #e9ecef; /* Light gray hover effect */
+        }
+
+        #boardList th, #boardList td {
+            padding: 12px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #pagingArea {
+            width: fit-content;
+            margin: auto;
+        }
+
+        .page-link {
+            color: #0275d8; /* Soft blue for pagination */
+        }
+
+        .page-link:hover {
+            background-color: #0275d8; /* Blue background on hover */
+            color: #fff; /* White text on hover */
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d; /* Gray for disabled links */
+        }
+
         #searchForm {
-            width:80%;
-            margin:auto;
+            width: 80%;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
         }
+
         #searchForm>* {
-            float:left;
-            margin:5px;
+            margin: 5px;
         }
-        .select {width:20%;}
-        .text {width:53%;}
-        .searchBtn {width:20%;}
+
+        .select {
+            width: 20%;
+        }
+
+        .text {
+            width: 50%;
+        }
+
+        .searchBtn {
+            width: 20%;
+            background-color: #0275d8; /* Soft blue button */
+            color: #fff; /* White text */
+        }
+
+        .searchBtn:hover {
+            background-color: #025aa5; /* Darker blue on hover */
+        }
+
+        .btn-secondary {
+            background-color: #0275d8; /* Soft blue button */
+            border-color: #0275d8;
+        }
+
+        .btn-secondary:hover {
+            background-color: #025aa5; /* Darker blue on hover */
+            border-color: #025aa5;
+        }
+
+        .btn-secondary:focus, .btn-secondary.focus {
+            box-shadow: 0 0 0 0.2rem rgba(2,117,216,.5);
+        }
     </style>
 </head>
 <body>

@@ -3,30 +3,120 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="reviewMapper">
-	
-	<select id="findLike" resultType="int">
-		select count(*) 
-		from review_like 
-		where board_no = #{boardNo} and user_no = #{userNo}
+		
+		<resultMap type="Review" id="reviewResultSet">
+		<result column="REVIEW_NO" property="reviewNo"/>
+		<result column="REVIEW_TITLE" property="reviewTitle"/>
+		<result column="REVIEW_WRITER" property="reviewWriter"/>
+		<result column="REVIEW_CONTENT" property="reviewContent"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="COUNT" property="count"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="status" property="status"/>
+	</resultMap>
+		
+		
+		
+		
+		<select id="listCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM REVIEW
+		WHERE STATUS='Y'
 	</select>
-
-
-
-	<insert id="likeUp" useGeneratedKeys="true" keyProperty="likeNo">
-    INSERT INTO REVIEW_LIKES (USER_NO, BOARD_NO, CREATE_DT)
-    VALUES (
-        #{userNo},
-        #{boardNo},
-        SYSDATE
-    )
-</insert>
 	
-	<delete id="likeDown">
-		delete from review_likes
-		where board_no = #{boardNo} and userNo = #{userNo}
+	
+	<select id="selectList" resultMap="reviewResultSet">
+		SELECT REVIEW_NO
+		      ,REVIEW_TITLE
+		      ,REVIEW_WRITER
+		      ,COUNT
+		      ,CREATE_DATE
+		      ,ORIGIN_NAME
+		FROM REVIEW
+		WHERE STATUS='Y'
+		ORDER BY CREATE_DATE DESC	
+	</select>
+	
+	<update id="increaseCount" parameterType="_int">
+		UPDATE REVIEW
+		SET COUNT = COUNT+1
+		WHERE REVIEW_NO = #{reviewNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<select id="selectReview" parameterType="_int" resultMap="reviewResultSet">
+		SELECT REVIEW_NO
+			  ,REVIEW_TITLE
+			  ,REVIEW_CONTENT
+			  ,REVIEW_WRITER
+			  ,CREATE_DATE
+			  ,ORIGIN_NAME
+			  ,CHANGE_NAME
+		FROM REVIEW 
+		WHERE REVIEW_NO = #{reviewNo}
+		AND STATUS = 'Y'
+	</select>
+	
+	<insert id="insertReview" parameterType="Review">
+		INSERT INTO REVIEW(REVIEW_NO
+		                 ,REVIEW_TITLE
+		                 ,REVIEW_WRITER
+		                 ,REVIEW_CONTENT
+		                 ,ORIGIN_NAME
+		                 ,CHANGE_NAME
+		                 )
+        		VALUES (SEQ_RNO.NEXTVAL
+               			,#{reviewTitle}
+               			,#{reviewWriter}
+               			,#{reviewContent}
+               			,#{originName}
+               			,#{changeName})
+	
+	</insert>
+	
+	<update id="updateReview" parameterType="Review">
+		UPDATE REVIEW
+		SET	REVIEW_TITLE = #{reviewTitle}
+		   ,REVIEW_CONTENT = #{reviewContent}
+		   ,ORIGIN_NAME = #{originName}
+		   ,CHANGE_NAME = #{changeName}
+		WHERE REVIEW_NO = #{reviewNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<delete id="deleteReview" parameterType="_int">
+		DELETE FROM
+		REVIEW 
+		WHERE REVIEW_NO = #{reviewNo}
+		AND STATUS='Y'
 	</delete>
-
-
-
-    
+	
+	<!-- 댓글 목록 -->
+	<select id="replyList" resultType="Reply" parameterType="_int">
+		<!-- resultType을 사용하기 위해 필드명과 컬럼명 일치시켜주기 -->
+		SELECT REPLY_NO replyNo
+		      ,REPLY_CONTENT replyContent
+		      ,REPLY_WRITER replyWriter
+		      ,CREATE_DATE createDate
+		FROM REPLY
+		WHERE REF_RNO = #{reviewNo}
+		AND STATUS ='Y'
+		ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<!-- 댓글 작성 -->
+	<insert id="insertReply" parameterType="Reply">
+		INSERT INTO REPLY (REPLY_NO
+						  ,REPLY_CONTENT
+						  ,REF_RNO
+						  ,REPLY_WRITER)
+           			 VALUES (SEQ_RNO.NEXTVAL
+           			 		,#{replyContent}
+           			 		,#{refRno}
+           			 		,#{replyWriter})
+	</insert>
+	
+	
+	
 </mapper>

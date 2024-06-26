@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freeMapper">
+
+
+	<resultMap type="freeBoard" id="freeboardResultSet">
+		<result column="Board_NO" property="boardNo"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="BOARD_WRITER" property="boardWriter"/>
+		<result column="BOARD_CONTENT" property="boardContent"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="COUNT" property="count"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="status" property="status"/>
+	</resultMap>
+
+	<select id="listCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FREEBOARD
+		WHERE STATUS='Y'
+	</select>
+	
+	<select id="selectList" resultMap="freeboardResultSet">
+		SELECT BOARD_NO
+		      ,BOARD_TITLE
+		      ,BOARD_WRITER
+		      ,COUNT
+		      ,CREATE_DATE
+		      ,ORIGIN_NAME
+		FROM FREEBOARD
+		WHERE STATUS='Y'
+		ORDER BY CREATE_DATE DESC	
+	</select>
+	
+	
+	<update id="increaseCount" parameterType="_int">
+		UPDATE FREEBOARD
+		SET COUNT = COUNT+1
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<select id="selectBoard" parameterType="_int" resultMap="freeboardResultSet">
+		SELECT BOARD_NO
+			  ,BOARD_TITLE
+			  ,BOARD_CONTENT
+			  ,BOARD_WRITER
+			  ,CREATE_DATE
+			  ,ORIGIN_NAME
+			  ,CHANGE_NAME
+			  ,COUNT
+		FROM FREEBOARD 
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+	</select>
+	
+	
+	<insert id="insertBoard" parameterType="freeBoard">
+		INSERT INTO FREEBOARD(BOARD_NO
+		                 ,BOARD_TITLE
+		                 ,BOARD_WRITER
+		                 ,BOARD_CONTENT
+		                 ,ORIGIN_NAME
+		                 ,CHANGE_NAME
+		                 )
+        		VALUES (SEQ_BNO.NEXTVAL
+               			,#{boardTitle}
+               			,#{boardWriter}
+               			,#{boardContent}
+               			,#{originName}
+               			,#{changeName})
+	
+	</insert>
+	
+	<update id="updateBoard" parameterType="freeBoard">
+		UPDATE FREEBOARD
+		SET	BOARD_TITLE = #{boardTitle}
+		   ,BOARD_CONTENT = #{boardContent}
+		   ,ORIGIN_NAME = #{originName}
+		   ,CHANGE_NAME = #{changeName}
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<delete id="deleteBoard" parameterType="_int">
+		DELETE FROM
+		FREEBOARD 
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS='Y'
+	</delete>
+	
+	
+	<!-- 댓글 목록 조회 -->
+	<select id="replyList" resultType="fbReply" parameterType="_int">
+		<!-- resultType을 사용하기 위해 필드명과 컬럼명 일치시켜주기 -->
+		SELECT REPLY_NO replyNo
+		      ,REPLY_CONTENT replyContent
+		      ,REPLY_WRITER replyWriter
+		      ,CREATE_DATE createDate
+		FROM FBREPLY
+		WHERE REF_BNO = #{boardNo}
+		AND STATUS ='Y'
+		ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<insert id="insertReply" parameterType="fbReply">
+		INSERT INTO FBREPLY (REPLY_NO
+						  ,REPLY_CONTENT
+						  ,REF_BNO
+						  ,REPLY_WRITER)
+           			 VALUES (SEQ_RNO.NEXTVAL
+           			 		,#{replyContent}
+           			 		,#{refBno}
+           			 		,#{replyWriter})
+	</insert>
+	
+	
+	<!-- 조회수 top5 -->
+	<select id="selectTopList" resultMap="freeboardResultSet">
+		<!-- 만약 XML문서에서  <> 와같이 태그로 인식될수있는 특수문자를 사용해야한다면 
+			 문자열로 인식되지 않는 문제가 발생한다. 
+			 이를 문자열로써 인식될수있도록 하는 구문 
+			 <![CDATA[<=]]> 5 
+			 해당 위치에 CDATA 구문을 넣어줌으로써 해당 특수문자는 문자열로 인식하라는 명령구문 
+		  -->
+	<![CDATA[SELECT * 
+		FROM (SELECT BOARD_NO
+		          ,BOARD_TITLE
+		          ,BOARD_WRITER
+		          ,COUNT
+		          ,CREATE_DATE
+		          ,ORIGIN_NAME
+		    FROM FREEBOARD
+		    WHERE STATUS='Y'
+		    ORDER BY COUNT DESC)
+		WHERE ROWNUM <=]]> 5
+<!-- 		WHERE ROWNUM BETWEEN 1 AND 5 -->
+	</select>
+	
+	
+	
+	
+	
+</mapper>

@@ -266,8 +266,7 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 		
-		
-		<!--  -->
+
 		    <!-- 스케쥴러에 필요한 것들 -->
 		<dependency>
 	        <groupId>org.springframework.boot</groupId>
@@ -289,8 +288,21 @@
 	        <artifactId>poi-ooxml</artifactId>
 	        <version>5.0.0</version>
 	    </dependency>
-	    
-   		<!-- 스케줄러 필요한것들 끝 -->
+	  
+	
+		<!-- 네이버 -->
+		<dependency>
+		<groupId>com.github.scribejava</groupId>
+		<artifactId>scribejava-core</artifactId>
+		<version>8.3.3</version>
+		</dependency>
+		<dependency>
+    <groupId>com.github.scribejava</groupId>
+	    <artifactId>scribejava-core</artifactId>
+	    <version>8.3.3</version>
+	</dependency>
+	
+
 	</dependencies>
     <build>
         <plugins>

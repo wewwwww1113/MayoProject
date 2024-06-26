@@ -5,55 +5,92 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.AutomapConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.common.template.Pagination;
+import com.kh.springProject.map.model.service.MapService;
+import com.kh.springProject.map.model.vo.Map;
+import com.kh.springProject.member.model.service.MemberService;
+import com.kh.springProject.member.model.vo.Member;
 import com.kh.springProject.review.model.service.ReviewService;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @Controller
 public class ReviewController {
 	
 	@Autowired
 	private ReviewService reviewService;
 	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private MapService mapService;
+	
+	
+//	@GetMapping("test.re")
+//    public String findIdPwd() {
+//        return "review/reviewTest";
+//    }
+	
+	// ★★★★★★★★★★★★★★문제 해결해야 함★★★★★★★★★★★★★★★★★
+	// loginUser가 null 값으로 처리되고 있는 상황
+//	@RequestMapping(value = "test.re", method = RequestMethod.GET)
+//    public String loginMember(Member m, Model model) {
+//
+//		Member loginUser = memberService.loginMember(m);
+//        
+//		model.addAttribute("loginUser", loginUser);
+//		
+//		log.debug("Login user: {}", loginUser);
+//		
+//        System.out.println(loginUser);
+//
+//      
+//        return "review/reviewTest";
+//    }
+	// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	
 	
 	
 	
-	// 비동기 통신 테스트용
-	@GetMapping("test.re")
-	public String test() {
-		
-		return "review/reviewTest";
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping(value = "test.re", method = RequestMethod.GET)
+
+    public ModelAndView getAllToilets(Map m, ModelAndView mv) {
+    	List<Map> t = mapService.getAllToilets(m);
+    	
+    	
+    	mv.setViewName("review/reviewTest");
+    	
+    	mv.addObject("t", t);
+    	
+        return mv;
+    }
 	
 	
 	
@@ -132,7 +169,7 @@ public class ReviewController {
 	
 	
 	
-	//게시글 등록 메소ㄷ
+	//게시글 등록 메소드
 		@PostMapping("insert.re")
 		public String insertReview(Review r
 								 ,MultipartFile upfile
@@ -312,6 +349,8 @@ public class ReviewController {
 			
 			return rList;
 		}
+		
+		
 
 		//댓글작성
 		@ResponseBody

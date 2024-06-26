@@ -7,27 +7,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-L25xsCO3g0t2z8C2qQSTsUk6/soHd+aRkE26HYPOYyZqJ3aJNSjQsZ7u0DSK5nXe" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     
-	
+    
+    
 	<style>
-	
-	
-	.like-icon {
-        cursor: pointer;
-        font-size: 50px; /* 원하는 크기로 조정 */
-        /* float: right; */ /* float을 사용할 경우 */
-        /* margin-left: auto; */ /* flexbox를 사용할 경우 */
-    }
-	
-	.modal-footer {
-        display: flex;
-        justify-content: space-between; /* 좋아요 아이콘과 다른 요소 사이의 간격을 유지하기 위해 */
-        align-items: center; /* 세로 중앙 정렬 */
-    }
-	
         body {
             font-family: Arial, sans-serif;
         }
@@ -156,23 +144,8 @@
             <button type="button">조회</button>
         </div>
         
-        <h5>test</h5>
-        안녕?  ${loginUser.memberNo} 이거야 
-        <br>
-        <br>
         
-        <button name="${count}" id="myButton">카운터</button>
         
-        <br>
-        
-        <script>
-        const button = document.getElementById('myButton');
-        button.addEventListener('click', function() {
-            // Log the button's name attribute value to the console
-            console.log(button.getAttribute('name'));
-        });
-    </script>
-     
         
         
         <div class="posts" id="postContainer">
@@ -182,6 +155,11 @@
                     <!-- 이미지와 화장실 정보 등 필요한 정보들을 출력 -->
                     <div class="post-title">${t.toiletName}</div>
                     <div class="post-content">${t.toiletAddress}</div>
+                    
+                    <!-- 좋아요 기능 -->
+			        <span class="like-icon" onclick="toggleLike()">❤️</span>
+			        <!-- 스크랩 기능 -->
+			        <span class="scrap-icon" onclick="toggleScrap()">⭐</span>
                     
                     
                     
@@ -251,26 +229,6 @@
 	</div>
 
 
-	<script>
-		//댓글 목록
-		function replyList(){
-			$.ajax({
-				url : "replyList.bo",
-				data : {
-					toiletNo : ${t.toiletNo}	
-				},
-				success : function(result){
-					console.log(result);
-				},
-				error : function(){
-					consol.log("통신 오류");
-				}
-			});
-		}
-	</script>
-
-
-
 	<!-- 4. 리뷰 작성 모달 -->
 	
 	<div id="reviewModal" class="modal">
@@ -298,24 +256,13 @@
 			var modal = document.getElementById("modal");
 			var modalBody = document.getElementById("modalBody");
 
-			
-			modalBody.innerHTML = "<div class='modal-header'>" +
-           // "<span class='scrap-icon' onclick='toggleScrap()'>⭐</span>" +
-            "<h2>" + name + "</h2>" +
-            "</div>" +
-           "<br>"+
-            "<p>위치: " + address + "</p>" +
-            "<p>개방 시간: " + open + "</p><br>" +
-            "<button class='btn btn-primary' onclick=\"openRatingModal()\">평점 남기기</button>" +
-            "<button class='btn btn-secondary' onclick=\"openUploadModal()\">이미지 업로드</button>" +
-            "<button class='btn btn-info' onclick=\"openReviewModal(${postId})\">리뷰 작성 </button> <span class='like-icon' onclick='toggleLike()'>❤️</span> (0)";
-            
-            
-
-			
-			
-			
-			
+			modalBody.innerHTML = "<h2>"
+					+ name
+					+ "</h2><p>위치: "
+					+ address
+					+ "</p><p>개방 시간: "
+					+ open
+					+ "</p><br><button class='btn btn-primary' onclick=\"openRatingModal()\">평점 남기기</button> <button class='btn btn-secondary' onclick=\"openUploadModal()\">이미지 업로드</button> <button class='btn btn-info' onclick=\"openReviewModal(${postId})\">리뷰 작성</button>";
 			modal.style.display = "block";
 		}
 
@@ -467,24 +414,21 @@
 		
 		
 		// 좋아요 기능
-		function toggleLike(boardId) {
-        $.ajax({
-            type: "POST",
-            url: "/review/like/" + boardId,
-            success: function(response) {
-                if (response === "liked") {
-                    alert('좋아요!');
-                    // 좋아요 처리 후 UI 갱신 코드 작성
-                } else if (response === "unliked") {
-                    alert('좋아요 취소!');
-                    // 좋아요 취소 처리 후 UI 갱신 코드 작성
-                }
-            },
-            error: function() {
-                alert('서버 오류가 발생했습니다.');
-            }
-        });
-    }
+		function toggleLike(postId) {
+		    var likeIcon = event.target;
+		    var isLiked = likeIcon.classList.contains('liked');
+		    
+		    // 이미 좋아요를 눌렀으면 취소하고, 아니면 좋아요 추가
+		    if (isLiked) {
+		        likeIcon.classList.remove('liked');
+		        alert('좋아요 취소!');
+		        // 좋아요 취소 처리를 서버로 전송할 수 있음
+		    } else {
+		        likeIcon.classList.add('liked');
+		        alert('좋아요!');
+		        // 좋아요 추가 처리를 서버로 전송할 수 있음
+		    }
+		}
 
 		// 스크랩 기능
 		function toggleScrap(postId) {
@@ -502,6 +446,18 @@
 		        // 스크랩 추가 처리를 서버로 전송할 수 있음
 		    }
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

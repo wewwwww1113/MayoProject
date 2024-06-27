@@ -85,6 +85,19 @@
         .social-login-buttons {
             margin-top: 20px;
         }
+        .social-login-buttons button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .social-login-buttons .google-login {
+            background-color: #db4437;
+            color: white;
+        }
         .social-login-buttons .kakao-login {
             background-color: #ffeb3b;
             color: black;
@@ -104,58 +117,13 @@
         .additional-links a:hover {
             text-decoration: underline;
         }
-        #naver_id_login {
-            text-align: center;
-        }
     </style>
-    <script>
-        function setCookie(name, value, days) {
-            var expires = "";
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days*24*60*60*1000));
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-        }
-
-        function getCookie(name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for(var i=0;i < ca.length;i++) {
-                var c = ca[i];
-                while (c.charAt(0)==' ') c = c.substring(1,c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-            }
-            return null;
-        }
-
-        function eraseCookie(name) {
-            document.cookie = name + '=; Max-Age=-99999999;';
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            var username = getCookie('rememberedUsername');
-            if (username) {
-                document.getElementById('username').value = username;
-                document.getElementById('remember-me').checked = true;
-            }
-
-            document.querySelector('form').addEventListener('submit', function() {
-                if (document.getElementById('remember-me').checked) {
-                    setCookie('rememberedUsername', document.getElementById('username').value, 30);
-                } else {
-                    eraseCookie('rememberedUsername');
-                }
-            });
-        });
-    </script>
 </head>
 <body>
     <div class="container">
         <c:choose>
-            <c:when test="${not empty loginUser}">
-                <p>이미 로그인된 상태입니다.</p>
+            <c:when test="${not empty sessionScope.loginUser}">
+                <p>${sessionScope.loginUser.memberNick} 환영합니다.</p>
                 <button onclick="location.href='logout.me'">로그아웃</button>
             </c:when>
             <c:otherwise>
@@ -176,12 +144,14 @@
                     <button type="submit" class="login-button">로그인</button>
                 </form>
                 <div class="additional-links">
-                    <a href="${pageContext.request.contextPath}/findIdPwd.me">아이디 찾기</a> / <a href="findIdPwd.jsp">비밀번호 찾기</a> / <a href="${pageContext.request.contextPath}/enrollCheckForm.me">회원가입</a>
+                   <a href="${pageContext.request.contextPath}/findIdPwd.me">아이디 찾기</a> / <a href="findIdPwd.jsp">비밀번호 찾기</a> / <a href="${pageContext.request.contextPath}/enrollCheckForm">회원가입</a>
                 </div>
                 <div class="social-login-buttons">
-                    <div id="naver_id_login">
+                    <button class="google-login" onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=63483462058-fju3itdbk36q6m7c4pkvv3qrqoujfngc.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/v1/oauth2/google/callback&response_type=code&scope=email%20profile%20openid&access_type=offline'">Google 로그인</button>
+                    
+                    <div id="naver_id_login" style="text-align:center">
                         <a href="${url}">
-                            <img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png"/>
+                            <img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" alt="네이버 로그인"/>
                         </a>
                     </div>
                 </div>

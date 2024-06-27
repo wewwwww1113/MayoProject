@@ -26,6 +26,9 @@ public interface MemberService {
 
 
 	
+	//소셜 로그인 기능
+	Member selectMemberById(String memberId);
+	
 
 	
 	

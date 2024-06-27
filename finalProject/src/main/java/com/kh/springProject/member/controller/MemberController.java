@@ -1,7 +1,7 @@
-
 package com.kh.springProject.member.controller;
 
 import java.io.IOException;
+import java.util.UUID;
 import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,10 +51,26 @@ public class MemberController {
             Object obj = parser.parse(apiResult);
             JSONObject jsonObj = (JSONObject) obj;
             JSONObject responseObj = (JSONObject) jsonObj.get("response");
+            String id = (String) responseObj.get("id");
             String nickname = (String) responseObj.get("nickname");
+            String email = (String) responseObj.get("email");
+            String gender = (String) responseObj.get("gender"); // 성별 추가
 
-            session.setAttribute("sessionId", nickname);
-            model.addAttribute("result", apiResult);
+            Member naverMember = memberService.selectMemberById(id);
+            if (naverMember == null) {
+                // 네이버 회원 정보를 이용해 새로운 회원 가입 처리
+                Member newMember = new Member();
+                newMember.setMemberId(id);
+                newMember.setMemberNick(nickname);
+                newMember.setEmail(email);
+                newMember.setGender(gender); // 성별 설정 추가
+                newMember.setMemberPwd(bcryptPasswordEncoder.encode(UUID.randomUUID().toString()));
+
+                memberService.insertMember(newMember);
+                session.setAttribute("loginUser", newMember);
+            } else {
+                session.setAttribute("loginUser", naverMember);
+            }
 
             mv.setViewName("redirect:/");
         } else if (m.getMemberId() != null && m.getMemberPwd() != null) {
@@ -90,9 +107,11 @@ public class MemberController {
     }
 
     @PostMapping("insert.me")
-    public ModelAndView insertMember(Member member, HttpSession session, ModelAndView mv) {
+    public ModelAndView insertMember(Member member, HttpSession session, ModelAndView mv,
+                                     @RequestParam("fullEmail") String fullEmail) {
         String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
         member.setMemberPwd(encPwd);
+        member.setEmail(fullEmail);
 
         int result = memberService.insertMember(member);
 
@@ -126,7 +145,12 @@ public class MemberController {
         }
     }
 
-    @GetMapping("enrollCheckForm.me")
+    @GetMapping("update.me")
+    public String updateMemberForm() {
+        return "member/update"; // 수정 페이지로 이동
+    }
+
+    @GetMapping("enrollCheckForm")
     public String enrollCheckForm() {
         return "member/enrollCheckForm";
     }
@@ -189,12 +213,32 @@ public class MemberController {
         Object obj = parser.parse(apiResult);
         JSONObject jsonObj = (JSONObject) obj;
         JSONObject responseObj = (JSONObject) jsonObj.get("response");
+        String id = (String) responseObj.get("id");
         String nickname = (String) responseObj.get("nickname");
+        String email = (String) responseObj.get("email");
+        String gender = (String) responseObj.get("gender"); // 성별 추가
 
-        session.setAttribute("sessionId", nickname);
-        model.addAttribute("result", apiResult);
+        Member naverMember = memberService.selectMemberById(id);
+        if (naverMember == null) {
+            // 네이버 회원 정보를 이용해 새로운 회원 가입 처리
+            Member newMember = new Member();
+            newMember.setMemberId(id);
+            newMember.setMemberNick(nickname);
+            newMember.setEmail(email);
+            newMember.setGender(gender); // 성별 설정 추가
+            newMember.setMemberPwd(bcryptPasswordEncoder.encode(UUID.randomUUID().toString()));
+
+            memberService.insertMember(newMember);
+            session.setAttribute("loginUser", newMember);
+        } else {
+            session.setAttribute("loginUser", naverMember);
+        }
 
         return "redirect:/";
     }
-}
 
+    @GetMapping("/myReviews.me")
+    public String myReviews() {
+        return "member/myReviews";
+    }
+}

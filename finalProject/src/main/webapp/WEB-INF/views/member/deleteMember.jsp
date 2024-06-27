@@ -77,9 +77,37 @@
             background-color: #ffc107;
             color: white;
         }
+         .sidebar {
+            background-color: #003366;
+            color: white;
+            width: 200px;
+            height: 100vh;
+            position: fixed;
+            top: 110px;
+            left: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin: 50px 0;
+        }
     </style>
 </head>
 <body>
+ <div class="sidebar">
+        <div class="profile">
+            <p>${loginUser.memberNick}</p>
+        </div>
+        <a href="${pageContext.request.contextPath}/mypage.me">로그인 정보</a>
+        <a href="${pageContext.request.contextPath}/favorites.me">즐겨찾기</a>
+        <a href="${pageContext.request.contextPath}/update.me">내 정보 수정</a>
+        <a href="${pageContext.request.contextPath}/myReviews.me">내가 쓴 리뷰</a>
+        <a href="${pageContext.request.contextPath}/myPosts.me">내가 작성한 글</a>
+        <a href="${pageContext.request.contextPath}/deleteMember.me">회원탈퇴</a>
+    </div>
     <div class="container">
         <h2>회원 탈퇴</h2>
         <c:if test="${not empty error}">

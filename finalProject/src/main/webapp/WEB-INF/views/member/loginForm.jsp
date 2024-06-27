@@ -84,19 +84,25 @@
         }
         .social-login-buttons {
             margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .social-login-buttons button {
-            width: 100%;
-            padding: 10px;
+            width: 223px; /* 네이버 버튼의 폭에 맞춤 */
+            height: 48px; /* 네이버 버튼 높이에 맞춤 */
             border: none;
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
             margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white; /* 글씨 색상을 흰색으로 설정 */
         }
         .social-login-buttons .google-login {
-            background-color: #db4437;
-            color: white;
+            background-color: #db4437; /* 배경색을 붉은색으로 설정 */
         }
         .social-login-buttons .kakao-login {
             background-color: #ffeb3b;
@@ -105,6 +111,8 @@
         .social-login-buttons .naver-login {
             background-color: #03c75a;
             color: white;
+            height: 48px; /* 높이 조정 */
+            width: 223px; /* 폭 조정 */
         }
         .additional-links {
             margin-top: 10px;
@@ -147,11 +155,13 @@
                    <a href="${pageContext.request.contextPath}/findIdPwd.me">아이디 찾기</a> / <a href="findIdPwd.jsp">비밀번호 찾기</a> / <a href="${pageContext.request.contextPath}/enrollCheckForm">회원가입</a>
                 </div>
                 <div class="social-login-buttons">
-                    <button class="google-login" onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=63483462058-fju3itdbk36q6m7c4pkvv3qrqoujfngc.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/v1/oauth2/google/callback&response_type=code&scope=email%20profile%20openid&access_type=offline'">Google 로그인</button>
+                    <button class="google-login" onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=63483462058-fju3itdbk36q6m7c4pkvv3qrqoujfngc.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/v1/oauth2/google/callback&response_type=code&scope=email%20profile%20openid&access_type=offline'">
+                        Google로 로그인
+                    </button>
                     
                     <div id="naver_id_login" style="text-align:center">
                         <a href="${url}">
-                            <img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" alt="네이버 로그인"/>
+                            <img width="223" height="48" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" alt="네이버 로그인"/>
                         </a>
                     </div>
                 </div>

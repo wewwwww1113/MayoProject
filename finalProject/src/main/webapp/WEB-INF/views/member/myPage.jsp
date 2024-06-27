@@ -131,7 +131,7 @@
             </div>
             <div class="info-group">
                 <label for="gender">성별</label>
-                <span id="gender">${loginUser.gender == 'M' ? '남자' : '여자'}</span>
+                <span id="gender">${loginUser.gender == 'male' ? '남자' : '여자'}</span>
             </div>
             <div class="info-group">
                 <label for="status">상태</label>

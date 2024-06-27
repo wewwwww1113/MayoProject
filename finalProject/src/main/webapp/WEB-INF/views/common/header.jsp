@@ -209,11 +209,11 @@ nav > ul > li:hover ul{opacity:1; }
                     </li>
                 </c:when>
                 <c:otherwise>
-                    <li class="login-menu">로그인
-                        <ul>
-                            <li><a href="${pageContext.request.contextPath}/login.me">로그인하기</a></li>
-                        </ul>
-                    </li>
+                    <li class="login-menu"><a href="${pageContext.request.contextPath}/login.me">로그인</a>
+					    <ul>
+					        <li><a href="${pageContext.request.contextPath}/login.me">로그인하기</a></li>
+					    </ul>
+					</li>
                 </c:otherwise>
             </c:choose>
         </ul>

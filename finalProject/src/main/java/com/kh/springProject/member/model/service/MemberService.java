@@ -21,6 +21,9 @@ public interface MemberService {
 	//회원 탈퇴 기능
 	boolean deleteMember(String memberId, String memberPwd);
 	
+	//소셜 로그인 기능
+	Member selectMemberById(String memberId);
+	
 
 
 }

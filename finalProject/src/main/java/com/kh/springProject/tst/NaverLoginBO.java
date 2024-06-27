@@ -15,7 +15,7 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 
 public class NaverLoginBO {
     private final static String CLIENT_ID = "Fnqh7ZfxmM1eawKjCQHx";
-    private final static String CLIENT_SECRET = "Fnqh7ZfxmM1eawKjCQHx";
+    private final static String CLIENT_SECRET = "vCeTRtUwWJ";
     private final static String REDIRECT_URI = "http://localhost:8888/springProject/callback";
     private final static String SESSION_STATE = "oauth_state";
     private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
@@ -27,6 +27,7 @@ public class NaverLoginBO {
         OAuth20Service oauthService = new ServiceBuilder(CLIENT_ID)
                 .apiSecret(CLIENT_SECRET)
                 .callback(REDIRECT_URI)
+                .defaultScope("profile, email, gender") // 필요한 scope 추가
                 .build(NaverLoginApi.instance());
 
         String authorizationUrl = oauthService.getAuthorizationUrl();
@@ -42,11 +43,11 @@ public class NaverLoginBO {
                     .build(NaverLoginApi.instance());
 
             try {
-				return oauthService.getAccessToken(code);
-			} catch (IOException | InterruptedException | ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                return oauthService.getAccessToken(code);
+            } catch (IOException | InterruptedException | ExecutionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -72,12 +73,12 @@ public class NaverLoginBO {
         OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL);
         oauthService.signRequest(oauthToken, request);
         Response response = null;
-		try {
-			response = oauthService.execute(request);
-		} catch (InterruptedException | ExecutionException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try {
+            response = oauthService.execute(request);
+        } catch (InterruptedException | ExecutionException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return response.getBody();
     }
 }

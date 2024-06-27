@@ -30,5 +30,10 @@ public class MemberDao {
 	        int result = sqlSession.delete("memberMapper.deleteMember", memberId);
 	        return result > 0;
 	    }
+	 
+	 
+	 public Member selectMemberById(SqlSessionTemplate sqlSession, String memberId) {
+		    return sqlSession.selectOne("memberMapper.selectMemberById", memberId);
+		}
 	    
 }

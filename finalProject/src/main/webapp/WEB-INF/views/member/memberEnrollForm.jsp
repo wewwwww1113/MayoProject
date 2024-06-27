@@ -36,7 +36,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
             margin: 100px auto 0;
-            
         }
         .container h2 {
             text-align: center;
@@ -168,6 +167,10 @@
                 var day = $('#day').val();
                 var birthDate = year + ('0' + month).slice(-2) + ('0' + day).slice(-2);
                 $('#birthDate').val(birthDate);
+
+                var email = $('#email').val();
+                var emailDomain = $('#email-domain').val();
+                $('#fullEmail').val(email + '@' + emailDomain);
             });
         });
     </script>
@@ -191,8 +194,8 @@
                     <input type="password" id="password" name="memberPwd" placeholder="영문, 숫자  4~10글자" required>
                     <label for="confirm-password">비밀번호 확인</label>
                     <input type="password" id="confirm-password" name="confirm-password" placeholder="비밀번호 재입력" required>
-                    <label for="name">이름</label>
-                    <input type="text" id="name" name="memberNick" placeholder="이름을 입력해주세요" required>
+                    <label for="name">닉네임</label>
+                    <input type="text" id="name" name="memberNick" placeholder="닉네임을 입력해주세요" required>
                     <label for="gender">성별</label>
                     <select id="gender" name="gender" required>
                         <option value="">성별을 선택하세요</option>
@@ -206,12 +209,12 @@
                         <select id="email-domain" name="email-domain" required>
                             <option value="naver.com">naver.com</option>
                             <option value="gmail.com">gmail.com</option>
-                            <option value="gmail.com">daum.net</option>
-                            <option value="gmail.com">outlook.com</option>
-                            <option value="gmail.com">nate.com</option>
-                            
+                            <option value="daum.net">daum.net</option>
+                            <option value="outlook.com">outlook.com</option>
+                            <option value="nate.com">nate.com</option>
                         </select>
                     </div>
+                    <input type="hidden" id="fullEmail" name="fullEmail">
                     <label for="birthdate">생년월일</label>
                     <div>
                         <select id="year" name="year" required>

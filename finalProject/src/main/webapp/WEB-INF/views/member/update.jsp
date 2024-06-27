@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원가입</title>
+    <title>내 정보 수정</title>
     <style>
         body {
             background-color: #e0f7fa;
@@ -45,7 +45,7 @@
             color: white;
             text-decoration: none;
             display: block;
-            margin: 50px 0; 
+            margin: 50px 0;
         }
         .container {
             margin-left: 220px;
@@ -56,8 +56,8 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px; /* 바 크기 줄이기 */
-            margin: 0 auto; /* 가운데 맞춤 */
+            max-width: 600px;
+            margin: 0 auto;
         }
         .content h2 {
             font-size: 24px;
@@ -67,7 +67,7 @@
         }
         .form-group {
             margin-bottom: 15px;
-            text-align: center; /* 추가: 텍스트 가운데 정렬 */
+            text-align: center;
         }
         .form-group label {
             display: block;
@@ -77,14 +77,22 @@
         .form-group input {
             width: calc(100% - 20px);
             padding: 10px;
-            margin: 0 auto; /* 추가: 가운데 정렬 */
-            display: block; /* 추가: 블록 요소로 변경 */
+            margin: 0 auto;
+            display: block;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
         .form-group input[type="radio"] {
             width: auto;
-            margin-right: 10px;
+            margin: 0 5px 0 0;
+        }
+        .gender-options {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .gender-options label {
+            margin: 0 10px 0 5px;
         }
         .btns {
             text-align: center;
@@ -98,7 +106,31 @@
             cursor: pointer;
             margin: 0 10px;
         }
+        .email-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .email-input input {
+            margin-right: 5px;
+        }
+        .email-input span {
+            margin: 0 5px;
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var email = "${loginUser.email}";
+            var emailParts = email.split('@');
+            $('#email').val(emailParts[0]);
+            $('#email-domain').val(emailParts[1]);
+
+            <c:if test="${not empty alertMsg}">
+                alert('${alertMsg}');
+            </c:if>
+        });
+    </script>
 </head>
 <body>
     <div class="sidebar">
@@ -121,6 +153,10 @@
                     <input type="text" id="enrollMemberId" name="memberId" class="form-control" value="${loginUser.memberId}" readonly>
                 </div>
                 <div class="form-group">
+                    <label for="currentPwd">현재 비밀번호</label>
+                    <input type="password" id="currentPwd" name="currentPwd" class="form-control" placeholder="현재 비밀번호를 입력해야 수정 가능" required>
+                </div>
+                <div class="form-group">
                     <label for="memberNick">닉네임</label>
                     <input type="text" id="memberNick" name="memberNick" class="form-control" value="${loginUser.memberNick}">
                 </div>
@@ -130,53 +166,36 @@
                 </div>
                 <div class="form-group">
                     <label for="email">이메일</label>
-                    <input type="text" id="email" name="email" class="form-control" value="${loginUser.email}">
-                    <span>@</span>
-                    <select id="email-domain" name="email-domain" required>
-                        <option value="naver.com">naver.com</option>
-                        <option value="gmail.com">gmail.com</option>
-                        <option value="daum.net">daum.net</option>
-                        <option value="outlook.com">outlook.com</option>
-                        <option value="nate.com">nate.com</option>
-                    </select>
+                    <div class="email-input">
+                        <input type="text" id="email" name="email" class="form-control">
+                        <span>@</span>
+                        <select id="email-domain" name="email-domain" required>
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="daum.net">daum.net</option>
+                            <option value="outlook.com">outlook.com</option>
+                            <option value="nate.com">nate.com</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newPwd">새 비밀번호</label>
+                    <input type="password" id="newPwd" name="newPwd" class="form-control" placeholder="새 비밀번호를 입력하세요">
                 </div>
                 <div class="form-group">
                     <label>성별</label>
-                    <input type="radio" id="male" value="M" name="gender" ${loginUser.gender == 'M' ? 'checked' : ''}>
-                    <label for="male">남자</label>
-                    <input type="radio" id="female" value="F" name="gender" ${loginUser.gender == 'F' ? 'checked' : ''}>
-                    <label for="female">여자</label>
+                    <div class="gender-options">
+                        <input type="radio" id="male" value="male" name="gender" ${loginUser.gender == 'male' ? 'checked' : ''}>
+                        <label for="male">남자</label>
+                        <input type="radio" id="female" value="female" name="gender" ${loginUser.gender == 'female' ? 'checked' : ''}>
+                        <label for="female">여자</label>
+                    </div>
                 </div>
                 <div class="btns">
                     <button type="submit">정보수정</button>
-                    <button type="button" onclick="confirmDelete()">회원탈퇴</button>
                 </div>
             </form>
-
-            <!-- 회원탈퇴를 위한 폼 추가 -->
-            <form id="deleteForm" action="deleteAccount.me" method="post">
-                <input type="hidden" name="memberId" value="${loginUser.memberId}">
-            </form>
         </div>
-    </div>
-    
-    <script>
-        function confirmDelete() {
-            if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
-                document.getElementById("deleteForm").submit();
-            }
-        }
-        
-        $(function(){
-            var gender = "${loginUser.gender}";
-            if(gender != "") {
-                $("input[value=" + gender + "]").attr("checked", true);
-            }
-        });
-    </script>
-    
-    </div>
-    </div>
     </div>
 
     <%@ include file="../common/footer.jsp" %>

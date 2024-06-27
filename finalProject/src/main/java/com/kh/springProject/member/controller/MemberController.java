@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.kh.springProject.member.model.service.MemberService;
 import com.kh.springProject.member.model.vo.Member;
@@ -41,7 +43,7 @@ public class MemberController {
     @RequestMapping(value = "login.me", method = { RequestMethod.GET, RequestMethod.POST })
     public ModelAndView login(Model model, HttpSession session, Member m, ModelAndView mv,
                               @RequestParam(value = "code", required = false) String code,
-                              @RequestParam(value = "state", required = false) String state) throws IOException, ParseException {
+                              @RequestParam(value = "state", required = false) String state, RedirectAttributes redirectAttributes) throws IOException, ParseException {
         if (code != null && state != null) {
             // 네이버 로그인 콜백 처리
             OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
@@ -72,6 +74,7 @@ public class MemberController {
                 session.setAttribute("loginUser", naverMember);
             }
 
+            redirectAttributes.addFlashAttribute("alertMsg", "로그인 성공!!");
             mv.setViewName("redirect:/");
         } else if (m.getMemberId() != null && m.getMemberPwd() != null) {
             // 일반 로그인 처리
@@ -81,8 +84,8 @@ public class MemberController {
                 mv.addObject("errorMsg", "로그인 실패!!");
                 mv.setViewName("common/errorPage");
             } else {
-                session.setAttribute("alertMsg", "로그인 성공!!");
                 session.setAttribute("loginUser", loginUser);
+                redirectAttributes.addFlashAttribute("alertMsg", "로그인 성공!!");
                 mv.setViewName("redirect:/");
             }
         } else {
@@ -108,7 +111,7 @@ public class MemberController {
 
     @PostMapping("insert.me")
     public ModelAndView insertMember(Member member, HttpSession session, ModelAndView mv,
-                                     @RequestParam("fullEmail") String fullEmail) {
+                                     @RequestParam("fullEmail") String fullEmail, RedirectAttributes redirectAttributes) {
         String encPwd = bcryptPasswordEncoder.encode(member.getMemberPwd());
         member.setMemberPwd(encPwd);
         member.setEmail(fullEmail);
@@ -116,7 +119,8 @@ public class MemberController {
         int result = memberService.insertMember(member);
 
         if (result > 0) {
-            session.setAttribute("alertMsg", "회원가입 성공!");
+            session.setAttribute("loginUser", member);
+            redirectAttributes.addFlashAttribute("alertMsg", "회원가입 성공!");
             mv.setViewName("redirect:/");
         } else {
             mv.addObject("errorMsg", "회원가입 실패");
@@ -131,19 +135,46 @@ public class MemberController {
     }
 
     @PostMapping("update.me")
-    public String updateMember(Member m, Model model, HttpSession session) {
+    public String updateMember(Member m, @RequestParam("currentPwd") String currentPwd, @RequestParam(value = "newPwd", required = false) String newPwd, @RequestParam("email") String email, @RequestParam("email-domain") String emailDomain, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+        // 이메일 결합
+        m.setEmail(email + "@" + emailDomain);
+
+        // 현재 비밀번호 확인
+        if (!currentPwd.isEmpty() && !bcryptPasswordEncoder.matches(currentPwd, loginUser.getMemberPwd())) {
+            redirectAttributes.addFlashAttribute("errorMsg", "현재 비밀번호가 일치하지 않습니다.");
+            return "redirect:update.me"; // 정보 수정 페이지로 다시 돌아감
+        }
+
+        // 새 비밀번호가 입력되었으면 새 비밀번호 설정
+        if (newPwd != null && !newPwd.isEmpty()) {
+            String encPwd = bcryptPasswordEncoder.encode(newPwd);
+            m.setMemberPwd(encPwd);
+        } else {
+            // 비밀번호를 변경하지 않을 경우 기존 비밀번호 유지
+            m.setMemberPwd(loginUser.getMemberPwd());
+        }
+
+        // 로그인 상태를 유지하기 위해 나머지 속성도 업데이트
+        m.setMemberId(loginUser.getMemberId());
+        m.setStatus(loginUser.getStatus());
+        m.setIsAdmin(loginUser.getIsAdmin());
+
         int result = memberService.updateMember(m);
 
         if (result > 0) {
+            // 업데이트 후 세션에 새로운 사용자 정보 저장
             Member updateMem = memberService.loginMember(m);
             session.setAttribute("loginUser", updateMem);
-            session.setAttribute("alertMsg", "정보수정 성공!!");
-            return "redirect:mypage.me";
+            redirectAttributes.addFlashAttribute("alertMsg", "정보수정 성공!!");
+            return "redirect:update.me"; // 정보 수정 페이지로 다시 돌아감
         } else {
-            model.addAttribute("errorMsg", "정보 수정 실패!");
-            return "common/errorPage";
+            redirectAttributes.addFlashAttribute("errorMsg", "정보 수정 실패!");
+            return "redirect:update.me";
         }
     }
+
 
     @GetMapping("update.me")
     public String updateMemberForm() {
@@ -161,7 +192,16 @@ public class MemberController {
     }
 
     @PostMapping("findId.me")
-    public ModelAndView findId(Member member, ModelAndView mv) {
+    public ModelAndView findId(@RequestParam("memberNick") String memberNick, @RequestParam("email") String email, @RequestParam("email-domain") String emailDomain, ModelAndView mv) {
+        // 이메일 결합
+        String fullEmail = email + "@" + emailDomain;
+
+        // Member 객체에 필요한 정보를 설정
+        Member member = new Member();
+        member.setMemberNick(memberNick);
+        member.setEmail(fullEmail);
+
+        // DB에서 회원 아이디 찾기
         String foundId = memberService.findMemberId(member);
 
         if (foundId != null) {
@@ -240,5 +280,9 @@ public class MemberController {
     @GetMapping("/myReviews.me")
     public String myReviews() {
         return "member/myReviews";
+    }
+    @GetMapping("loginForm.me")
+    public String loginForm() {
+        return "member/loginForm";
     }
 }

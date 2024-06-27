@@ -63,19 +63,19 @@
         )
 </insert>
 
-    <update id="updateMember" parameterType="Member">
-        UPDATE MEMBER
-           SET MEMBER_NICK = #{memberNick},
-               MEMBER_PWD = #{memberPwd},
-               GENDER = #{gender},
-               BIRTH_DATE = #{birthDate},
-               EMAIL = #{email},
-               MODIFY_DATE = SYSDATE,
-               STATUS = #{status},
-               IS_ADMIN = #{isAdmin}
-         WHERE MEMBER_ID = #{memberId}
-           AND STATUS = 'Y'
-    </update>
+    <update id="updateMember" parameterType="member">
+    UPDATE MEMBER
+    SET MEMBER_NICK = #{memberNick},
+        MEMBER_PWD = #{memberPwd},
+        GENDER = #{gender},
+        BIRTH_DATE = #{birthDate},
+        EMAIL = #{email},
+        MODIFY_DATE = SYSDATE,
+        STATUS = #{status},
+        IS_ADMIN = #{isAdmin}
+    WHERE MEMBER_ID = #{memberId}
+      AND STATUS = 'Y'
+</update>
 
      <!-- 비밀번호 확인 쿼리 -->
     <select id="checkPassword" parameterType="String" resultType="String">
@@ -89,7 +89,7 @@
     
 
     
-  <select id="findMemberId" parameterType="Member" resultType="String">
+ <select id="findMemberId" parameterType="member" resultType="string">
     SELECT MEMBER_ID
     FROM MEMBER
     WHERE MEMBER_NICK = #{memberNick}
@@ -114,7 +114,6 @@
 
 
 
-
 <select id="findMemberNo" resultType="String">
     SELECT *
     FROM MEMBER
@@ -128,6 +127,7 @@
 	where member_id= #{memberId}
 
 </select>
+
 
 
 </mapper>

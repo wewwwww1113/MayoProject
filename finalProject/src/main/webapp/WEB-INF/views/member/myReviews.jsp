@@ -157,12 +157,17 @@
                 </tbody>
             </table>
             <div class="pagination">
-                <a href="#">&lt;</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">&gt;</a>
+                <c:if test="${pi.startPage > 1}">
+                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=1">&lt;&lt;</a>
+                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${pi.startPage - 1}">&lt;</a>
+                </c:if>
+                <c:forEach begin="${pi.startPage}" end="${pi.endPage}" var="i">
+                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${i}" class="${pi.currentPage == i ? 'active' : ''}">${i + 1}</a>
+                </c:forEach>
+                <c:if test="${pi.endPage < pi.maxPage}">
+                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${pi.endPage + 1}">&gt;</a>
+                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${pi.maxPage}">&gt;&gt;</a>
+                </c:if>
             </div>
         </div>
     </div>

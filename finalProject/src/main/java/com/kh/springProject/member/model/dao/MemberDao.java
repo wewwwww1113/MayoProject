@@ -35,5 +35,18 @@ public class MemberDao {
 	 public Member selectMemberById(SqlSessionTemplate sqlSession, String memberId) {
 		    return sqlSession.selectOne("memberMapper.selectMemberById", memberId);
 		}
+
+	public Member getMemberByUsername(SqlSessionTemplate sqlSession, String memberNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("memberMapper.findMemberNo",memberNo);
+	}
+
+	public int MemberId(SqlSessionTemplate sqlSession, Member mem) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("memberMapper.reviewMemberId",mem);
+	}
+
+	
+
 	    
 }

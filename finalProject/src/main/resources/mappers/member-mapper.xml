@@ -111,5 +111,23 @@
       FROM MEMBER
      WHERE MEMBER_ID = #{memberId}
 </select>
-    
+
+
+
+<select id="findMemberNo" resultType="String">
+    SELECT *
+    FROM MEMBER
+    WHERE MEMBER_ID = #{memberId}
+</select>
+
+
+<select id="reviewMemberId" resultType="String">
+	select *
+	from member
+	where member_id= #{memberId}
+
+</select>
+
+
+
 </mapper>

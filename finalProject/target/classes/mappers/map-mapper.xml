@@ -5,7 +5,9 @@
 
 <mapper namespace="mapMapper">
 		
+
 		<resultMap type="toiletMap" id="mapResultSet">
+      
 		<result column="TOILET_NO" property="toiletNo"/>
 		<result column="TOILET_NAME" property="toiletName"/>
 		<result column="TOILET_ADDRESS" property="toiletAddress"/>
@@ -19,7 +21,8 @@
 		<result column="TOILET_SAFEBELL" property="toiletSafeBell"/>
 		<result column="TOILET_DIAPER" property="toiletDiaper"/>
 		<result column="TOILET_UPDATE" property="toiletUpdate"/>
-	</resultMap>
+
+  </resultMap>
 		
 		
 		
@@ -45,10 +48,47 @@
 		      ,TOILET_DIAPER
 		      ,TOILET_UPDATE
 		FROM TOILET
-		ORDER BY TOILET_NO ASC
-		
+
 	</select>
 	
+  
+  
+	<delete id="deleteAllToilets">
+        DELETE FROM TOILET
+    </delete>
+
+  
+  
+    <insert id="insertToilet" parameterType="java.util.Map">
+	    INSERT INTO TOILET (
+	        TOILET_NAME,
+	        TOILET_ADDRESS,
+	        TOILET_MH_B,
+	        TOILET_MH_S,
+	        TOILET_WH_B,
+	        TOILET_OPEN,
+	        LATITUDE,
+	        LONGITUDE,
+	        TOILET_SEAT,
+	        TOILET_SAFEBELL,
+	        TOILET_DIAPER,
+	        TOILET_UPDATE
+	    ) VALUES (
+	        #{TOILET_NAME},
+	        #{TOILET_ADDRESS},
+	        #{TOILET_MH_B},
+	        #{TOILET_MH_S},
+	        #{TOILET_WH_B},
+	        #{TOILET_OPEN},
+	        #{LATITUDE},
+	        #{LONGITUDE},
+	        #{TOILET_SEAT},
+	        #{TOILET_SAFEBELL},
+	        #{TOILET_DIAPER},
+	        #{TOILET_UPDATE}
+	    )
+	</insert>
+
 	
 	
 </mapper>

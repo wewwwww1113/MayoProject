@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="toiletLikeMapper">
+		
+	<resultMap type="ReviewReplyLikeVO" id="tolietlikeset">
+		<result column="TOILET_LIKE_KEY" property="tolietLikeKey"/>
+		<result column="USER_KEY" property="userKey"/>
+		<result column="TOILET_KEY" property="tolietKey"/>
+	</resultMap>
+		
+		
+	
+	<insert id="postLikeReview" parameterType="map">
+		insert into TOILET_LIKE(TOILET_LIKE_KEY,USER_KEY,TOILET_KEY) 
+		values(TOILET_LIKE_SEQ.NEXTVAL,#{memberNo},#{toiletNo})
+	
+	</insert>
+	
+	<select id="getLikeReview" parameterType="map" resultType="ReviewReplyLikeVO">
+		select TOILET_LIKE_KEY as tolietLikeKey,USER_KEY as userKey,TOILET_KEY as tolietKey 
+		from TOILET_LIKE where USER_KEY = #{userNo}
+	</select>
+	
+	
+</mapper>

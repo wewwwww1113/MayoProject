@@ -31,6 +31,7 @@ public class ReviewReplyController  {
 	@Autowired
 	private ReviewReplyService reviewReplyService;
 	
+
 	 @PostMapping
 	    @ResponseBody
 	    public ResponseEntity<?> postReview(@RequestBody ReviewReplyVO reviewReplyVO, HttpSession session) {
@@ -45,6 +46,8 @@ public class ReviewReplyController  {
 	    }
 
 	
+	
+	//댓글 등록
 	@GetMapping
 	@ResponseBody
 	public ResponseEntity<?> getReview(@RequestParam("toiletNo") int toiletNo){
@@ -53,12 +56,16 @@ public class ReviewReplyController  {
 		
 		return ResponseEntity.ok(reviews);
 	}
+	
+	//좋아요 누르기
 	@PostMapping("/like")
 	@ResponseBody
 	public ResponseEntity<?> postLikeReview(@RequestBody ReviewReplyVO reviewReplyVO ){
 		reviewReplyService.postLikeReview(1,reviewReplyVO.getToiletNo());
 		return ResponseEntity.ok("sucess");
 	}
+	
+	//좋아요 수 전체 조회
 	@GetMapping("/like")
 	@ResponseBody
 	public ResponseEntity<?> gettLikeReview( ){

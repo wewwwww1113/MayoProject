@@ -118,9 +118,22 @@
 	</insert>
 	
 	
+	<!--  댓글 작성 -->
 	<insert id="test" parameterType="map">
-		INSERT INTO REVIEW_REPLY(review_reply_key,USER_KEY, CONTENT,TOILET_NO, CREATE_TIME, UPDATE_TIME, DEL_YN) VALUES 
-		(REVIEW_REPLY_SEQ.NEXTVAL,#{memberNo}, #{content},#{toiletNo}, (SELECT SYSDATE FROM DUAL),(SELECT SYSDATE FROM DUAL),'N')
+		INSERT INTO REVIEW_REPLY(review_reply_key
+									,USER_KEY
+									, CONTENT
+									, TOILET_NO
+									, CREATE_TIME
+									, UPDATE_TIME
+									, DEL_YN) VALUES 
+		(REVIEW_REPLY_SEQ.NEXTVAL
+		,#{memberNo} <!--  -->
+		, #{content}
+		,#{toiletNo}
+		, (SELECT SYSDATE FROM DUAL)
+		,(SELECT SYSDATE FROM DUAL)
+		,'N')
 	</insert>
 	
 	<select id="test2" resultType="ReviewReplyVO" parameterType="_int">

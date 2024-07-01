@@ -16,21 +16,28 @@ public class ReviewReplyDao {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
-	public void postReview(int memberNo, ReviewReplyVO reviewReplyVO) {
+//＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠
+	
+	//댓글 작성
+	public void postReview( ReviewReplyVO reviewReplyVO) {
 	
 		Map<String,Object> map = new HashMap();
-		map.put("memberNo", memberNo);
+		map.put("memberNo", reviewReplyVO.getUserKey());
 		map.put("content", reviewReplyVO.getContent());
 		map.put("toiletNo", reviewReplyVO.getToiletNo());
 		
 		sqlSessionTemplate.insert("reviewMapper.test", map);
 	}
-
+	
+//＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠
+	
+	//댓글 조회
 	public List<ReviewReplyVO> getReview(int toiletNo) {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectList("reviewMapper.test2", toiletNo);
 	}
 
+	//좋아요 눌렀을 때
 	public void postLikeReview(int memberNo, int toiletNo) {
 		Map<String,Object> map = new HashMap();
 		map.put("memberNo", memberNo);
@@ -39,7 +46,8 @@ public class ReviewReplyDao {
 		// TODO Auto-generated method stub
 		sqlSessionTemplate.insert("toiletLikeMapper.postLikeReview",map);
 	}
-
+	
+	//좋아요 조회
 	public List<ReviewReplyLikeVO> gettLikeReview(int userNo) {
 		Map<String,Object> map = new HashMap();
 		map.put("userNo", userNo);

@@ -444,7 +444,8 @@
 
 		  	var body = {
 		  		    "content" : commentText,
-		  		    "toiletNo":toiletNo
+		  		    "toiletNo":toiletNo,
+		  		    "userKey" : 3
 	         }
 			loadComments(0,toiletNo)
 	         

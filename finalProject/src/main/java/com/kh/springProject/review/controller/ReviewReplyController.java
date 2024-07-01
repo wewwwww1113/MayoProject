@@ -31,20 +31,26 @@ public class ReviewReplyController  {
 	@Autowired
 	private ReviewReplyService reviewReplyService;
 	
+	
+//＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠
+
+	//댓글작성 
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<?> postReview(@RequestBody ReviewReplyVO reviewReplyVO,HttpSession session ){
-//		Member member = (Member) session.getAttribute("loginUser");
-		
-//		member.getMemberId()
-		
-		
-//		reviewReplyService.postReview(Integer.parseInt(member.getMemberNo()),reviewReplyVO);
-		reviewReplyService.postReview(1,reviewReplyVO);
 
+		System.out.println(reviewReplyVO);
+		reviewReplyService.postReview(reviewReplyVO);
+				
+		
+		
 		return ResponseEntity.ok("sucess");
 	}
 	
+//＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠
+	
+	
+	//댓글 등록
 	@GetMapping
 	@ResponseBody
 	public ResponseEntity<?> getReview(@RequestParam("toiletNo") int toiletNo){
@@ -53,12 +59,16 @@ public class ReviewReplyController  {
 		
 		return ResponseEntity.ok(reviews);
 	}
+	
+	//좋아요 누르기
 	@PostMapping("/like")
 	@ResponseBody
 	public ResponseEntity<?> postLikeReview(@RequestBody ReviewReplyVO reviewReplyVO ){
 		reviewReplyService.postLikeReview(1,reviewReplyVO.getToiletNo());
 		return ResponseEntity.ok("sucess");
 	}
+	
+	//좋아요 수 전체 조회
 	@GetMapping("/like")
 	@ResponseBody
 	public ResponseEntity<?> gettLikeReview( ){

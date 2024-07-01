@@ -151,7 +151,7 @@
         <div class="posts" id="postContainer">
             <!-- 화장실 정보를 반복적으로 출력 -->
             <c:forEach var="t" items="${t}" >
-                <div class="post" data-name="${t.toiletName}" data-address="${t.toiletAddress}" data-open="${t.toiletOpen }">
+                <div class="post" data-name="${t.toiletName}" data-address="${t.toiletAddress}" data-open="${t.toiletOpen }" data-no="${t.toiletNo}" >
                     <!-- 이미지와 화장실 정보 등 필요한 정보들을 출력 -->
                     <div class="post-title">${t.toiletName}</div>
                     <div class="post-content">${t.toiletAddress}</div>
@@ -252,17 +252,23 @@
 
 	<script>
 		// 모달 메인창
-		function openModal(name, address, open) {
+		function openModal(name, address, open,tolietNo) {
+			
+			console.log('tolietNo11=',tolietNo)
 			var modal = document.getElementById("modal");
 			var modalBody = document.getElementById("modalBody");
+			var postId = ${postId}
 
+		    modal.setAttribute('data-no', tolietNo);
+
+			
 			modalBody.innerHTML = "<h2>"
 					+ name
 					+ "</h2><p>위치: "
 					+ address
 					+ "</p><p>개방 시간: "
 					+ open
-					+ "</p><br><button class='btn btn-primary' onclick=\"openRatingModal()\">평점 남기기</button> <button class='btn btn-secondary' onclick=\"openUploadModal()\">이미지 업로드</button> <button class='btn btn-info' onclick=\"openReviewModal(${postId})\">리뷰 작성</button>";
+					+ "</p><br><button class='btn btn-primary' onclick=\"openRatingModal()\">평점 남기기</button> <button class='btn btn-secondary' onclick=\"openUploadModal()\">이미지 업로드</button> <button class='btn btn-info'onclick=\"openReviewModal(" + postId + "," + tolietNo + ")\") \">리뷰 작성</button>";
 			modal.style.display = "block";
 		}
 
@@ -278,7 +284,9 @@
 						var name = post.getAttribute('data-name');
 						var address = post.getAttribute('data-address');
 						var open = post.getAttribute('data-open');
-						openModal(name, address, open);
+						var tolietNo = post.getAttribute('data-no');
+						
+						openModal(name, address, open,tolietNo);
 					}
 				});
 
@@ -374,12 +382,13 @@
 
 		//댓글 
 
-		function openReviewModal(postId) {
+		function openReviewModal(postId,tolietNo) {
+			console.log('qweqw=',tolietNo)
 			var reviewModal = document.getElementById("reviewModal");
 			reviewModal.style.display = "block";
 
 			// 여기서 postId를 사용하여 해당 게시물의 댓글을 로드하는 로직을 추가할 수 있음
-			loadComments(postId);
+			loadComments(postId,tolietNo);
 		}
 
 		function closeReviewModal() {
@@ -387,27 +396,72 @@
 			reviewModal.style.display = "none";
 		}
 
-		function loadComments(postId) {
-			// postId를 기반으로 해당 게시물의 댓글을 로드하는 로직을 구현할 수 있음
-			var commentsList = document.getElementById('commentsList');
-			commentsList.innerHTML = "<p>댓글을 로드하는 중입니다...</p>";
-			// 예시로 간단히 댓글 목록을 가져와서 출력하는 코드
-			// 이 부분은 서버에서 데이터를 가져와야 하므로 실제 서버에서 데이터를 가져오는 방식으로 구현 필요
-			setTimeout(function() {
-				commentsList.innerHTML = "<p>댓글 1</p><p>댓글 2</p><p>댓글 3</p>"; // 예시로 댓글을 추가하는 부분
-			}, 1000); // 1초 후에 댓글을 추가하는 예시 코드
+		function loadComments(postId,tolietNo) {
+			
+			console.log("asd",tolietNo)
+		  	var param = {
+	           "toiletNo" : tolietNo,
+	        }
+				
+			var res =[];
+
+			  $.ajax({
+				    type: "GET", //전송방식 지정
+				    url: "/springProject/v1/review/reply", //전송 url
+				    data: param, //요청 시 전송할 데이터
+				    success: function (data) {
+				    	res=data
+				    }
+				  });
+				
+				setTimeout(function() {
+					
+					   var commentsHtml = "";
+					
+					console.log('res==',res)
+					   res.forEach(function (comment) {
+				            commentsHtml += "<p>작성자 "+comment.userNickName+"</p><p>" + comment.content + "</p>";
+				        });
+				        commentsList.innerHTML = commentsHtml;
+				}, 100); // 1초 후에 댓글을 추가하는 예시 코드
+		}
+
+		function getCookie(name) {
+		    var value = "; " + document.cookie;
+		    var parts = value.split("; " + name + "=");
+		    if (parts.length == 2) return parts.pop().split(";").shift();
+		}
+		function get_cookie(name) {
+		    var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+		    return value? value[2] : null;
 		}
 
 		function submitComment() {
+			
 			var commentText = document.getElementById('commentText').value;
 			var commentsList = document.getElementById('commentsList');
+		    var toiletNo = document.querySelector('.modal').getAttribute('data-no'); // Get toiletNo from modal
 
+		  	var body = {
+		  		    "content" : commentText,
+		  		    "toiletNo":toiletNo
+	         }
+			loadComments(0,toiletNo)
+	         
+		 $.ajax({
+			    type: "POST", //전송방식 지정
+			    url: "/springProject/v1/review/reply", //전송 url
+			    data: JSON.stringify(body), // Convert object to JSON string
+			    contentType: "application/json", // Set content type to JSON\
+			   
+			  });
 			// 여기서 commentText를 서버에 전송하여 댓글을 저장하는 로직을 추가할 수 있음
 			// 실제 서버와의 통신이 필요한 부분이므로 예시로 경고창을 띄우는 코드를 추가
-			alert("댓글작성 완료! ");
-
+			//alert("댓글작성 완료! ");
+			
+			loadComments(0,toiletNo)
 			// 댓글 제출 후 화면에서 추가
-			commentsList.innerHTML += "<p>" + commentText + "</p>";
+			//commentsList.innerHTML += "<p>" + commentText + "</p>";
 
 		}
 		

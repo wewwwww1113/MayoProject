@@ -118,5 +118,31 @@
 	</insert>
 	
 	
+	<insert id="test" parameterType="map">
+		INSERT INTO REVIEW_REPLY(review_reply_key,USER_KEY, CONTENT,TOILET_NO, CREATE_TIME, UPDATE_TIME, DEL_YN) VALUES 
+		(REVIEW_REPLY_SEQ.NEXTVAL,#{memberNo}, #{content},#{toiletNo}, (SELECT SYSDATE FROM DUAL),(SELECT SYSDATE FROM DUAL),'N')
+	</insert>
+	
+	<select id="test2" resultType="ReviewReplyVO" parameterType="_int">
+		SELECT 
+		    rr.USER_KEY as userKey,
+		    m.MEMBER_NICK as userNickName ,
+		    rr.REVIEW_REPLY_KEY as reviewReplyKey,
+		    rr.content as CONTENT,
+		    rr.CREATE_TIME as createTime,
+		    rr.UPDATE_TIME as updateTime,
+		    rr.DEL_YN as delYn,
+		    rr.TOILET_NO as toiletNo
+		FROM 
+		    REVIEW_REPLY rr
+		JOIN 
+		    member m ON m.member_no = rr.USER_KEY
+		WHERE 
+		    rr.TOILET_NO = #{toiletNo}
+		    AND rr.DEL_YN = 'N'
+		order by rr.review_reply_key asc
+	</select>
+
+	
 	
 </mapper>

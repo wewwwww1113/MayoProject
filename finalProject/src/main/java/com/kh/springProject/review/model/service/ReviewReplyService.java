@@ -16,22 +16,30 @@ public class ReviewReplyService {
 	@Autowired
 	private ReviewReplyDao reviewReplyDao;
 
-	public void postReview(int memberNo, ReviewReplyVO reviewReplyVO) {
-		// TODO Auto-generated method stub
+//＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠
+	//댓글 작성
+	public void postReview(ReviewReplyVO reviewReplyVO) {
 		
-		reviewReplyDao.postReview(memberNo,reviewReplyVO);
-	}
+		reviewReplyDao.postReview(reviewReplyVO);
 
+	}
+//＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠
+	
+	
+	
+	//댓글 목록
 	public List<ReviewReplyVO> getReview(int toiletNo) {
 		// TODO Auto-generated method stub
 		return reviewReplyDao.getReview(toiletNo);
 	}
-
+	
+	//좋아요 눌렀을 때
 	public void postLikeReview(int userNo, int toiletNo) {
 		// TODO Auto-generated method stub
 		reviewReplyDao.postLikeReview(userNo,toiletNo);
 	}
-
+	
+	//좋아요 전체 보기
 	public List<ReviewReplyLikeVO> gettLikeReview(int userNo) {
 		// TODO Auto-generated method stub
 		return reviewReplyDao.gettLikeReview(userNo);

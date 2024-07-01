@@ -21,7 +21,7 @@ import com.kh.springProject.review.model.service.ReviewReplyService;
 import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
 import com.kh.springProject.review.model.vo.ReviewReplyVO;
 
-import ch.qos.logback.classic.Logger;
+
 import lombok.extern.slf4j.Slf4j;
 
 @RequestMapping("/v1/review/reply")
@@ -31,23 +31,20 @@ public class ReviewReplyController  {
 	@Autowired
 	private ReviewReplyService reviewReplyService;
 	
-	
-//＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠
 
-	//댓글작성 
-	@PostMapping
-	@ResponseBody
-	public ResponseEntity<?> postReview(@RequestBody ReviewReplyVO reviewReplyVO,HttpSession session ){
+	 @PostMapping
+	    @ResponseBody
+	    public ResponseEntity<?> postReview(@RequestBody ReviewReplyVO reviewReplyVO, HttpSession session) {
+	        Member member = (Member) session.getAttribute("loginUser");
+	        if (member != null) {
+	            reviewReplyVO.setUserKey(Integer.parseInt(member.getMemberNo()));
+	            reviewReplyService.postReview(reviewReplyVO.getUserKey(), reviewReplyVO);
+	            return ResponseEntity.ok("success");
+	        } else {
+	            return ResponseEntity.status(401).body("Unauthorized");
+	        }
+	    }
 
-		System.out.println(reviewReplyVO);
-		reviewReplyService.postReview(reviewReplyVO);
-				
-		
-		
-		return ResponseEntity.ok("sucess");
-	}
-	
-//＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠
 	
 	
 	//댓글 등록

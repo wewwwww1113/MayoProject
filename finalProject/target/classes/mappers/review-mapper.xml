@@ -16,7 +16,7 @@
 		<result column="status" property="status"/>
 	</resultMap>
 		
-		
+	
 		
 		
 		<select id="listCount" resultType="_int">
@@ -156,6 +156,34 @@
 		order by rr.review_reply_key asc
 	</select>
 
+	
+	
+	<insert id="postLikeReview" parameterType="map">
+		insert into TOILET_LIKE(TOILET_LIKE_KEY
+											,USER_KEY
+											,TOILET_KEY) 
+								values(TOILET_LIKE_SEQ.NEXTVAL
+								,#{userKey}
+								,#{toiletKey})
+	
+	</insert>
+	
+	
+<resultMap type="ReviewReplyLikeVO" id="reviewLike">
+	<result column="TOILET_LIKE_KEY" property="toiletLikeKey" />
+	<result column="USER_KEY" property="userKey" />
+	<result column="TOILET_KEY" property="toiletKey" />
+</resultMap>
+
+
+	<select id="personLike" resultType="java.lang.Integer" parameterType="ReviewReplyLikeVO">
+    SELECT COUNT(TOILET_LIKE_KEY)
+    FROM TOILET_LIKE
+    WHERE TOILET_KEY = #{toiletKey} AND USER_KEY = #{userKey}
+</select>
+	
+	
+	
 	
 	
 </mapper>

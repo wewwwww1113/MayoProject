@@ -13,8 +13,12 @@
 		
 	
 	<insert id="postLikeReview" parameterType="map">
-		insert into TOILET_LIKE(TOILET_LIKE_KEY,USER_KEY,TOILET_KEY) 
-		values(TOILET_LIKE_SEQ.NEXTVAL,#{memberNo},#{toiletNo})
+		insert into TOILET_LIKE(TOILET_LIKE_KEY
+											,USER_KEY
+											,TOILET_KEY) 
+								values(TOILET_LIKE_SEQ.NEXTVAL
+								,#{memberNo}
+								,#{toiletNo})
 	
 	</insert>
 	

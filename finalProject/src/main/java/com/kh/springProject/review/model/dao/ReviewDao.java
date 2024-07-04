@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
+import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
 
 @Repository
 public class ReviewDao {
@@ -75,6 +76,17 @@ public class ReviewDao {
 		// TODO Auto-generated method stub
 		return sqlSession.insert("reviewMapper.insertReply",r);
 
+	}
+
+	//토탈 좋아요
+	public int insertLike(SqlSessionTemplate sqlSession, ReviewReplyLikeVO like) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("reviewMapper.postLikeReview", like);
+	}
+
+	//각 게시물
+	public int personLike(SqlSessionTemplate sqlSession, ReviewReplyLikeVO like) {
+	    return sqlSession.selectOne("reviewMapper.personLike", like);
 	}
 
 }

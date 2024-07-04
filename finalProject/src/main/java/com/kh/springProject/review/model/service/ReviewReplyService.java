@@ -33,18 +33,23 @@ public class ReviewReplyService {
 		return reviewReplyDao.getReview(toiletNo);
 	}
 	
-	//좋아요 눌렀을 때
-	public void postLikeReview(int userNo, int toiletNo) {
-		// TODO Auto-generated method stub
-		reviewReplyDao.postLikeReview(userNo,toiletNo);
-	}
+//	//좋아요 눌렀을 때
+//	public void postLikeReview(int userKey, int toiletKey, int toiletLikeKey) {
+//        reviewReplyDao.postLikeReview(userKey, toiletKey, toiletLikeKey);
+//    }
 	
 	//좋아요 전체 보기
 	public List<ReviewReplyLikeVO> gettLikeReview(int userNo) {
 		// TODO Auto-generated method stub
 		return reviewReplyDao.gettLikeReview(userNo);
 	}
-	
+
+
+
+
+
+
+
 
 
 	

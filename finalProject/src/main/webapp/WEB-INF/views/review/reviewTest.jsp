@@ -15,117 +15,128 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-L25xsCO3g0t2z8C2qQSTsUk6/soHd+aRkE26HYPOYyZqJ3aJNSjQsZ7u0DSK5nXe" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
+body {
+	font-family: Arial, sans-serif;
+}
 
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            text-align: center;
-        }
+.like-icon {
+	font-size: 36px; /* Increase the size as desired */
+	cursor: pointer;
+	
+}
 
-        .search-bar {
-            margin: 20px 0;
-        }
+.container {
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
+}
 
-        .search-bar input,
-        .search-bar select,
-        .search-bar button {
-            padding: 10px;
-            margin-right: 10px;
-            font-size: 16px;
-        }
+.search-bar {
+	margin: 20px 0;
+}
 
-        .posts {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
+.search-bar input, .search-bar select, .search-bar button {
+	padding: 10px;
+	margin-right: 10px;
+	font-size: 16px;
+}
 
-        .post {
-            width: 23%;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            padding: 10px;
-            text-align: left;
-            cursor: pointer;
-        }
+.posts {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
 
-        .post img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px 10px 0 0;
-        }
+.post {
+	width: 23%;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	padding: 10px;
+	text-align: left;
+	cursor: pointer;
+}
 
-        .post-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
+.post img {
+	width: 100%;
+	height: auto;
+	border-radius: 10px 10px 0 0;
+}
 
-        .post-content {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
+.post-title {
+	font-size: 18px;
+	font-weight: bold;
+	margin: 10px 0;
+}
 
-        .load-more {
-            margin: 20px 0;
-        }
+.post-content {
+	font-size: 14px;
+	margin-bottom: 10px;
+}
 
-        .load-more button {
-            padding: 10px 20px;
-            font-size: 16px;
-        }
+.load-more {
+	margin: 20px 0;
+}
 
-        /* 상세보기 모달 스타일 */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1050;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
+.load-more button {
+	padding: 10px 20px;
+	font-size: 16px;
+}
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 10px;
-        }
+/* 상세보기 모달 스타일 */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1050;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.5);
+}
 
-        .modal-close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.modal-content {
+	background-color: #fefefe;
+	margin: 10% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+	max-width: 500px;
+	border-radius: 10px;
+}
 
-        .star {
-            font-size: 30px; /* 별의 크기 조정 */
-            cursor: pointer;
-            transition: color 0.3s; /* 색상 변화 애니메이션 */
-        }
-        
-        .star:hover {
-            color: gold; /* 마우스 호버 시 색상 변경 */
-        }
-    </style>
+.modal-close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.star {
+	font-size: 30px; /* 별의 크기 조정 */
+	cursor: pointer;
+	transition: color 0.3s; /* 색상 변화 애니메이션 */
+}
+
+.star:hover {
+	color: gold; /* 마우스 호버 시 색상 변경 */
+}
+</style>
 </head>
 <body>
     <div class="container">
         <br><br>
-        <h1>화장실 게시판</h1>
-        <div class="search-bar">
+        <h1>화장실 게시판  </h1>
+        
+        
+		<div>
+			<p>누적 좋아요 횟수: ${result}</p>
+			<p>유저가 누른 개인 좋아요 횟수: ${person}</p>
+		</div>
+
+		<div class="search-bar">
             <input type="text" placeholder="Search">
             <select id="location" name="location" required>
                 <option value="" disabled selected>지역을 선택하세요</option>
@@ -143,14 +154,12 @@
                     <!-- 이미지와 화장실 정보 등 필요한 정보들을 출력 -->
                     <div class="post-title">${t.toiletName}</div>
                     <div class="post-content">${t.toiletAddress}</div>
-                    
-                    <!-- 좋아요 기능 -->
-                    <span class="like-icon" onclick="toggleLike()">❤️</span>
-                    <!-- 스크랩 기능 -->
-                    <span class="scrap-icon" onclick="toggleScrap()">⭐</span>
+
                 </div>
             </c:forEach>
         </div>
+        
+        
 
         <div class="load-more">
             <button type="button" onclick="loadMorePosts()">더보기</button>
@@ -239,7 +248,13 @@
 
             modal.setAttribute('data-no', tolietNo);
 
-            modalBody.innerHTML = "<h2>" + name + "</h2><p>위치: " + address + "</p><p>개방 시간: " + open + "</p><br><button class='btn btn-primary' onclick=\"openRatingModal()\">평점 남기기</button> <button class='btn btn-secondary' onclick=\"openUploadModal()\">이미지 업로드</button> <button class='btn btn-info' onclick=\"openReviewModal(" + postId + "," + tolietNo + ")\")\">리뷰 작성</button>";
+            modalBody.innerHTML 
+            = "<h2>" + name + "</h2><p>위치: " + address + "</p><p>개방 시간: " + open 
+            + "</p><br><button class='btn btn-primary' onclick=\"openRatingModal()\">평점 남기기</button>"
+            +" <button class='btn btn-info' onclick=\"openReviewModal(" + postId + "," + tolietNo + ")\")\">리뷰 작성</button>"
+            + "<span class='like-icon' onclick='toggleLike()''>🤍</span>"
+            + "( ${result}  )"
+            +" <span class='scrap-icon' onclick='toggleScrap()''>⭐</span>";
             modal.style.display = "block";
         }
 
@@ -385,7 +400,7 @@
                     commentsHtml += "<p>작성자 " + comment.userNickName + "</p><p>" + comment.content + "</p>";
                 });
                 commentsList.innerHTML = commentsHtml;
-            }, 100); // 1초 후에 댓글을 추가하는 예시 코드
+            }, 10);
         }
 
         function getCookie(name) {
@@ -422,20 +437,60 @@
             loadComments(0, toiletNo);
         }
 
-        // 좋아요 기능
-        function toggleLike(postId) {
-            var likeIcon = event.target;
-            var isLiked = likeIcon.classList.contains('liked');
+        
+        
+ // ------------------------------------------좋아요 기능 --------------------------------------------------------------
+    
+ var isLiked = false;
 
-            // 이미 좋아요를 눌렀으면 취소하고, 아니면 좋아요 추가
+function toggleLike() {
+    var userKey = ${loginUser.memberNo};
+
+    if (!userKey) {
+        alert("로그인 후 이용해주세요.");
+        return;
+    }
+
+    var toiletNo = document.querySelector('.modal').getAttribute('data-no');
+    var likeIcon = document.querySelector('.like-icon');
+
+    var toiletKey = toiletNo; // toiletNo를 사용하여 toiletKey 설정
+
+    var toiletLikeKey = isLiked ? 0 : 1;
+
+    var formData = new FormData();
+    formData.append('toiletKey', toiletKey);
+    formData.append('userKey', userKey);
+    formData.append('toiletLikeKey', toiletLikeKey);
+
+    $.ajax({
+        type: "POST",
+        url: "/springProject/like",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
             if (isLiked) {
-                likeIcon.classList.remove('liked');
-                alert('좋아요 취소!');
+                // 이미 좋아요를 누른 경우
+                alert('이미 좋아요를 누르셨습니다.');
             } else {
+                // 좋아요 등록 성공 시 아이콘 변경
                 likeIcon.classList.add('liked');
-                alert('좋아요!');
+                likeIcon.innerHTML = '❤️'; // 하트 아이콘을 채워진 하트로 변경
+                alert('좋아요가 등록되었습니다.');
+                // 버튼 비활성화
+                likeIcon.style.pointerEvents = 'none';
             }
+            // 상태 변경
+            isLiked = !isLiked;
+        },
+        error: function(error) {
+            console.error('Error:', error);
+            alert('좋아요 등록에 실패했습니다.');
         }
+    });
+}
+
 
         // 스크랩 기능
         function toggleScrap(postId) {
@@ -453,7 +508,6 @@
         }
     </script>
     
-    <!--  gd --> 
 
     <%@ include file="../common/footer.jsp" %>
 </body>

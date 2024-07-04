@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
+import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
 
 public interface ReviewService {
 	
@@ -34,6 +35,15 @@ public interface ReviewService {
 		
 		//게시글 조회수 top5 조회
 		ArrayList<Review> selectTopList();
+		
+		
+		//토탈
+		int postLikeReview(ReviewReplyLikeVO like);
+		
+		
+		
+		//각게시물
+		int personLike(ReviewReplyLikeVO like);
 
 	
 	

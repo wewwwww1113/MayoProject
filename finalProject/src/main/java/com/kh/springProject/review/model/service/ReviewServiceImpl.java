@@ -10,6 +10,7 @@ import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.review.model.dao.ReviewDao;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
+import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -90,11 +91,25 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDao.replyList(sqlSession,reviewNo);
 	}
 
-	//게시글 조회수 top5 조회
 	@Override
 	public ArrayList<Review> selectTopList() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	//토탈
+	@Override
+	public int postLikeReview(ReviewReplyLikeVO like) {
+		// TODO Auto-generated method stub
+		return reviewDao.insertLike(sqlSession,like);
+	}
+
+	//각각
+	@Override
+	public int personLike(ReviewReplyLikeVO like) {
+		// TODO Auto-generated method stub
+		return reviewDao.personLike(sqlSession,like);
 	}
 
 }

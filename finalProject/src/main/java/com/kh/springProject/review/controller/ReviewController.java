@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.AutomapConstructor;
@@ -26,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.common.template.Pagination;
 import com.kh.springProject.map.model.service.MapService;
@@ -35,6 +38,7 @@ import com.kh.springProject.member.model.vo.Member;
 import com.kh.springProject.review.model.service.ReviewService;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
+import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -364,6 +368,65 @@ public class ReviewController {
 			return result;
 		}
 
+		
+		
+		@PostMapping("/like")
+		public String postLike(Model model, HttpServletRequest request) {
+		    // HttpServletRequest를 통해 파라미터 추출
+		    int toiletKey = Integer.parseInt(request.getParameter("toiletKey"));
+		    int userKey = Integer.parseInt(request.getParameter("userKey"));
+		    int toiletLikeKey = Integer.parseInt(request.getParameter("toiletLikeKey"));
+
+		    ReviewReplyLikeVO like = new ReviewReplyLikeVO();
+		    like.setToiletKey(toiletKey);
+		    like.setUserKey(userKey);
+		    like.setToiletLikeKey(toiletLikeKey);
+
+		    
+		    
+		    int result = reviewService.postLikeReview(like);
+		    model.addAttribute("result", result);
+		    
+		    System.out.println("누적 좋아요 횟수 : " + result);
+		    
+		    int person = reviewService.personLike(like);
+		   
+		    model.addAttribute("person",person);
+		    
+		    System.out.println("유저가 누른 개인 좋아요 횟수  :" +person);
+		    
+		    
+		    
+		    
+		    
+		    return "review/reviewTest";
+		}
+		
+	
+		
+//		@PostMapping("/like")
+//		public String postPersonLike(Model model, HttpServletRequest request) {
+//			
+//			int toiletKey = Integer.parseInt(request.getParameter("toiletKey"));
+//			int userKey = Integer.parseInt(request.getParameter("userKey"));
+//			int toiletLikeKey = Integer.parseInt(request.getParameter("toiletLikeKey"));
+//			
+//			ReviewReplyLikeVO like = new ReviewReplyLikeVO();
+//			like.setToiletKey(toiletKey);
+//			like.setUserKey(userKey);
+//			like.setToiletLikeKey(toiletLikeKey);
+//
+//		    int person = reviewService.personLike(like);
+//		   
+//		    model.addAttribute("person",person);
+//		    
+//		    System.out.println(person);
+//		    
+//		    System.out.println(person);
+//		 
+//			return "review/reviewTest";
+//		}
+//		
 		
 		
 		

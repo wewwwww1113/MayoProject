@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewReplyLikeVO {
 	
+	private int toiletLikeKey;
 	private int userKey;
-	private int reviewReplyKey;
-	private int tolietKey;
-	private int tolietLikeKey;
+	private int toiletKey;
 	
 
 }

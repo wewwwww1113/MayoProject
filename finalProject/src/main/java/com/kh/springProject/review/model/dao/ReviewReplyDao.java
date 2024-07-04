@@ -37,15 +37,15 @@ public class ReviewReplyDao {
 		return sqlSessionTemplate.selectList("reviewMapper.test2", toiletNo);
 	}
 
-	//좋아요 눌렀을 때
-	public void postLikeReview(int memberNo, int toiletNo) {
-		Map<String,Object> map = new HashMap();
-		map.put("memberNo", memberNo);
-		map.put("toiletNo", toiletNo);
-
-		// TODO Auto-generated method stub
-		sqlSessionTemplate.insert("toiletLikeMapper.postLikeReview",map);
-	}
+//	//좋아요 눌렀을 때
+//	public void postLikeReview(int userKey, int toiletKey, int toiletLikeKey) {
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("memberNo", userKey);
+//        map.put("toiletNo", toiletKey);
+//        map.put("toiletLikeKey", toiletLikeKey);
+//
+//        sqlSessionTemplate.insert("toiletLikeMapper.postLikeReview", map);
+//    }
 	
 	//좋아요 조회
 	public List<ReviewReplyLikeVO> gettLikeReview(int userNo) {
@@ -55,4 +55,10 @@ public class ReviewReplyDao {
 		return sqlSessionTemplate.selectList("toiletLikeMapper.getLikeReview",userNo);
 	}
 
-}
+	
+
+
+
+	}
+
+

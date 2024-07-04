@@ -452,6 +452,8 @@
             }
         }
     </script>
+    
+    <!--  gd --> 
 
     <%@ include file="../common/footer.jsp" %>
 </body>

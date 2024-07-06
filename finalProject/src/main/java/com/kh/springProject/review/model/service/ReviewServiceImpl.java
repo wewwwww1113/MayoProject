@@ -112,4 +112,31 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDao.personLike(sqlSession,like);
 	}
 
+	
+	
+	//----------------------------------------
+	
+	@Override
+	public int scrapCheck(String memberNo, int toiletNo) {
+		// TODO Auto-generated method stub
+		return reviewDao.scrapCheck(sqlSession,memberNo, toiletNo);
+	}
+
+	@Override
+	public int scrap(String memberNo, int toiletNo) {
+		// TODO Auto-generated method stub
+		return reviewDao.scrap(sqlSession,memberNo,toiletNo);
+	}
+
+	@Override
+	public int scrapCancel(String memberNo, int toiletNo) {
+		// TODO Auto-generated method stub
+		return reviewDao.scrapCancel(sqlSession,memberNo,toiletNo);
+	}
+
+	@Override
+	public void updateStar(String memberNo, int toiletNo, int starCnt) {
+		reviewDao.updateStar(sqlSession, memberNo, toiletNo, starCnt);
+	}
+
 }

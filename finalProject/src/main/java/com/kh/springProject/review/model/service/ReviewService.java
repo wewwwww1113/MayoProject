@@ -37,15 +37,25 @@ public interface ReviewService {
 		ArrayList<Review> selectTopList();
 		
 		
-		//토탈
+		//토탈추가
 		int postLikeReview(ReviewReplyLikeVO like);
 		
 		
 		
 		//각게시물
 		int personLike(ReviewReplyLikeVO like);
-
-	
+		
+		//-----------------------------------------------
+		
+		
+		int scrapCheck(String memberNo, int toiletNo);
+		int scrap(String memberNo, int toiletNo);
+		int scrapCancel(String memberNo, int toiletNo);
+		
+		// 평정 수정
+		void updateStar(String memberNo, int toiletNo, int starCnt);
+		
+		
 	
 	
 

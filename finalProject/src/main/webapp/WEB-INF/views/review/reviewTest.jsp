@@ -184,11 +184,11 @@ body {
                 <!-- 평점 입력 폼 -->
                 <h4 align="center">평점 남기기</h4>
                 <div id="ratingStars" align="center">
-                    <span class="star" onclick="rateStar(1)">☆</span>
-                    <span class="star" onclick="rateStar(2)">☆</span>
-                    <span class="star" onclick="rateStar(3)">☆</span>
-                    <span class="star" onclick="rateStar(4)">☆</span>
-                    <span class="star" onclick="rateStar(5)">☆</span>
+                    <span class="starReview" onclick="rateStar(1)">☆</span>
+                    <span class="starReview" onclick="rateStar(2)">☆</span>
+                    <span class="starReview" onclick="rateStar(3)">☆</span>
+                    <span class="starReview" onclick="rateStar(4)">☆</span>
+                    <span class="starReview" onclick="rateStar(5)">☆</span>
                 </div>
                 <input type="hidden" id="ratingInput" value="0">
                 <div align="center">
@@ -250,14 +250,14 @@ body {
 
             modalBody.innerHTML 
             = "<h2>" + name + "</h2><p>위치: " + address + "</p><p>개방 시간: " + open 
-            + "</p><br><button class='btn btn-primary' onclick=\"openRatingModal()\">평점 남기기</button>"
+            + "</p><br><button class='btn btn-primary' onclick=\"openRatingModal("+ tolietNo +")\">평점 남기기</button>"
             +" <button class='btn btn-info' onclick=\"openReviewModal(" + postId + "," + tolietNo + ")\")\">리뷰 작성</button>"
             + "<span class='like-icon' onclick='toggleLike()''>🤍</span>"
             + "( ${result}  )"
-            +" <span class='scrap-icon' onclick='toggleScrap()''>⭐</span>";
+            +" <span class='star' onclick='scrap("+ tolietNo +");'>☆</span>";
             modal.style.display = "block";
         }
-
+        
         function closeModal() {
             var modal = document.getElementById("modal");
             modal.style.display = "none";
@@ -276,7 +276,9 @@ body {
         });
 
         // 평점 모달
-        function openRatingModal() {
+        var selectTolietNo = 0; // 선택한 화장실 Id
+        function openRatingModal(tolietNo) {
+        	selectTolietNo = tolietNo;
             // 평점 남기기 모달 보이기
             var ratingModal = document.getElementById('ratingModal');
             ratingModal.style.display = 'block';
@@ -293,6 +295,7 @@ body {
         }
 
         function closeRatingModal() {
+        	selectTolietNo = 0;
             // 평점 남기기 모달 닫기
             var ratingModal = document.getElementById('ratingModal');
             ratingModal.style.display = 'none';
@@ -300,16 +303,16 @@ body {
 
         function rateStar(value) {
             // 모든 별 초기화 (☆로 설정)
-            var stars = document.getElementsByClassName('star');
+            var stars = $(".starReview");
+            console.log(stars);
             for (var i = 0; i < stars.length; i++) {
-                stars[i].textContent = '☆';
+            	if(i < value) {
+            		stars[i].textContent = '★';
+            	} else {
+            		stars[i].textContent = '☆';
+            	}
             }
-
-            // 클릭한 별까지 채워지도록 변경 (★로 설정)
-            for (var i = 0; i < value; i++) {
-                stars[i].textContent = '★';
-            }
-
+            
             // 입력 폼에 값 설정
             var ratingInput = document.getElementById('ratingInput');
             ratingInput.value = value;
@@ -317,9 +320,32 @@ body {
 
         function saveRating() {
             // 여기서 평점을 저장하는 로직을 추가할 수 있습니다.
-            var rating = document.getElementById('ratingInput').value;
-            alert('평점 ' + rating + '점이 저장되었습니다.');
-            closeRatingModal();
+            var stars	= $(".starReview");
+            var cnt		= 0;
+            for (var i = 0; i < stars.length; i++) {
+            	if($(".starReview")[i].textContent == "★") cnt++;
+            }
+            
+            // 채워진 별 데이터 저장
+            var sendData = {
+            	starCnt:	cnt,
+            	toiletNo:	selectTolietNo
+            }
+            $.ajax({
+				url: "/springProject/updateStar",
+				type: "POST",
+		        contentType: "application/json",
+		        dataType: "json",
+		        data: JSON.stringify(sendData),
+				success : function(data) {
+					alert(data.msg);
+					closeRatingModal();
+				},
+				error : function(error) {
+					console.log(error);
+					alert("통신 에러" + error);
+				}
+			});
         }
 
         // 이미지 모달창
@@ -492,21 +518,28 @@ function toggleLike() {
 }
 
 
-        // 스크랩 기능
-        function toggleScrap(postId) {
-            var scrapIcon = event.target;
-            var isScrapped = scrapIcon.classList.contains('scrapped');
 
-            // 이미 스크랩했으면 취소하고, 아니면 스크랩 처리
-            if (isScrapped) {
-                scrapIcon.classList.remove('scrapped');
-                alert('스크랩 취소!');
-            } else {
-                scrapIcon.classList.add('scrapped');
-                alert('스크랩!');
-            }
-        }
-    </script>
+					function scrap(toiletNo) {
+						var sendData = {
+							toiletNo: toiletNo
+						}
+						$.ajax({
+							url: "/springProject/scrap",
+							type: "POST",
+					        contentType: "application/json",
+					        dataType: "json",
+					        data: JSON.stringify(sendData),
+							success : function(data) {
+								alert(data.msg);
+								$(".star").text(data.cnt == 0 ? "☆" : "⭐");
+							},
+							error : function(error) {
+								console.log(error);
+								alert("통신 에러" + error);
+							}
+						});
+					}
+				</script>
     
 
     <%@ include file="../common/footer.jsp" %>

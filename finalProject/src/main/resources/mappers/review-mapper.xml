@@ -181,8 +181,43 @@
     FROM TOILET_LIKE
     WHERE TOILET_KEY = #{toiletKey} AND USER_KEY = #{userKey}
 </select>
-	
-	
+
+
+
+
+<!-- 스크랩 기능 -->
+<insert id="scrap">
+insert into REVIEW_SCRAP (SCRAP_NO ,MEMBER_NO , TOILET_NO) 
+values ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM REVIEW_SCRAP),#{memberNo},#{toiletNo})
+</insert>
+
+<!-- 스크랩 취소 -->
+<delete id="scrapCancel">
+delete from REVIEW_SCRAP where TOILET_NO = #{toiletNo} AND MEMBER_NO = #{memberNo}
+</delete>
+
+<!-- 게시글의 스크랩 수 -->
+<select id="scrapCount" resultType="int">
+select count(*) from REVIEW_SCRAP where TOILET_NO = #{toiletNO}
+</select>
+
+<!-- 중복방지 -->
+<select id="scrapCheck" resultType="int">
+select count(*) from REVIEW_SCRAP where TOILET_NO = #{toiletNo} and MEMBER_NO = #{memberNo}
+</select>
+
+<!-- 평점 수정 -->
+<update id="updateStar">
+MERGE INTO REVIEW_STAR s
+USING DUAL
+   on (s.MEMBER_NO = #{memberNo} AND s.TOILET_NO = #{toiletNo})
+ WHEN MATCHED THEN
+ 	  UPDATE SET
+ 	  s.STAR = #{starCnt}
+ WHEN NOT MATCHED THEN
+ 	  INSERT (s.MEMBER_NO, s.STAR, s.TOILET_NO)
+ 	  VALUES (#{memberNo}, #{starCnt}, #{toiletNo})
+</update>
 	
 	
 	

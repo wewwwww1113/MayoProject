@@ -1,6 +1,8 @@
 package com.kh.springProject.review.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -87,6 +89,39 @@ public class ReviewDao {
 	//각 게시물
 	public int personLike(SqlSessionTemplate sqlSession, ReviewReplyLikeVO like) {
 	    return sqlSession.selectOne("reviewMapper.personLike", like);
+	}
+
+	
+	
+	//-----------------------------
+	public int scrapCheck(SqlSessionTemplate sqlSession, String memberNo, int toiletNo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("memberNo", memberNo);
+		paramMap.put("toiletNo", toiletNo);
+		return sqlSession.selectOne("reviewMapper.scrapCheck",paramMap);
+	}
+
+	public int scrap(SqlSessionTemplate sqlSession, String memberNo, int toiletNo) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("memberNo", memberNo);
+		paramMap.put("toiletNo", toiletNo);
+		return sqlSession.insert("reviewMapper.scrap",paramMap);
+	}
+
+	public int scrapCancel(SqlSessionTemplate sqlSession, String memberNo, int toiletNo) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("memberNo", memberNo);
+		paramMap.put("toiletNo", toiletNo);
+		return sqlSession.delete("reviewMapper.scrapCancel",paramMap);
+	}
+	
+	public void updateStar(SqlSessionTemplate sqlSession, String memberNo, int toiletNo, int starCnt) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("memberNo",	memberNo);
+		paramMap.put("toiletNo",	toiletNo);
+		paramMap.put("starCnt",		starCnt);
+		sqlSession.delete("reviewMapper.updateStar", paramMap);
 	}
 
 }

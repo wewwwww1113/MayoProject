@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 <!DOCTYPE html>
@@ -106,30 +106,40 @@
             border-radius: 5px;
             font-size: 14px;
         }
+        #username-message {
+            color: red;
+            font-size: 12px; 
+            margin-top: 5px;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#check-username').click(function() {
-                var username = $('#username').val();
+                var username = $('#username').val().trim();
+                var messageDiv = $('#username-message');
                 if (username !== '') {
                     $.ajax({
                         type: 'POST',
-                        url: 'checkUsername.jsp',
+                        url: 'checkUsername',
                         data: { username: username },
                         success: function(response) {
                             if (response.trim() === 'available') {
-                                alert('사용 가능한 아이디입니다.');
+                                messageDiv.text('사용 가능한 아이디입니다.');
+                                messageDiv.css('color', 'green');
                             } else {
-                                alert('이미 사용 중인 아이디입니다.');
+                                messageDiv.text('이미 사용 중인 아이디입니다.');
+                                messageDiv.css('color', 'red');
                             }
                         },
                         error: function() {
-                            alert('서버 오류가 발생했습니다.');
+                            messageDiv.text('서버 오류가 발생했습니다.');
+                            messageDiv.css('color', 'red');
                         }
                     });
                 } else {
-                    alert('아이디를 입력해주세요.');
+                    messageDiv.text('아이디를 입력해주세요.');
+                    messageDiv.css('color', 'red');
                 }
             });
 
@@ -190,6 +200,7 @@
                         <input type="text" id="username" name="memberId" placeholder="아이디 (영문 6~20자)" required>
                         <button type="button" id="check-username">중복 확인</button>
                     </div>
+                    <div id="username-message"></div>
                     <label for="password">비밀번호</label>
                     <input type="password" id="password" name="memberPwd" placeholder="영문, 숫자  4~10글자" required>
                     <label for="confirm-password">비밀번호 확인</label>
@@ -230,7 +241,7 @@
                     <input type="hidden" id="birthDate" name="birthDate">
                     <div class="button-container">
                         <button type="submit" class="join-button">가입하기</button>
-                        <button type="button" class="cancel-button" onclick="location.href='cancel.page'">가입취소</button>
+                        <button type="button" class="cancel-button" onclick="location.href='loginForm.me'">가입취소</button>
                     </div>
                 </form>
             </c:otherwise>

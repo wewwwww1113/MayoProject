@@ -73,6 +73,12 @@ public class ReviewReplyDao {
 		        return sqlSessionTemplate.delete("reviewMapper.deleteReviewsByKey", reviewReplyKeys);
 		    }
 
+		 //리뷰게시판용 검색창
+		public List<ReviewReplyVO> searchReviewsByUserKey1(Map<String, Object> searchParams) {
+			// TODO Auto-generated method stub
+			return sqlSessionTemplate.selectList("reviewMapper.searchReviewsByUserKey1", searchParams);
+		}
+
 	
 
 

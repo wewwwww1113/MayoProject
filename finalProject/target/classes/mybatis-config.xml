@@ -16,6 +16,8 @@
 		
 		<typeAlias type="com.kh.springProject.review.model.vo.Review" alias="Review"/>
  		<typeAlias type="com.kh.springProject.review.model.vo.Reply" alias="Reply"/>
+ 		<typeAlias type="com.kh.springProject.review.model.vo.ReviewStar" alias="ReviewStar"/>
+ 		
  		
  		<typeAlias type="com.kh.springProject.review.model.vo.ReviewReplyVO" alias="ReviewReplyVO"/>
  		<typeAlias type="com.kh.springProject.review.model.vo.ReviewReplyLikeVO" alias="ReviewReplyLikeVO"/>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="rankMapper">
+		
+	<resultMap type="ReviewStar" id="rankResultSet">
+		<result column="MEMBER_NO" property="memberNo"/>
+		<result column="STAR" property="star"/>
+		<result column="TOILET_NO" property="toiletNo"/>
+		
+	</resultMap>
+		
+	
+	<select id="selectAllStars" resultMap="rankResultSet">
+	select member_no, star, toilet_no
+	from review_star
+	order by star asc
+		
+	</select>
+	
+	<select id="avgStar" resultMap="rankResultSet">
+	SELECT AVG(STAR)
+	FROM review_star
+	WHERE toilet_no = #{toiletNo}
+	
+	</select>
+	
+	
+	
+	
+	
+	
+	
+</mapper>

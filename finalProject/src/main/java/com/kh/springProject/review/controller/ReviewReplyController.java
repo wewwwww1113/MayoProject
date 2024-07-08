@@ -1,5 +1,6 @@
 package com.kh.springProject.review.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,6 +89,39 @@ public class ReviewReplyController  {
 	
 	
 	
+	//수정수정
+	
+
+    @GetMapping("/myReviews.re")
+    public String myReviews(
+                            @RequestParam(value = "searchType", required = false) String searchType,
+                            @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+                            Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/login.me";
+        }
+
+        int userKey = Integer.parseInt(loginUser.getMemberNo());
+        java.util.Map<String, Object> searchParams = new HashMap<>();
+        searchParams.put("userKey", userKey);
+        if ("toiletName".equals(searchType)) {
+            searchParams.put("toiletName", searchKeyword);
+        } else if ("reviewContent".equals(searchType)) {
+            searchParams.put("reviewContent", searchKeyword);
+        }
+
+        List<ReviewReplyVO> allReviews = reviewReplyService.searchReviewsByUserKey1(searchParams);
+
+        
+
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("searchKeyword", searchKeyword);
+
+    
+        return "review/reviewTest";
+    }
 	
 
 }

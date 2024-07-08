@@ -63,6 +63,13 @@ public class ReviewReplyService {
 		    }
 
 
+		    //리뷰게시판용 검색창
+			public List<ReviewReplyVO> searchReviewsByUserKey1(Map<String, Object> searchParams) {
+				// TODO Auto-generated method stub
+				return reviewReplyDao.searchReviewsByUserKey1(searchParams);
+			}
+
+
 
 
 

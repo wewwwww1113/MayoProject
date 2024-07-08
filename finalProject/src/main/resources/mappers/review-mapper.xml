@@ -284,4 +284,30 @@ USING DUAL
 	
 	
 	
+	<!-- 리뷰게시판용 검색 기능 추가 -->
+    <select id="searchReviewsByUserKey1" parameterType="map" resultMap="reviewReplyResultSet">
+        SELECT 
+            rr.USER_KEY,
+            rr.REVIEW_REPLY_KEY,
+            rr.CONTENT,
+            rr.CREATE_TIME,
+            rr.UPDATE_TIME,
+            rr.DEL_YN,
+            rr.TOILET_NO,
+            t.TOILET_NAME
+        FROM REVIEW_REPLY rr
+        JOIN TOILET t ON rr.TOILET_NO = t.TOILET_NO
+        WHERE rr.USER_KEY = #{userKey}
+        <if test="toiletName != null and toiletName != ''">
+            AND t.TOILET_NAME LIKE '%' || #{toiletName} || '%'
+        </if>
+        <if test="reviewContent != null and reviewContent != ''">
+            AND rr.CONTENT LIKE '%' || #{reviewContent} || '%'
+        </if>
+        AND rr.DEL_YN = 'N'
+    </select>
+	
+	
+	
+	
 </mapper>

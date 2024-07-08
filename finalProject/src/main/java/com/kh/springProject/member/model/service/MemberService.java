@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.member.model.vo.Member;
 import com.kh.springProject.review.model.vo.ReviewReplyVO;
+import com.kh.springProject.review.model.vo.ReviewScrap;
 
 public interface MemberService {
 
@@ -37,7 +38,6 @@ public interface MemberService {
      
     // 내가 쓴 리뷰 관리 기능
     List<ReviewReplyVO> getReviewsByUser(String memberNo, PageInfo pi);
-	
 	
 
 }

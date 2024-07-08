@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../common/header.jsp" %>
 
@@ -36,7 +36,7 @@
             width: 200px;
             height: 100vh;
             position: fixed;
-            top: 60px; /* Adjusted to not overlap with header */
+            top: 110px; /* Adjusted to not overlap with header */
             left: 0;
             padding: 20px;
             box-sizing: border-box;
@@ -45,7 +45,7 @@
             color: white;
             text-decoration: none;
             display: block;
-            margin: 20px 0;
+            margin: 50px 0;
         }
         .container {
             margin-left: 220px;
@@ -129,6 +129,40 @@
         .delete-button:hover {
             background-color: #c9302c;
         }
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -137,7 +171,7 @@
             <p>${loginUser.memberNick}</p>
         </div>
         <a href="${pageContext.request.contextPath}/mypage.me">로그인 정보</a>
-        <a href="${pageContext.request.contextPath}/favorites.me">즐겨찾기</a>
+        <a href="${pageContext.request.contextPath}/scrap.me">즐겨찾기</a>
         <a href="${pageContext.request.contextPath}/update.me">내 정보 수정</a>
         <a href="${pageContext.request.contextPath}/myReviews.me">내가 쓴 리뷰</a>
         <a href="${pageContext.request.contextPath}/myPosts.me">내가 작성한 글</a>
@@ -158,7 +192,7 @@
                     <button type="submit">검색</button>
                 </form>
             </div>
-            <form id="deleteForm" action="${pageContext.request.contextPath}/deleteReview.me" method="post">
+            <form id="deleteForm" action="${pageContext.request.contextPath}/deleteReview.me" method="post" onsubmit="return checkSelection()">
                 <button type="button" class="delete-button" onclick="deleteSelected()">리뷰 삭제</button>
                 <table>
                     <thead>
@@ -204,6 +238,14 @@
 
     <%@ include file="../common/footer.jsp" %>
 
+    <!-- 선택된 리뷰가 없을 때 보여주는 모달 -->
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>선택된 리뷰가 없습니다.</p>
+        </div>
+    </div>
+
     <script>
         function toggleSelectAll(source) {
             checkboxes = document.getElementsByName('selectedReviews');
@@ -213,7 +255,52 @@
         }
 
         function deleteSelected() {
-            document.getElementById('deleteForm').submit();
+            var checkboxes = document.getElementsByName('selectedReviews');
+            var isSelected = false;
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    isSelected = true;
+                    break;
+                }
+            }
+            if (isSelected) {
+                document.getElementById('deleteForm').submit();
+            } else {
+                showModal();
+            }
+        }
+
+        function checkSelection() {
+            var checkboxes = document.getElementsByName('selectedReviews');
+            var isSelected = false;
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    isSelected = true;
+                    break;
+                }
+            }
+            if (!isSelected) {
+                showModal();
+                return false;
+            }
+            return true;
+        }
+
+        function showModal() {
+            var modal = document.getElementById("alertModal");
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("alertModal");
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById("alertModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
     </script>
 </body>

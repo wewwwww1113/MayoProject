@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.kh.springProject.member.model.vo.Member;
 import com.kh.springProject.review.model.vo.ReviewReplyVO;
+import com.kh.springProject.review.model.vo.ReviewScrap;
 
 @Repository
 public class MemberDao {
@@ -62,6 +63,7 @@ public class MemberDao {
 	    public List<ReviewReplyVO> getReviewsByUser(SqlSessionTemplate sqlSession, Map<String, Object> params) {
 	        return sqlSession.selectList("memberMapper.getReviewsByUser", params);
 	    }
+	    
 
 	
 

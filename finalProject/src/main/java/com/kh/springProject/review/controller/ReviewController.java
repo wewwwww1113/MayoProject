@@ -34,6 +34,7 @@ import com.kh.springProject.review.model.service.ReviewService;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
 import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
+import com.kh.springProject.review.model.vo.ReviewReplyVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -438,4 +439,22 @@ public class ReviewController {
 
 			return map;
 		}
+		
+		
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }

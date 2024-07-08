@@ -188,7 +188,7 @@ nav > ul > li:hover ul{opacity:1; }
                 <ul>
                     <li><a href="test.re">리뷰게시판</a></li>
                     <li><a href="list.re">클론게시판(test) </a></li>
-                    <li><a href="list2.ra">랭킹</a></li>
+                    <li><a href="rank.ra">랭킹</a></li>
                 </ul>
             </li>
             <li>메뉴 4

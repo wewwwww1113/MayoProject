@@ -2,6 +2,7 @@ package com.kh.springProject.review.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -12,6 +13,7 @@ import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
 import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
+import com.kh.springProject.review.model.vo.ReviewReplyVO;
 
 @Repository
 public class ReviewDao {
@@ -123,5 +125,6 @@ public class ReviewDao {
 		paramMap.put("starCnt",		starCnt);
 		sqlSession.delete("reviewMapper.updateStar", paramMap);
 	}
+
 
 }

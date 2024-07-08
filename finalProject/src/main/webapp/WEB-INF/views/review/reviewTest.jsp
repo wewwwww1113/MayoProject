@@ -1,6 +1,6 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ include file="../common/header.jsp" %>
 
 <!DOCTYPE html>
@@ -8,165 +8,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insert title here</title>
+    <title>화장실 게시판</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-L25xsCO3g0t2z8C2qQSTsUk6/soHd+aRkE26HYPOYyZqJ3aJNSjQsZ7u0DSK5nXe" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <style>
-body {
-	font-family: Arial, sans-serif;
-}
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-.like-icon {
-	font-size: 36px; /* Increase the size as desired */
-	cursor: pointer;
-	
-}
+        .like-icon {
+            font-size: 36px; /* Increase the size as desired */
+            cursor: pointer;
+        }
 
-.container {
-	width: 80%;
-	margin: 0 auto;
-	text-align: center;
-}
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+        }
 
-.search-bar {
-	margin: 20px 0;
-}
+        .search-bar {
+            margin: 20px 0;
+        }
 
-.search-bar input, .search-bar select, .search-bar button {
-	padding: 10px;
-	margin-right: 10px;
-	font-size: 16px;
-}
+        .search-bar input, .search-bar button {
+            padding: 10px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
 
-.posts {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
-}
+        .posts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
 
-.post {
-	width: 23%;
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	margin-bottom: 20px;
-	padding: 10px;
-	text-align: left;
-	cursor: pointer;
-}
+        .post {
+            width: 23%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            text-align: left;
+            cursor: pointer;
+        }
 
-.post img {
-	width: 100%;
-	height: auto;
-	border-radius: 10px 10px 0 0;
-}
+        .post img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+        }
 
-.post-title {
-	font-size: 18px;
-	font-weight: bold;
-	margin: 10px 0;
-}
+        .post-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
 
-.post-content {
-	font-size: 14px;
-	margin-bottom: 10px;
-}
+        .post-content {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
 
-.load-more {
-	margin: 20px 0;
-}
+        .load-more {
+            margin: 20px 0;
+        }
 
-.load-more button {
-	padding: 10px 20px;
-	font-size: 16px;
-}
+        .load-more button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
 
-/* 상세보기 모달 스타일 */
-.modal {
-	display: none;
-	position: fixed;
-	z-index: 1050;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.5);
-}
+        /* 상세보기 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
 
-.modal-content {
-	background-color: #fefefe;
-	margin: 10% auto;
-	padding: 20px;
-	border: 1px solid #888;
-	width: 80%;
-	max-width: 500px;
-	border-radius: 10px;
-}
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
 
-.modal-close {
-	color: #aaa;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-	cursor: pointer;
-}
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-.star {
-	font-size: 30px; /* 별의 크기 조정 */
-	cursor: pointer;
-	transition: color 0.3s; /* 색상 변화 애니메이션 */
-}
+        .star {
+            font-size: 30px; /* 별의 크기 조정 */
+            cursor: pointer;
+            transition: color 0.3s; /* 색상 변화 애니메이션 */
+        }
 
-.star:hover {
-	color: gold; /* 마우스 호버 시 색상 변경 */
-}
-</style>
+        .star:hover {
+            color: gold; /* 마우스 호버 시 색상 변경 */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <br><br>
-        <h1>화장실 게시판  </h1>
+        <h1>화장실 게시판</h1>
         
-        
-		<div>
-			<p>누적 좋아요 횟수: ${result}</p>
-			<p>유저가 누른 개인 좋아요 횟수: ${person}</p>
-		</div>
+        <div>
+            <p>누적 좋아요 횟수: ${result}</p>
+            <p>유저가 누른 개인 좋아요 횟수: ${person}</p>
+        </div>
 
-		<div class="search-bar">
-            <input type="text" placeholder="Search">
-            <select id="location" name="location" required>
-                <option value="" disabled selected>지역을 선택하세요</option>
-                <option value="서울">서울</option>
-                <option value="경기">경기</option>
-                <option value="광주">광주</option>
-            </select>
-            <button type="button">조회</button>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search (예: 강남구 길동주유소)">
+            <button type="button" onclick="filterPosts()">조회</button>
         </div>
 
         <div class="posts" id="postContainer">
             <!-- 화장실 정보를 반복적으로 출력 -->
-            <c:forEach var="t" items="${t}" >
-                <div class="post" data-name="${t.toiletName}" data-address="${t.toiletAddress}" data-open="${t.toiletOpen}" data-no="${t.toiletNo}">
+            <c:forEach var="t" items="${t}">
+                <c:set var="district" value="${fn:substringBefore(t.toiletAddress, ' ')}" />
+                <div class="post" data-name="${t.toiletName}" data-address="${t.toiletAddress}" data-district="${district}" data-no="${t.toiletNo}" data-open="${t.toiletOpen}">
                     <!-- 이미지와 화장실 정보 등 필요한 정보들을 출력 -->
                     <div class="post-title">${t.toiletName}</div>
                     <div class="post-content">${t.toiletAddress}</div>
-
                 </div>
             </c:forEach>
         </div>
-        
-        
 
         <div class="load-more">
             <button type="button" onclick="loadMorePosts()">더보기</button>
         </div>
     </div>
 
-    <!-- 1. 모달 메인페이지  -->
+    <!-- 1. 모달 메인페이지 -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -240,21 +230,20 @@ body {
 
     <script>
         // 모달 메인창
-        function openModal(name, address, open, tolietNo) {
-            console.log('tolietNo=', tolietNo);
+        function openModal(name, address, open, toiletNo) {
             var modal = document.getElementById("modal");
             var modalBody = document.getElementById("modalBody");
-            var postId = ${postId}
 
-            modal.setAttribute('data-no', tolietNo);
+            modal.setAttribute('data-no', toiletNo);
+
+            var openTime = open ? open : '정보 없음';
 
             modalBody.innerHTML 
-            = "<h2>" + name + "</h2><p>위치: " + address + "</p><p>개방 시간: " + open 
-            + "</p><br><button class='btn btn-primary' onclick=\"openRatingModal("+ tolietNo +")\">평점 남기기</button>"
-            +" <button class='btn btn-info' onclick=\"openReviewModal(" + postId + "," + tolietNo + ")\")\">리뷰 작성</button>"
-            + "<span class='like-icon' onclick='toggleLike()''>🤍</span>"
-            + "( ${result}  )"
-            +" <span class='star' onclick='scrap("+ tolietNo +");'>☆</span>";
+                = "<h2>" + name + "</h2><p>위치: " + address + "</p><p>개방 시간: " + openTime 
+                + "</p><br><button class='btn btn-primary' onclick=\"openRatingModal(" + toiletNo + ")\">평점 남기기</button>"
+                + " <button class='btn btn-info' onclick=\"openReviewModal(" + toiletNo + ")\">리뷰 작성</button>"
+                + "<span class='like-icon' onclick='toggleLike()'>🤍</span>"
+                + " <span class='star' onclick='scrap(" + toiletNo + ");'>☆</span>";
             modal.style.display = "block";
         }
         
@@ -263,28 +252,34 @@ body {
             modal.style.display = "none";
         }
 
-        document.getElementById('postContainer').addEventListener('click', function(event) {
-            var post = event.target.closest('.post');
-            if (post) {
-                var name = post.getAttribute('data-name');
-                var address = post.getAttribute('data-address');
-                var open = post.getAttribute('data-open');
-                var tolietNo = post.getAttribute('data-no');
-                
-                openModal(name, address, open, tolietNo);
+        function setPostEventListeners() {
+            var posts = document.getElementsByClassName('post');
+            for (var i = 0; i < posts.length; i++) {
+                posts[i].addEventListener('click', function(event) {
+                    var post = event.currentTarget;
+                    var name = post.getAttribute('data-name');
+                    var address = post.getAttribute('data-address');
+                    var open = post.getAttribute('data-open');
+                    var toiletNo = post.getAttribute('data-no');
+                    
+                    openModal(name, address, open, toiletNo);
+                });
             }
-        });
+        }
+
+        // 초기 이벤트 리스너 설정
+        setPostEventListeners();
 
         // 평점 모달
-        var selectTolietNo = 0; // 선택한 화장실 Id
-        function openRatingModal(tolietNo) {
-        	selectTolietNo = tolietNo;
+        var selectToiletNo = 0; // 선택한 화장실 Id
+        function openRatingModal(toiletNo) {
+            selectToiletNo = toiletNo;
             // 평점 남기기 모달 보이기
             var ratingModal = document.getElementById('ratingModal');
             ratingModal.style.display = 'block';
 
             // 초기화 - 모든 별을 ☆로 설정
-            var stars = document.getElementsByClassName('star');
+            var stars = document.getElementsByClassName('starReview');
             for (var i = 0; i < stars.length; i++) {
                 stars[i].textContent = '☆';
             }
@@ -295,7 +290,7 @@ body {
         }
 
         function closeRatingModal() {
-        	selectTolietNo = 0;
+            selectToiletNo = 0;
             // 평점 남기기 모달 닫기
             var ratingModal = document.getElementById('ratingModal');
             ratingModal.style.display = 'none';
@@ -304,13 +299,12 @@ body {
         function rateStar(value) {
             // 모든 별 초기화 (☆로 설정)
             var stars = $(".starReview");
-            console.log(stars);
             for (var i = 0; i < stars.length; i++) {
-            	if(i < value) {
-            		stars[i].textContent = '★';
-            	} else {
-            		stars[i].textContent = '☆';
-            	}
+                if (i < value) {
+                    stars[i].textContent = '★';
+                } else {
+                    stars[i].textContent = '☆';
+                }
             }
             
             // 입력 폼에 값 설정
@@ -319,33 +313,32 @@ body {
         }
 
         function saveRating() {
-            // 여기서 평점을 저장하는 로직을 추가할 수 있습니다.
-            var stars	= $(".starReview");
-            var cnt		= 0;
+            var stars = $(".starReview");
+            var cnt = 0;
             for (var i = 0; i < stars.length; i++) {
-            	if($(".starReview")[i].textContent == "★") cnt++;
+                if ($(".starReview")[i].textContent == "★") cnt++;
             }
             
             // 채워진 별 데이터 저장
             var sendData = {
-            	starCnt:	cnt,
-            	toiletNo:	selectTolietNo
+                starCnt: cnt,
+                toiletNo: selectToiletNo
             }
             $.ajax({
-				url: "/springProject/updateStar",
-				type: "POST",
-		        contentType: "application/json",
-		        dataType: "json",
-		        data: JSON.stringify(sendData),
-				success : function(data) {
-					alert(data.msg);
-					closeRatingModal();
-				},
-				error : function(error) {
-					console.log(error);
-					alert("통신 에러" + error);
-				}
-			});
+                url: "/springProject/updateStar",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(sendData),
+                success: function(data) {
+                    alert(data.msg);
+                    closeRatingModal();
+                },
+                error: function(error) {
+                    console.log(error);
+                    alert("통신 에러" + error);
+                }
+            });
         }
 
         // 이미지 모달창
@@ -377,23 +370,19 @@ body {
         }
 
         function saveImage() {
-            // 이미지 저장 로직을 구현할 수 있음
             var preview = document.getElementById('uploadPreview');
             var imageSrc = preview.src;
             alert("이미지를 저장합니다!");
 
-            // 이미지 저장 후 모달 닫기
             closeUploadModal();
         }
 
         // 댓글
-        function openReviewModal(postId, tolietNo) {
-            console.log('tolietNo=', tolietNo);
+        function openReviewModal(toiletNo) {
             var reviewModal = document.getElementById("reviewModal");
             reviewModal.style.display = "block";
 
-            // 여기서 postId를 사용하여 해당 게시물의 댓글을 로드하는 로직을 추가할 수 있음
-            loadComments(postId, tolietNo);
+            loadComments(toiletNo);
         }
 
         function closeReviewModal() {
@@ -401,18 +390,17 @@ body {
             reviewModal.style.display = "none";
         }
 
-        function loadComments(postId, tolietNo) {
-            console.log("toiletNo=", tolietNo);
+        function loadComments(toiletNo) {
             var param = {
-                "toiletNo": tolietNo,
+                "toiletNo": toiletNo,
             }
 
             var res = [];
 
             $.ajax({
-                type: "GET", // 전송방식 지정
-                url: "/springProject/v1/review/reply", // 전송 url
-                data: param, // 요청 시 전송할 데이터
+                type: "GET",
+                url: "/springProject/v1/review/reply",
+                data: param,
                 success: function(data) {
                     res = data;
                 }
@@ -421,127 +409,126 @@ body {
             setTimeout(function() {
                 var commentsHtml = "";
 
-                console.log('res=', res);
                 res.forEach(function(comment) {
                     commentsHtml += "<p>작성자 " + comment.userNickName + "</p><p>" + comment.content + "</p>";
                 });
-                commentsList.innerHTML = commentsHtml;
+                document.getElementById('commentsList').innerHTML = commentsHtml;
             }, 10);
-        }
-
-        function getCookie(name) {
-            var value = "; " + document.cookie;
-            var parts = value.split("; " + name + "=");
-            if (parts.length == 2) return parts.pop().split(";").shift();
-        }
-
-        function get_cookie(name) {
-            var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-            return value ? value[2] : null;
         }
 
         function submitComment() {
             var commentText = document.getElementById('commentText').value;
-            var commentsList = document.getElementById('commentsList');
-            var toiletNo = document.querySelector('.modal').getAttribute('data-no'); // Get toiletNo from modal
-            var userKey = ${loginUser.memberNo}; // Get userKey from logged in user
+            var toiletNo = document.querySelector('.modal').getAttribute('data-no');
+            var userKey = ${loginUser.memberNo};
 
             var body = {
                 "content": commentText,
                 "toiletNo": toiletNo,
-                "userKey": userKey // Include userKey in the request
+                "userKey": userKey
             }
-            loadComments(0, toiletNo);
 
             $.ajax({
-                type: "POST", // 전송방식 지정
-                url: "/springProject/v1/review/reply", // 전송 url
-                data: JSON.stringify(body), // Convert object to JSON string
-                contentType: "application/json", // Set content type to JSON
+                type: "POST",
+                url: "/springProject/v1/review/reply",
+                data: JSON.stringify(body),
+                contentType: "application/json",
+                success: function() {
+                    loadComments(toiletNo);
+                }
             });
-
-            loadComments(0, toiletNo);
         }
 
-        
-        
- // ------------------------------------------좋아요 기능 --------------------------------------------------------------
-    
- var isLiked = false;
+        // 좋아요 기능
+        var isLiked = false;
 
-function toggleLike() {
-    var userKey = ${loginUser.memberNo};
+        function toggleLike() {
+            var userKey = ${loginUser.memberNo};
 
-    if (!userKey) {
-        alert("로그인 후 이용해주세요.");
-        return;
-    }
-
-    var toiletNo = document.querySelector('.modal').getAttribute('data-no');
-    var likeIcon = document.querySelector('.like-icon');
-
-    var toiletKey = toiletNo; // toiletNo를 사용하여 toiletKey 설정
-
-    var toiletLikeKey = isLiked ? 0 : 1;
-
-    var formData = new FormData();
-    formData.append('toiletKey', toiletKey);
-    formData.append('userKey', userKey);
-    formData.append('toiletLikeKey', toiletLikeKey);
-
-    $.ajax({
-        type: "POST",
-        url: "/springProject/like",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            if (isLiked) {
-                // 이미 좋아요를 누른 경우
-                alert('이미 좋아요를 누르셨습니다.');
-            } else {
-                // 좋아요 등록 성공 시 아이콘 변경
-                likeIcon.classList.add('liked');
-                likeIcon.innerHTML = '❤️'; // 하트 아이콘을 채워진 하트로 변경
-                alert('좋아요가 등록되었습니다.');
-                // 버튼 비활성화
-                likeIcon.style.pointerEvents = 'none';
+            if (!userKey) {
+                alert("로그인 후 이용해주세요.");
+                return;
             }
-            // 상태 변경
-            isLiked = !isLiked;
-        },
-        error: function(error) {
-            console.error('Error:', error);
-            alert('좋아요 등록에 실패했습니다.');
+
+            var toiletNo = document.querySelector('.modal').getAttribute('data-no');
+            var likeIcon = document.querySelector('.like-icon');
+
+            var toiletKey = toiletNo;
+            var toiletLikeKey = isLiked ? 0 : 1;
+
+            var formData = new FormData();
+            formData.append('toiletKey', toiletKey);
+            formData.append('userKey', userKey);
+            formData.append('toiletLikeKey', toiletLikeKey);
+
+            $.ajax({
+                type: "POST",
+                url: "/springProject/like",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (isLiked) {
+                        alert('이미 좋아요를 누르셨습니다.');
+                    } else {
+                        likeIcon.classList.add('liked');
+                        likeIcon.innerHTML = '❤️';
+                        alert('좋아요가 등록되었습니다.');
+                        likeIcon.style.pointerEvents = 'none';
+                    }
+                    isLiked = !isLiked;
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                    alert('좋아요 등록에 실패했습니다.');
+                }
+            });
         }
-    });
-}
 
+        function scrap(toiletNo) {
+            var sendData = {
+                toiletNo: toiletNo
+            }
+            $.ajax({
+                url: "/springProject/scrap",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(sendData),
+                success: function(data) {
+                    alert(data.msg);
+                    $(".star").text(data.cnt == 0 ? "☆" : "⭐");
+                },
+                error: function(error) {
+                    console.log(error);
+                    alert("통신 에러" + error);
+                }
+            });
+        }
 
+        function filterPosts() {
+            var searchInput = document.getElementById('searchInput').value.toLowerCase();
+            var posts = document.getElementsByClassName('post');
 
-					function scrap(toiletNo) {
-						var sendData = {
-							toiletNo: toiletNo
-						}
-						$.ajax({
-							url: "/springProject/scrap",
-							type: "POST",
-					        contentType: "application/json",
-					        dataType: "json",
-					        data: JSON.stringify(sendData),
-							success : function(data) {
-								alert(data.msg);
-								$(".star").text(data.cnt == 0 ? "☆" : "⭐");
-							},
-							error : function(error) {
-								console.log(error);
-								alert("통신 에러" + error);
-							}
-						});
-					}
-				</script>
+            for (var i = 0; i < posts.length; i++) {
+                var post = posts[i];
+                var name = post.getAttribute('data-name').toLowerCase();
+                var address = post.getAttribute('data-address').toLowerCase();
+                var district = post.getAttribute('data-district').toLowerCase();
+
+                if (name.includes(searchInput) || address.includes(searchInput) || district.includes(searchInput)) {
+                    post.style.display = '';
+                } else {
+                    post.style.display = 'none';
+                }
+            }
+            setPostEventListeners();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setPostEventListeners();
+        });
+    </script>
     
-
     <%@ include file="../common/footer.jsp" %>
 </body>
 </html>

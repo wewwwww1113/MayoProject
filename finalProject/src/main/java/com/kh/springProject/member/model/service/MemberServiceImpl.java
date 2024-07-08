@@ -14,6 +14,8 @@ import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.member.model.dao.MemberDao;
 import com.kh.springProject.member.model.vo.Member;
 import com.kh.springProject.review.model.vo.ReviewReplyVO;
+import com.kh.springProject.review.model.vo.ReviewScrap;
+
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -79,6 +81,8 @@ public class MemberServiceImpl implements MemberService {
 
 	        return memberDao.getReviewsByUser(sqlSession, params);
 	    }
+	    
+
 
 	
 

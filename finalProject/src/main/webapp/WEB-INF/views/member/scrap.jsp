@@ -1,14 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ include file="../common/header.jsp" %>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내 정보</title>
+    <title>즐겨찾기</title>
     <style>
         body {
             background-color: #e0f7fa;
@@ -57,7 +56,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
         }
         .content h2 {
@@ -66,36 +65,35 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        .info-group {
-            margin-bottom: 15px;
-            text-align: center;
+        .scrap-list {
+            list-style: none;
+            padding: 0;
         }
-        .info-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .info-group span {
-            display: block;
+        .scrap-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 10px;
-            width: 100%; /* 동일한 크기 */
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            box-sizing: border-box; /* 패딩과 보더 포함한 크기 계산 */
+            border-bottom: 1px solid #ccc;
         }
-        .btns {
-            text-align: center;
-            margin-top: 20px;
+        .scrap-item:last-child {
+            border-bottom: none;
         }
-        .btns button {
-            padding: 10px 20px;
-            background-color: #333;
+        .scrap-item h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .scrap-item p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+        .scrap-item button {
+            padding: 5px 10px;
+            background-color: #f44336;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin: 0 10px;
         }
     </style>
 </head>
@@ -114,40 +112,21 @@
     </div>
     <div class="container">
         <div class="content">
-            <h2><c:out value="${loginUser.memberNick}"/>님의 정보</h2>
-            <div class="info-group">
-                <label for="enrollMemberId">아이디</label>
-                <span id="enrollMemberId">${loginUser.memberId}</span>
-            </div>
-            <div class="info-group">
-                <label for="memberNick">닉네임</label>
-                <span id="memberNick">${loginUser.memberNick}</span>
-            </div>
-            <div class="info-group">
-                <label for="birthDate">생년월일</label>
-                <span id="birthDate">${loginUser.birthDate}</span>
-            </div>
-            <div class="info-group">
-                <label for="email">이메일</label>
-                <span id="email">${loginUser.email}</span>
-            </div>
-            <div class="info-group">
-                <label for="gender">성별</label>
-                <span id="gender">${loginUser.gender == 'male' ? '남자' : '여자'}</span>
-            </div>
-            <div class="info-group">
-                <label for="enrollDate">가입 날짜</label>
-                <span id="enrollDate"><fmt:formatDate value="${loginUser.enrollDate}" pattern="yyyy-MM-dd"/></span>
-            </div>
-            <div class="info-group">
-                <label for="status">상태</label>
-                <span id="status">${loginUser.status}</span>
-            </div>
-            <div class="btns">
-                <form id="updateForm" action="${pageContext.request.contextPath}/update.me" method="get">
-                    <button type="submit">정보 수정</button>
-                </form>
-            </div>
+            <h2>즐겨찾기 목록</h2>
+            <ul class="scrap-list">
+                <c:forEach var="scrap" items="${scrapList}">
+                    <li class="scrap-item">
+                        <div>
+                            <h3>${scrap.toiletName}</h3>
+                            <p>${scrap.toiletAddress}</p>
+                        </div>
+                        <form action="${pageContext.request.contextPath}/deleteScrap.me" method="post">
+                            <input type="hidden" name="scrapNo" value="${scrap.scrapNo}">
+                            <button type="submit">삭제</button>
+                        </form>
+                    </li>
+                </c:forEach>
+            </ul>
         </div>
     </div>
 

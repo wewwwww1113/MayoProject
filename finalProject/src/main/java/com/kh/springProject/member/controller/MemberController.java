@@ -45,6 +45,7 @@ import com.kh.springProject.member.model.vo.Member;
 import com.kh.springProject.review.model.service.ReviewReplyService;
 import com.kh.springProject.review.model.service.ReviewService;
 import com.kh.springProject.review.model.vo.ReviewReplyVO;
+import com.kh.springProject.review.model.vo.ReviewScrap;
 import com.kh.springProject.tst.NaverLoginBO;
 
 @Controller
@@ -403,5 +404,11 @@ public class MemberController {
 
         return "member/statistics";
     }
+    
+    @GetMapping("scrap.me")
+    public String scrap() {
+        return "member/scrap";
+    }
+
    
 }

@@ -3,6 +3,7 @@ package com.kh.springProject.freeBoard.model.service;
 import java.util.ArrayList;
 
 import com.kh.springProject.common.model.vo.PageInfo;
+import com.kh.springProject.freeBoard.model.vo.Category;
 import com.kh.springProject.freeBoard.model.vo.fbReply;
 import com.kh.springProject.freeBoard.model.vo.freeBoard;
 
@@ -26,7 +27,14 @@ public interface FreeBoardService {
 
 	int insertReply(fbReply r);
 
-	ArrayList<freeBoard> selectTopList();
+	int cListCount(int categoryNo);
+
+
+	ArrayList<Category> boardInsert();
+
+	ArrayList<freeBoard> orderByCategory(int categoryNo, PageInfo pi);
+
+	int listCountByCategory(int categoryNo);
 
 
 

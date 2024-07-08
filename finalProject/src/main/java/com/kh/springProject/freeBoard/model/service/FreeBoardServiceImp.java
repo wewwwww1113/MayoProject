@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.freeBoard.model.dao.FreeBoardDao;
+import com.kh.springProject.freeBoard.model.vo.Category;
 import com.kh.springProject.freeBoard.model.vo.fbReply;
 import com.kh.springProject.freeBoard.model.vo.freeBoard;
 
@@ -71,10 +72,30 @@ public class FreeBoardServiceImp implements FreeBoardService {
 		return fboardDao.insertReply(sqlSession, r);
 	}
 
+
+
 	@Override
-	public ArrayList<freeBoard> selectTopList() {
+	public int cListCount(int categoryNo) {
+		
+		return fboardDao.cListCount(sqlSession,categoryNo);
+	}
+
+	@Override
+	public ArrayList<freeBoard> orderByCategory(int categoryNo, PageInfo pi) {
+	
+		  return fboardDao.orderByCategory(sqlSession, categoryNo, pi);
+	}
+
+	@Override
+	public ArrayList<Category> boardInsert() {
 		// TODO Auto-generated method stub
-		return null;
+		return fboardDao.boardInsert(sqlSession);
+	}
+
+	@Override
+	public int listCountByCategory(int categoryNo) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

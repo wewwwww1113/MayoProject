@@ -24,6 +24,7 @@ import com.kh.springProject.common.template.Pagination;
 import com.kh.springProject.freeBoard.model.service.FreeBoardService;
 import com.kh.springProject.freeBoard.model.vo.fbReply;
 import com.kh.springProject.freeBoard.model.vo.freeBoard;
+import com.kh.springProject.freeBoard.model.vo.Category;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,23 +35,31 @@ public class FreeBoardController {
 	@Autowired
 	private FreeBoardService fbService;
 
-	// 목록 페이지로 이동 메소드
-	@RequestMapping("list.fr")
-	public String boardList(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, Model model) {
+	@RequestMapping("/list.fr")
+	public String boardList(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+			@RequestParam(value = "categoryNo", defaultValue = "0") int categoryNo, Model model) {
 
-		int listCount = fbService.listCount();
+		int listCount;
+		ArrayList<freeBoard> list;
 		int pageLimit = 10;
 		int boardLimit = 5;
 
+		if (categoryNo == 0) {
+			listCount = fbService.listCount();
+			list = fbService.selectList(Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit));
+		} else {
+			listCount = fbService.cListCount(categoryNo);
+			list = fbService.orderByCategory(categoryNo,
+					Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit));
+		}
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
-		// 게시글 목록 조회하기
-		ArrayList<freeBoard> list = fbService.selectList(pi);
-
 		model.addAttribute("pi", pi);
-		model.addAttribute("list",list);
+		model.addAttribute("list", list);
+		model.addAttribute("categoryNo", categoryNo);
 
-		// System.out.println(list);
+		System.out.println(list);
 
 		return "freeboard/boardListView";
 	}
@@ -82,7 +91,12 @@ public class FreeBoardController {
 
 	// 게시글 작성 페이지 이동
 	@GetMapping("insert.fr")
-	public String boardEnrollForm() {
+	public String boardEnrollForm(Model model) {
+
+		ArrayList<Category> cgList = fbService.boardInsert();
+		model.addAttribute("cgList", cgList);
+
+		// System.out.println(cgList);
 
 		return "freeboard/boardEnrollForm";
 	}
@@ -91,37 +105,8 @@ public class FreeBoardController {
 	@PostMapping("insert.fr")
 	public String insertBoard(freeBoard b, MultipartFile upfile, HttpSession session) {
 
-		// 첨부된 파일의 유무에 상관없이 MultipartFile 객체는 만들어져서 주입된다.
-		// 때문에 파일이 넘어왔는지 판별하는 작업을 null 비교가 아닌
-		// filename에 담긴 값이 빈값인지 확인하는 작업으로 처리해야한다.
-
 		// 전달된 파일이 있을경우 - 파일명수정작업 후 서버로 업로드, 원본명과 수정된 파일명을 DB에 등록하기
 		if (!upfile.getOriginalFilename().equals("")) {
-
-			/*
-			 * //파일명 수정작업하기 //1.원본파일명 추출 String originName = upfile.getOriginalFilename();
-			 * 
-			 * //2.시간형식 문자열로 만들기 //20240527162730 String currentTime = new
-			 * SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-			 * 
-			 * //3.확장자 추출하기 파일명 뒤에서부터 . 찾아서 뒤로 잘라내기 String ext =
-			 * originName.substring(originName.lastIndexOf("."));
-			 * 
-			 * //4.랜덤값 5자리 뽑기 int ranNum = (int)(Math.random()*90000+10000);
-			 * 
-			 * //5.하나로 합쳐주기 String changeName = currentTime+ranNum+ext;
-			 * 
-			 * //6.업로드하고자하는 물리적인 경로 알아내기 (프로젝트 내에 저장될 실제 경로 찾기) String savePath =
-			 * session.getServletContext().getRealPath("/resources/uploadFiles/");
-			 * 
-			 * 
-			 * try { //7.경로와 수정 파일명을 합쳐서 파일 업로드 처리하기 upfile.transferTo(new
-			 * File(savePath+changeName));
-			 * 
-			 * 
-			 * } catch (IllegalStateException | IOException e) { // TODO Auto-generated
-			 * catch block e.printStackTrace(); }
-			 */
 
 			// 만들어놓은 파일업로드 메소드 사용하기
 			String changeName = saveFile(upfile, session);
@@ -139,7 +124,6 @@ public class FreeBoardController {
 		} else { // 게시글 작성 실패
 			session.setAttribute("alertMsg", "게시글 작성 실패!");
 		}
-		
 
 		return "redirect:/list.fr";
 	}
@@ -283,22 +267,45 @@ public class FreeBoardController {
 		int result = fbService.insertReply(r);
 
 		return result;
-		
+
+	}
+
+	
+	@RequestMapping("category.fr")
+	public String orderByCategory( @RequestParam("categoryNo") int categoryNo,
+	                              @RequestParam(value = "currentPage", defaultValue = "1") int currentPage, 
+	                              Model model) {
+
+	    // Get the total count of the list for the specified category
+	    int listCount = fbService.cListCount(categoryNo);
+	    int pageLimit = 10;
+	    int boardLimit = 5;
+
+	    // Create PageInfo object with pagination details
+	    PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+	    // Get the list of posts for the selected category and pagination info
+	    ArrayList<freeBoard> list = fbService.orderByCategory(categoryNo, pi);
+
+	    // Debugging: Print out list and categoryNo for debugging purposes
+	    System.out.println("List size: " + list.size());
+	    System.out.println("CategoryNo: " + categoryNo);
+
+	    // Save data to model if list is not null
+	    if (list != null) {
+	        model.addAttribute("list", list);
+	    } else {
+	        // Handle case where list is null (optional)
+	        // model.addAttribute("list", new ArrayList<freeBoard>());
+	        System.out.println("List is null or empty.");
+	    }
+
+	    model.addAttribute("pi", pi);
+	    model.addAttribute("CategoryNo", categoryNo);
+
+	    // Forward to the view
+	    return "freeboard/boardListView"; 
 	}
 	
 	
-	
-
-	/*
-	 * //조회수 top5 목록 조회
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping("topList.bo") public ArrayList<Board> selectTopList(){
-	 * 
-	 * ArrayList<Board> list = boardService.selectTopList();
-	 * 
-	 * return list; }
-	 */
-
 }

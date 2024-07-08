@@ -142,6 +142,7 @@
         <a href="${pageContext.request.contextPath}/update.me">내 정보 수정</a>
         <a href="${pageContext.request.contextPath}/myReviews.me">내가 쓴 리뷰</a>
         <a href="${pageContext.request.contextPath}/myPosts.me">내가 작성한 글</a>
+        <a href="${pageContext.request.contextPath}/statistics.me">통계</a>
         <a href="${pageContext.request.contextPath}/deleteMember.me">회원탈퇴</a>
     </div>
     <div class="container">

@@ -269,22 +269,7 @@
 		</dependency>
 		
 
-		    <!-- 스케쥴러에 필요한 것들 -->
-		<dependency>
-	        <groupId>org.springframework.boot</groupId>
-	        <artifactId>spring-boot-starter</artifactId>
-	        <version>${spring-boot-version}</version>
-	    </dependency>
-	    <dependency>
-	        <groupId>org.springframework.boot</groupId>
-	        <artifactId>spring-boot-starter-data-jpa</artifactId>
-	        <version>${spring-boot-version}</version>
-	    </dependency>
-	    <dependency>
-	        <groupId>org.mybatis.spring.boot</groupId>
-	        <artifactId>mybatis-spring-boot-starter</artifactId>
-	        <version>2.1.4</version>
-	    </dependency>
+	       
 	    <dependency>
 	        <groupId>org.apache.poi</groupId>
 	        <artifactId>poi-ooxml</artifactId>
@@ -311,6 +296,15 @@
     <artifactId>mysql-connector-java</artifactId>
     <version>8.0.23</version>
 </dependency>
+
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>4.0.1</version>
+    <scope>provided</scope>
+</dependency>
+
+
 			
 
 	</dependencies>

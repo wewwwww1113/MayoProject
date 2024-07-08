@@ -54,6 +54,24 @@ public class ReviewReplyDao {
 		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectList("toiletLikeMapper.getLikeReview",userNo);
 	}
+	
+	//추가 메소드
+		 public List<ReviewReplyVO> getReviewsByUserKey(int userKey) {
+		        return sqlSessionTemplate.selectList("reviewMapper.getReviewsByUserKey", userKey);
+		    }
+
+
+		 public List<ReviewReplyVO> searchReviewsByUserKey(Map<String, Object> searchParams) {
+		        return sqlSessionTemplate.selectList("reviewMapper.searchReviewsByUserKey", searchParams);
+		    }
+		 
+		 public int deleteReviewByKey(int reviewReplyKey) {
+		        return sqlSessionTemplate.delete("reviewMapper.deleteReviewByKey", reviewReplyKey);
+		    }
+		 
+		 public int deleteReviewsByKey(List<Integer> reviewReplyKeys) {
+		        return sqlSessionTemplate.delete("reviewMapper.deleteReviewsByKey", reviewReplyKeys);
+		    }
 
 	
 

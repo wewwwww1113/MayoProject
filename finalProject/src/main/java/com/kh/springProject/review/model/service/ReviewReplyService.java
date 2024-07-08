@@ -43,6 +43,24 @@ public class ReviewReplyService {
 		// TODO Auto-generated method stub
 		return reviewReplyDao.gettLikeReview(userNo);
 	}
+	
+	//수정된 부분
+		 public List<ReviewReplyVO> getReviewsByUserKey(int userKey) {
+		        return reviewReplyDao.getReviewsByUserKey(userKey);
+		    }
+		 
+		  // 검색 기능 추가된 부분
+		    public List<ReviewReplyVO> searchReviewsByUserKey(Map<String, Object> searchParams) {
+		        return reviewReplyDao.searchReviewsByUserKey(searchParams);
+		    }
+		    //글 삭제
+		    public int deleteReviewByKey(int reviewReplyKey) {
+		        return reviewReplyDao.deleteReviewByKey(reviewReplyKey);
+		    }
+		    //글 일괄 삭제
+		    public int deleteReviewsByKey(List<Integer> reviewReplyKeys) {
+		        return reviewReplyDao.deleteReviewsByKey(reviewReplyKeys);
+		    }
 
 
 

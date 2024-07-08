@@ -1,8 +1,13 @@
 package com.kh.springProject.member.model.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.member.model.vo.Member;
+import com.kh.springProject.review.model.vo.ReviewReplyVO;
 
 public interface MemberService {
 
@@ -24,12 +29,14 @@ public interface MemberService {
 	//리뷰 - 멤버 아이디
 	int reviewMemberNo(Member mem);
 
-
-	
 	//소셜 로그인 기능
 	Member selectMemberById(String memberId);
 	
-
+	 // 내가 쓴 리뷰 관리 기능
+    int getReviewCountByUser(String memberNo);
+     
+    // 내가 쓴 리뷰 관리 기능
+    List<ReviewReplyVO> getReviewsByUser(String memberNo, PageInfo pi);
 	
 	
 

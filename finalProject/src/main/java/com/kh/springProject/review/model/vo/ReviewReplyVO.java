@@ -19,6 +19,7 @@ public class ReviewReplyVO {
 	private String delYn;
 	private int toiletNo;
 	private String userNickName;
+	private String toiletName;
 	
 
 }

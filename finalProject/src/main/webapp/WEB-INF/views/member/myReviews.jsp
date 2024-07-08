@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%@ include file="../common/header.jsp" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -13,7 +13,7 @@
             background-color: #e0f7fa;
             font-family: Arial, sans-serif;
             margin: 0;
-            padding-top: 60px; /* 헤더 높이만큼 패딩 추가 */
+            padding-top: 60px;
         }
         .header {
             position: fixed;
@@ -36,7 +36,7 @@
             width: 200px;
             height: 100vh;
             position: fixed;
-            top: 110px;
+            top: 60px; /* Adjusted to not overlap with header */
             left: 0;
             padding: 20px;
             box-sizing: border-box;
@@ -45,7 +45,7 @@
             color: white;
             text-decoration: none;
             display: block;
-            margin: 50px 0;
+            margin: 20px 0;
         }
         .container {
             margin-left: 220px;
@@ -56,8 +56,8 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 1000px; /* 바 크기 줄이기 */
-            margin: 0 auto; /* 가운데 맞춤 */
+            max-width: 1000px;
+            margin: 0 auto;
         }
         .content h2 {
             font-size: 24px;
@@ -74,6 +74,7 @@
             padding: 10px;
             border: 1px solid #ccc;
             text-align: center;
+            cursor: pointer;
         }
         table th {
             background-color: #f2f2f2;
@@ -101,7 +102,7 @@
             text-align: right;
             margin-bottom: 20px;
         }
-        .search-box input[type="text"] {
+        .search-box select, .search-box input[type="text"] {
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -113,6 +114,20 @@
             color: white;
             border-radius: 5px;
             cursor: pointer;
+        }
+        .delete-button {
+            display: block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: left;
+        }
+        .delete-button:hover {
+            background-color: #c9302c;
         }
     </style>
 </head>
@@ -126,43 +141,58 @@
         <a href="${pageContext.request.contextPath}/update.me">내 정보 수정</a>
         <a href="${pageContext.request.contextPath}/myReviews.me">내가 쓴 리뷰</a>
         <a href="${pageContext.request.contextPath}/myPosts.me">내가 작성한 글</a>
+        <a href="${pageContext.request.contextPath}/statistics.me">통계</a>
         <a href="${pageContext.request.contextPath}/deleteMember.me">회원탈퇴</a>
     </div>
 
     <div class="container">
         <div class="content">
-            <h2> <c:out value="${loginUser.memberNick}"/>님이 쓴 리뷰</h2>
+            <h2><c:out value="${loginUser.memberNick}"/>님이 쓴 리뷰</h2>
             <div class="search-box">
-                <input type="text" placeholder="제목">
-                <button>검색</button>
+                <form action="${pageContext.request.contextPath}/myReviews.me" method="get">
+                    <select name="searchType">
+                        <option value="toiletName">화장실 이름</option>
+                        <option value="reviewContent">내용</option>
+                    </select>
+                    <input type="text" name="searchKeyword" placeholder="검색어" value="${searchKeyword}">
+                    <button type="submit">검색</button>
+                </form>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>제목</th>
-                        <th>화장실명</th>
-                        <th>등록일</th>
-                        <th>조회수</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="review" items="${reviewList}">
+            <form id="deleteForm" action="${pageContext.request.contextPath}/deleteReview.me" method="post">
+                <button type="button" class="delete-button" onclick="deleteSelected()">리뷰 삭제</button>
+                <table>
+                    <thead>
                         <tr>
-                            <td>${review.title}</td>
-                            <td>${review.toilet}</td>
-                            <td>${review.date}</td>
-                            <td>${review.views}</td>
+                            <th><input type="checkbox" onclick="toggleSelectAll(this)"></th>
+                            <th>화장실 이름</th>
+                            <th>내용</th>
+                            <th>작성일</th>
                         </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="review" items="${reviewList}">
+                            <tr>
+                                <td><input type="checkbox" name="selectedReviews" value="${review.reviewReplyKey}"></td>
+                                <td>${review.toiletName}</td>
+                                <td>${review.content}</td>
+                                <td>${review.createTime}</td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${empty reviewList}">
+                            <tr>
+                                <td colspan="4">작성한 리뷰가 없습니다.</td>
+                            </tr>
+                        </c:if>
+                    </tbody>
+                </table>
+            </form>
             <div class="pagination">
                 <c:if test="${pi.startPage > 1}">
                     <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=1">&lt;&lt;</a>
                     <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${pi.startPage - 1}">&lt;</a>
                 </c:if>
                 <c:forEach begin="${pi.startPage}" end="${pi.endPage}" var="i">
-                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${i}" class="${pi.currentPage == i ? 'active' : ''}">${i + 1}</a>
+                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${i}" class="${pi.currentPage == i ? 'active' : ''}">${i}</a>
                 </c:forEach>
                 <c:if test="${pi.endPage < pi.maxPage}">
                     <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${pi.endPage + 1}">&gt;</a>
@@ -172,6 +202,19 @@
         </div>
     </div>
 
-    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+    <%@ include file="../common/footer.jsp" %>
+
+    <script>
+        function toggleSelectAll(source) {
+            checkboxes = document.getElementsByName('selectedReviews');
+            for(var i=0, n=checkboxes.length; i<n; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+
+        function deleteSelected() {
+            document.getElementById('deleteForm').submit();
+        }
+    </script>
 </body>
 </html>

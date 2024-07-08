@@ -1,12 +1,27 @@
 package com.kh.springProject.member.controller;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,24 +31,43 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.kh.springProject.common.model.vo.PageInfo;
+import com.kh.springProject.common.template.Pagination;
 import com.kh.springProject.member.model.service.MemberService;
 import com.kh.springProject.member.model.vo.Member;
+import com.kh.springProject.review.model.service.ReviewReplyService;
+import com.kh.springProject.review.model.service.ReviewService;
+import com.kh.springProject.review.model.vo.ReviewReplyVO;
 import com.kh.springProject.tst.NaverLoginBO;
 
 @Controller
 public class MemberController {
+	
     private NaverLoginBO naverLoginBO;
     private String apiResult = null;
 
     @Autowired
     private MemberService memberService;
+    
+    @Autowired
+    private ReviewService reviewService;
 
     @Autowired
     private BCryptPasswordEncoder bcryptPasswordEncoder;
+    
+    
+    @Autowired
+    private ReviewReplyService reviewReplyService;
+    
+
+    
 
     @Autowired
     public MemberController(NaverLoginBO naverLoginBO) {
@@ -277,12 +311,97 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/myReviews.me")
-    public String myReviews() {
-        return "member/myReviews";
-    }
     @GetMapping("loginForm.me")
     public String loginForm() {
         return "member/loginForm";
     }
+    
+    private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+
+
+    @GetMapping("/myReviews.me")
+    public String myReviews(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                            @RequestParam(value = "searchType", required = false) String searchType,
+                            @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+                            Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/login.me";
+        }
+
+        int userKey = Integer.parseInt(loginUser.getMemberNo());
+        Map<String, Object> searchParams = new HashMap<>();
+        searchParams.put("userKey", userKey);
+        if ("toiletName".equals(searchType)) {
+            searchParams.put("toiletName", searchKeyword);
+        } else if ("reviewContent".equals(searchType)) {
+            searchParams.put("reviewContent", searchKeyword);
+        }
+
+        List<ReviewReplyVO> allReviews = reviewReplyService.searchReviewsByUserKey(searchParams);
+
+        int listCount = allReviews.size();
+        int pageLimit = 10;
+        int boardLimit = 10;
+
+        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+        int startRow = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+        int endRow = startRow + pi.getBoardLimit();
+        endRow = endRow > listCount ? listCount : endRow;
+
+        List<ReviewReplyVO> reviewList = allReviews.subList(startRow, endRow);
+
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("pi", pi);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("searchKeyword", searchKeyword);
+
+        return "member/myReviews";
+    }
+
+    @PostMapping("/deleteReview.me")
+    public String deleteReview(@RequestParam("selectedReviews") List<Integer> reviewReplyKeys, HttpSession session, Model model) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/login.me";
+        }
+
+        int result = reviewReplyService.deleteReviewsByKey(reviewReplyKeys);
+
+        if (result > 0) {
+            session.setAttribute("alertMsg", "선택한 리뷰가 삭제되었습니다.");
+        } else {
+            session.setAttribute("alertMsg", "리뷰 삭제에 실패했습니다.");
+        }
+
+        return "redirect:/myReviews.me";
+    }
+
+    @GetMapping("/review/reviewTest")
+    public String reviewTest(@RequestParam("toiletNo") int toiletNo, Model model) {
+        // 해당 toiletNo에 대한 필요한 데이터를 가져와서 모델에 추가하는 로직
+        model.addAttribute("toiletNo", toiletNo);
+    
+        return "review/reviewTest";
+    }
+    @GetMapping("statistics.me")
+    public String statistics(Model model, HttpSession session, @RequestParam(defaultValue = "1") int currentPage) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/loginForm.me";
+        }
+
+        List<ReviewReplyVO> reviewList = reviewReplyService.getReviewsByUserKey(Integer.parseInt(loginUser.getMemberNo()));
+        int listCount = reviewList.size();
+        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("pi", pi);
+
+        return "member/statistics";
+    }
+   
 }

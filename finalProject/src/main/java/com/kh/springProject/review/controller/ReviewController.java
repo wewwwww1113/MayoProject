@@ -5,30 +5,25 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.AutomapConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.common.template.Pagination;
 import com.kh.springProject.map.model.service.MapService;
@@ -402,46 +397,45 @@ public class ReviewController {
 		    return "review/reviewTest";
 		}
 		
-	
-		
-//		@PostMapping("/like")
-//		public String postPersonLike(Model model, HttpServletRequest request) {
-//			
-//			int toiletKey = Integer.parseInt(request.getParameter("toiletKey"));
-//			int userKey = Integer.parseInt(request.getParameter("userKey"));
-//			int toiletLikeKey = Integer.parseInt(request.getParameter("toiletLikeKey"));
-//			
-//			ReviewReplyLikeVO like = new ReviewReplyLikeVO();
-//			like.setToiletKey(toiletKey);
-//			like.setUserKey(userKey);
-//			like.setToiletLikeKey(toiletLikeKey);
-//
-//		    int person = reviewService.personLike(like);
-//		   
-//		    model.addAttribute("person",person);
-//		    
-//		    System.out.println(person);
-//		    
-//		    System.out.println(person);
-//		 
-//			return "review/reviewTest";
-//		}
-//		
 		
 		
 		
+		//---------------------------------------------------------------------------
 		
-		
-		
-		
-		
-	
-	
-			
+		// 스크랩
+		@PostMapping(value="/scrap")
+		@ResponseBody
+		public HashMap<String, Object> scrap(@RequestBody HashMap<String, Object> paramMap, HttpSession session) throws Exception{
+			Member member	= (Member) session.getAttribute("loginUser");
+			HashMap<String, Object> map = new HashMap<>();
+			String memberNo = member.getMemberNo();
+			int toiletNo	= Integer.parseInt(paramMap.get("toiletNo").toString());
+			int count		= reviewService.scrapCheck(memberNo, toiletNo);
+			if (count == 0) {
+				reviewService.scrap(memberNo, toiletNo);
+				map.put("msg", "스크랩 완료");
+				map.put("cnt", 1);
+			}else {
+				reviewService.scrapCancel(memberNo, toiletNo);
+				map.put("msg", "스크랩 취소");
+				map.put("cnt", 0);
+			}
 
+			return map;
+		}
+		
+		// 평점 Update
+		@PostMapping(value="/updateStar")
+		@ResponseBody
+		public HashMap<String, Object> updateStar(@RequestBody HashMap<String, Object> paramMap, HttpSession session) throws Exception{
+			Member member	= (Member) session.getAttribute("loginUser");
+			HashMap<String, Object> map = new HashMap<>();
+			String memberNo = member.getMemberNo();
+			int toiletNo	= Integer.parseInt(paramMap.get("toiletNo").toString());
+			int starCnt		= Integer.parseInt(paramMap.get("starCnt").toString());
+			reviewService.updateStar(memberNo, toiletNo, starCnt);			
+			map.put("msg", "평점이 수정되었습니다.");
 
-	
-	
-	
-
+			return map;
+		}
 }

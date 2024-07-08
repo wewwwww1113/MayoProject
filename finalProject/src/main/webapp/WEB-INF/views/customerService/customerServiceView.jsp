@@ -63,14 +63,14 @@
 }
 </style>
 
-
+ 
 
 </head>
 <body>
 
 	<%@include file="../common/header.jsp"%>
 
-
+    <li><a href="#" id="oneToOneInquiry">1:1 문의</a></li>
 	<div id="content">
 		<ul class="cs_menu">
 			<li class="on"><button id="cs">문의</button></li>
@@ -81,6 +81,30 @@
 	<div id="contentDiv"></div>
 
 	<script>
+	 document.getElementById('oneToOneInquiry').addEventListener('click', function(event) {
+         event.preventDefault(); // 링크의 기본 동작을 막음
+
+         var ws = new WebSocket("ws://localhost:8888/springProject/customerService/member");
+
+         ws.onopen = function() {
+             console.log("WebSocket connection opened");
+             // 연결이 열리면 서버로 메시지 보내기
+             ws.send("Hello, Server!");
+         };
+
+         ws.onmessage = function(event) {
+             console.log("Message from server: " + event.data);
+             // 서버로부터 메시지를 받으면 처리
+         };
+
+         ws.onclose = function() {
+             console.log("WebSocket connection closed");
+         };
+
+         ws.onerror = function(error) {
+             console.log("WebSocket error: " + error);
+         };
+     });
 		/* 비동기 통신으로 카테고리별 숙소 정보 조회해오는 비동기 통신 Script */
 		$(function() {
 			$("#cs").click();

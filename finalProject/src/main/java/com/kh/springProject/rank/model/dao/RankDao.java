@@ -1,10 +1,12 @@
 package com.kh.springProject.rank.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.springProject.rank.model.vo.Rank;
 import com.kh.springProject.review.model.vo.ReviewStar;
 
 @Repository
@@ -15,9 +17,9 @@ public class RankDao {
 		return sqlSession.selectList("rankMapper.selectAllStars", rs);
 	}
 	//평균 별점
-	public int avgStar(SqlSessionTemplate sqlSession, int toiletNo) {
+	public ArrayList<Rank> selectAvgStar(SqlSessionTemplate sqlSession) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("rankMapper.avgStar",toiletNo);
+		return (ArrayList)sqlSession.selectList("rankMapper.avgStar") ;
 	}
 
 }

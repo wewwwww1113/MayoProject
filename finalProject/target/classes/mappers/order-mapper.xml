@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="orderMapper">
+	
+	<resultMap type="Order" id="orderResultMap">
+	
+        <result property="orderNo" column="ORDERNO" />
+        <result property="pg" column="PG" />
+        <result property="mcUid" column="MCUID" />
+        <result property="memberNo" column="MEMBERNO" />
+        <result property="pdName" column="PDNAME" />
+        <result property="amount" column="AMOUNT" />
+        <result property="buyerName" column="BUYERNAME" />
+        <result property="buyerTel" column="BUYERTEL" />
+        <result property="buyerAddr" column="BUYERADDR" />
+        <result property="orderDate" column="ORDERDATE" />
+        <result property="receiptUrl" column="RECEIPTURL"/>
+        <result property="paidAt" column="PAIDAT"/>
+    </resultMap>
+
+    <insert id="insertOrder" parameterType="Order">
+        INSERT INTO ORDERS (PG,
+							MCUID,
+							ORDERNO,
+							MEMBERNO, 
+							PDNAME, 
+							AMOUNT, 
+							BUYERNAME, 
+							BUYERTEL, 
+							BUYERADDR, 
+							ORDERDATE,
+							RECEIPTURL,
+							PAIDAT
+							)
+        VALUES (#{pg},
+        	    #{mcUid}, 
+        	    ORDERS_SEQ.NEXTVAL,
+        	    #{memberNo}, 
+        	    #{pdName},
+        	    #{amount}, 
+        	    #{buyerName}, 
+        	    #{buyerTel}, 
+        	    #{buyerAddr}, 
+        	    SYSDATE,
+        	    #{receiptUrl},
+        	    #{paidAt}
+        	    )
+    </insert>
+    
+    <select id="selectOrder" resultMap="orderResultMap">
+        SELECT * FROM ORDERS WHERE MCUID = #{mcUid}
+    </select>
+
+    
+</mapper>

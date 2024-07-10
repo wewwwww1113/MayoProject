@@ -1,5 +1,6 @@
 package com.kh.springProject.rank.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.springProject.map.model.service.MapService;
 import com.kh.springProject.map.model.vo.Map;
 import com.kh.springProject.rank.model.service.RankService;
+import com.kh.springProject.rank.model.vo.Rank;
 import com.kh.springProject.review.model.vo.ReviewStar;
 
 @Controller
@@ -28,8 +30,7 @@ public class RankController {
 	
 
 	@GetMapping("rank.ra")
-	public ModelAndView RankList(Map m, ReviewStar rs, ModelAndView mv, HttpSession session
-			,@RequestParam(required = false) Integer toiletNo ) {
+	public ModelAndView RankList(Map m, ReviewStar rs, ModelAndView mv, HttpSession session ) {
 	      
 	    // 화장실 전체조회
 	    List<Map> t = mapService.getAllToilets(m);
@@ -38,10 +39,7 @@ public class RankController {
 	    List<ReviewStar> star = rankService.getAllStars(rs);
 	    
 	    // toiletNo가 null이 아닌 경우에만 평균 별점 조회
-	    int avg = 0;
-	    if (toiletNo != null) {
-	        avg = rankService.avgStar(toiletNo);
-	    }
+	   ArrayList<Rank>  avg = rankService.avgStar();
 	    
 	    System.out.println(t);
 	    System.out.println(star);

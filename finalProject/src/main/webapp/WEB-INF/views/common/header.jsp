@@ -176,9 +176,9 @@ nav > ul > li:hover ul{opacity:1; }
                     <li>상세 2</li>
                 </ul>
             </li>
-            <li>메뉴 2
+            <li>상좀~!
                 <ul>
-                    <li>상세 1</li>
+                    <li><a href="list.st">사앙저엄</a></li>
                     <li>상세 2</li>
                     <li>상세 3</li>
                     <li>상세 4</li>

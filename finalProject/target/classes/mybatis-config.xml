@@ -12,7 +12,7 @@
  		<typeAlias type="com.kh.springProject.freeBoard.model.vo.fbReply" alias="fbReply"/>
  		<typeAlias type="com.kh.springProject.map.model.vo.Map" alias="toiletMap"/>
  		<typeAlias type="com.kh.springProject.freeBoard.model.vo.freeBoard" alias="freeBoard"/>
-		 		<typeAlias type="com.kh.springProject.freeBoard.model.vo.Category" alias="Category"/>
+		<typeAlias type="com.kh.springProject.freeBoard.model.vo.Category" alias="Category"/>
 		
 		<typeAlias type="com.kh.springProject.review.model.vo.Review" alias="Review"/>
  		<typeAlias type="com.kh.springProject.review.model.vo.Reply" alias="Reply"/>
@@ -23,7 +23,10 @@
  		<typeAlias type="com.kh.springProject.review.model.vo.ReviewReplyLikeVO" alias="ReviewReplyLikeVO"/>
 
  		<typeAlias type="com.kh.springProject.csBoard.model.vo.csBoard" alias="csBoard"/>
-
+ 		
+ 		<typeAlias type="com.kh.springProject.store.model.vo.Store" alias="Store"/>
+ 		<typeAlias type="com.kh.springProject.store.model.vo.Cart" alias="Cart"/>
+ 		<typeAlias type="com.kh.springProject.common.portone.model.vo.Order" alias="Order"/>
  	</typeAliases>
  	
  	

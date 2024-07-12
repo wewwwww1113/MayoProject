@@ -49,9 +49,7 @@ public class ReviewDao {
 	
 	//게시글 작성
 	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
-		
-		System.out.println(1);
-		
+				
 		return sqlSession.insert("reviewMapper.insertReview", r);
 	}
 	

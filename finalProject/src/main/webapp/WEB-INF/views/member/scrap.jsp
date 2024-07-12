@@ -149,7 +149,7 @@
             <p>${loginUser.memberNick}</p>
         </div>
         <a href="${pageContext.request.contextPath}/mypage.me">로그인 정보</a>
-        <a href="${pageContext.request.contextPath}/scrap.me">즐겨찾기</a>
+        <a href="${pageContext.request.contextPath}/v1/review/reply/scrap.me">즐겨찾기</a>
         <a href="${pageContext.request.contextPath}/update.me">내 정보 수정</a>
         <a href="${pageContext.request.contextPath}/myReviews.me">내가 쓴 리뷰</a>
         <a href="${pageContext.request.contextPath}/myPosts.me">내가 작성한 글</a>
@@ -163,6 +163,7 @@
             <c:choose>
                 <c:when test="${empty scrapList}">
                     <p class="no-favorites-message">즐겨찾기 된 화장실이 없습니다.</p>
+                    <button onclick="hi()">안녕</button>
                 </c:when>
                 <c:otherwise>
                     <ul class="scrap-list">
@@ -186,6 +187,9 @@
         </div>
     </div>
     <script>
+    
+    
+    
         function confirmDelete(scrapNo) {
             if (confirm("정말 즐겨찾기에서 삭제하시겠습니까?")) {
                 document.getElementById('deleteForm-' + scrapNo).submit();

@@ -114,7 +114,7 @@ public class ReviewReplyController  {
 
         List<ReviewReplyVO> allReviews = reviewReplyService.searchReviewsByUserKey1(searchParams);
 
-        
+        System.out.println(allReviews);
 
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("searchType", searchType);
@@ -126,16 +126,20 @@ public class ReviewReplyController  {
 	
     
 
-    @GetMapping("/scrap")
+    @GetMapping("/scrap.me")
     public String getScrapList(HttpSession session, Model model) {
         Member member = (Member) session.getAttribute("loginUser");
         if (member == null) {
             return "redirect:/login.me";
         }
         int memberNo = Integer.parseInt(member.getMemberNo());
+        
+        
         List<ReviewScrap> scrapList = reviewReplyService.getScrapListByMemberNo(memberNo);
         model.addAttribute("scrapList", scrapList);
-        session.setAttribute("scrapList", scrapList); // 세션에 추가
+       
+        System.out.println(scrapList);
+       
         log.info("Scrap List: " + scrapList); // 로그 추가
         return "member/scrap"; // JSP 파일 경로
     }
@@ -144,6 +148,6 @@ public class ReviewReplyController  {
     @PostMapping("/deleteScrap")
     public String deleteScrap(@RequestParam("scrapNo") int scrapNo) {
         reviewReplyService.deleteScrap(scrapNo);
-        return "redirect:/v1/review/reply/scrap";
+        return "redirect:/v1/review/reply/scrap.me";
     }
 }

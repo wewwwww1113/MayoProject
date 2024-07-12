@@ -9,42 +9,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>아이디 찾기 결과</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
+            font-family: 'Playfair Display', serif;
+            background-color: #ffffff;
             margin: 0;
-            padding-top: 60px;
-        }
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: #003366;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            z-index: 1000;
-        }
-        .header a {
-            color: white;
-            margin: 0 20px;
-            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
-            background-color: white;
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            margin-top: -200px; /* 박스를 더 위로 올립니다 */
+        }
+        .content {
+            background-color: #f5f5f5;
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
             text-align: center;
-            margin: 100px auto 0;
         }
-        .container h2 {
+        .content h2 {
             margin-bottom: 20px;
-            font-size: 24px;
-            color: #333;
+            font-size: 40px;
+            color: #080808;
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
         }
-        .container p {
+        .content p {
             font-size: 18px;
             color: #555;
         }
@@ -57,23 +54,36 @@
             border-radius: 5px;
             font-size: 14px;
             cursor: pointer;
-            background-color: blue;
+            background-color: black;
             color: white;
+        }
+        footer {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            position: relative;
+            bottom: 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>아이디 찾기 결과</h2>
-        <c:if test="${not empty foundId}">
-            <p>고객님의 아이디는 <strong>${foundId}</strong> 입니다.</p>
-        </c:if>
-        <c:if test="${empty foundId}">
-            <p>아이디를 찾을 수 없습니다.</p>
-        </c:if>
-        <div class="button-container">
-            <button onclick="location.href='loginForm.me'">로그인 하기</button>
+        <div class="content">
+            <h2>아이디 찾기 결과</h2>
+            <c:if test="${not empty foundId}">
+                <p>고객님의 아이디는 <strong>${foundId}</strong> 입니다.</p>
+            </c:if>
+            <c:if test="${empty foundId}">
+                <p>아이디를 찾을 수 없습니다.</p>
+            </c:if>
+            <div class="button-container">
+                <button onclick="location.href='loginForm.me'">로그인 하기</button>
+            </div>
         </div>
     </div>
+    
+    <%@ include file="../common/footer.jsp" %>
 </body>
 </html>

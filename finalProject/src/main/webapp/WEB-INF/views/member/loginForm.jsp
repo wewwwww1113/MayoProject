@@ -9,29 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&display=swap');
+        
         body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
+            font-family: 'Playfair Display', serif;
+            background-color: #ffffff; /* 센터와 같은 배경색 */
             margin: 0;
-            padding-top: 60px; /* 헤더 높이만큼 패딩 추가 */
-        }
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: #003366;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            z-index: 1000;
-        }
-        .header a {
-            color: white;
-            margin: 0 20px;
-            text-decoration: none;
+            padding-top: 80px; /* 헤더 높이만큼 패딩 추가 */
         }
         .container {
-            background-color: white;
+            background-color: #f5f5f5; /* 부드러운 회색 배경 */
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -41,8 +28,10 @@
         }
         .container h2 {
             margin-bottom: 20px;
-            font-size: 24px;
-            color: #333;
+            font-size: 40px;
+            color: #080808;
+            font-family: 'Playfair Display', serif; /* 제목에 'Playfair Display' 글꼴 적용 */
+            font-weight: 400;
         }
         .form-group {
             margin-bottom: 15px;
@@ -76,11 +65,15 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            background-color: blue;
+            background-color: #808080; /* 센터와 동일한 회색 */
             color: white;
             font-size: 16px;
             cursor: pointer;
             margin-top: 10px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .login-button:hover {
+            background-color: #333;
         }
         .social-login-buttons {
             margin-top: 20px;
@@ -135,7 +128,7 @@
                 <button onclick="location.href='logout.me'">로그아웃</button>
             </c:when>
             <c:otherwise>
-                <h2>참지마요 로그인</h2>
+                <h2>Login</h2>
                 <form action="${pageContext.request.contextPath}/login.me" method="post">
                     <div class="form-group">
                         <label for="username"><i class="fas fa-user"></i> 아이디</label>
@@ -158,7 +151,6 @@
                     <button class="google-login" onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=63483462058-fju3itdbk36q6m7c4pkvv3qrqoujfngc.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/v1/oauth2/google/callback&response_type=code&scope=email%20profile%20openid&access_type=offline'">
                         Google로 로그인
                     </button>
-                    
                     <div id="naver_id_login" style="text-align:center">
                         <a href="${url}">
                             <img width="223" height="48" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" alt="네이버 로그인"/>

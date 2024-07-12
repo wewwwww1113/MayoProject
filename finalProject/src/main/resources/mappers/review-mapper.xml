@@ -307,7 +307,23 @@ USING DUAL
         AND rr.DEL_YN = 'N'
     </select>
 	
-	
-	
+	<resultMap id="reviewScrapResultMap" type="com.kh.springProject.review.model.vo.ReviewScrap">
+    <result column="SCRAP_NO" property="scrapNo"/>
+    <result column="MEMBER_NO" property="memberNo"/>
+    <result column="TOILET_NO" property="toiletNo"/>
+    <result column="TOILET_NAME" property="toiletName"/>
+    <result column="TOILET_ADDRESS" property="toiletAddress"/>
+</resultMap>
+
+<select id="getScrapListByMemberNo" parameterType="int" resultMap="reviewScrapResultMap">
+    SELECT S.SCRAP_NO, S.MEMBER_NO, S.TOILET_NO, T.TOILET_NAME, T.TOILET_ADDRESS
+    FROM REVIEW_SCRAP S
+    JOIN TOILET T ON S.TOILET_NO = T.TOILET_NO
+    WHERE S.MEMBER_NO = #{memberNo}
+</select>
+
+<delete id="deleteScrap" parameterType="int">
+    DELETE FROM REVIEW_SCRAP WHERE SCRAP_NO = #{scrapNo}
+</delete>
 	
 </mapper>

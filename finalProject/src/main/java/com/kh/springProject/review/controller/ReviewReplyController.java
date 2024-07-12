@@ -22,7 +22,7 @@ import com.kh.springProject.member.model.vo.Member;
 import com.kh.springProject.review.model.service.ReviewReplyService;
 import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
 import com.kh.springProject.review.model.vo.ReviewReplyVO;
-
+import com.kh.springProject.review.model.vo.ReviewScrap;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -123,5 +123,26 @@ public class ReviewReplyController  {
         return "review/reviewTest";
     }
 	
+    
 
+    @GetMapping("/scrap")
+    public String getScrapList(HttpSession session, Model model) {
+        Member member = (Member) session.getAttribute("loginUser");
+        if (member == null) {
+            return "redirect:/login.me";
+        }
+        int memberNo = Integer.parseInt(member.getMemberNo());
+        List<ReviewScrap> scrapList = reviewReplyService.getScrapListByMemberNo(memberNo);
+        model.addAttribute("scrapList", scrapList);
+        session.setAttribute("scrapList", scrapList); // 세션에 추가
+        log.info("Scrap List: " + scrapList); // 로그 추가
+        return "member/scrap"; // JSP 파일 경로
+    }
+
+    // 즐겨찾기 삭제
+    @PostMapping("/deleteScrap")
+    public String deleteScrap(@RequestParam("scrapNo") int scrapNo) {
+        reviewReplyService.deleteScrap(scrapNo);
+        return "redirect:/v1/review/reply/scrap";
+    }
 }

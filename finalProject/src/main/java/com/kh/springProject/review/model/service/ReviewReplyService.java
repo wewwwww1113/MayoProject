@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.springProject.review.model.dao.ReviewReplyDao;
 import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
 import com.kh.springProject.review.model.vo.ReviewReplyVO;
+import com.kh.springProject.review.model.vo.ReviewScrap;
 
 @Service
 public class ReviewReplyService {
@@ -68,8 +69,15 @@ public class ReviewReplyService {
 				// TODO Auto-generated method stub
 				return reviewReplyDao.searchReviewsByUserKey1(searchParams);
 			}
+			   // 즐겨찾기 기능
+		    public List<ReviewScrap> getScrapListByMemberNo(int memberNo) {
+		        return reviewReplyDao.getScrapListByMemberNo(memberNo);
+		    }
 
-
+		    public int deleteScrap(int scrapNo) {
+		        return reviewReplyDao.deleteScrap(scrapNo);
+		    }
+		   
 
 
 

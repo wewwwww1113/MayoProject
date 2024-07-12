@@ -9,26 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&display=swap');
+        
         body {
-            background-color: #e0f7fa;
-            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            font-family: 'Playfair Display', serif;
             margin: 0;
             padding-top: 60px; /* 헤더 높이만큼 패딩 추가 */
-        }
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: #003366;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            z-index: 1000;
-        }
-        .header a {
-            color: white;
-            margin: 0 20px;
-            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
             width: 800px;
@@ -36,8 +26,8 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 100px auto 0;
-            
+            margin: 40px auto 20px auto; /* 위아래 마진 조정 */
+            flex: 1;
         }
         .content {
             padding: 20px;
@@ -46,10 +36,11 @@
             font-size: 24px;
             color: #333;
             margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
         }
         .content textarea {
             width: 100%;
-            height: 150px;
+            height: 200px; /* 높이 조정 */
             padding: 10px;
             margin-top: 10px;
             margin-bottom: 10px;
@@ -82,6 +73,7 @@
         }
         .footer {
             text-align: center;
+            margin-top: 20px;
         }
         .footer button {
             padding: 10px 20px;
@@ -94,6 +86,13 @@
         .footer button a {
             color: white;
             text-decoration: none;
+        }
+        footer {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
         }
     </style>
     <script>
@@ -166,5 +165,6 @@
             <button type="button" onclick="if(validateForm()) { location.href='http://localhost:8888/springProject/insert.me'; }">다음</button>
         </div>
     </div>
+
 </body>
 </html>

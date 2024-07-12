@@ -128,12 +128,28 @@
     }
         
 
-        body {
-            font-family: Arial, sans-serif;
-            
-            margin: 0;
-            padding: 0;
-        }
+         body, ul, li, h1 {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+     a {
+        color: #FFFFFF; /* 기본 글자 색상 흰색 */
+        text-decoration: none; /* 모든 a 태그에 밑줄 없애기 */
+        transition: color 0.3s ease, background-color 0.3s ease; /* 부드러운 전환 효과 */
+    }
+
+    /* 글자 호버 */
+    a:hover {
+        color: black; 
+        text-decoration: none; /* hover 상태에서도 밑줄 없애기 */
+    }
+    
+     body {
+        background: rgb(255, 255, 255);
+        font-family: Arial, sans-serif;
+    }
 
         .like-icon {
             font-size: 36px; /* Increase the size as desired */
@@ -741,7 +757,7 @@ button {
                 },
                 error: function(error) {
                     console.log(error);
-                    alert("통신 에러" + error);
+                    alert("로그인 후 이용해주세요." + error);
                 }
             });
         }

@@ -56,6 +56,7 @@ public class ReviewReplyController  {
 		
 		List<ReviewReplyVO> reviews=reviewReplyService.getReview(toiletNo);
 		
+		
 		return ResponseEntity.ok(reviews);
 	}
 	

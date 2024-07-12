@@ -25,6 +25,7 @@
     /* 글자 호버 */
     a:hover {
         color: black; 
+        text-decoration: none; /* hover 상태에서도 밑줄 없애기 */
     }
 
     body {
@@ -66,15 +67,14 @@
 
     nav > ul > li a {
         font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 120px; /* 너비를 120px 이상으로 설정 */
-    height: 100%;
-    text-align: center;
-    white-space: nowrap; /* 줄 바꿈 방지 */
-    
-}
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px; /* 너비를 120px 이상으로 설정 */
+        height: 100%;
+        text-align: center;
+        white-space: nowrap; /* 줄 바꿈 방지 */
+    }
 
     nav > ul > li ul {
         width: 100%;
@@ -100,25 +100,24 @@
         margin-left: auto;
     }
 
-.toggle-text {
-    display: inline-block;
-    width: 150px; /* 너비를 충분히 늘립니다. */
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap; /* 한 줄로 유지 */
-    transition: opacity 0.5s ease-in-out; /* 부드러운 전환 효과 */
-    font-size: 20px; /* 글자 크기 설정 */
-}
-        
-        .logo {
-    margin-right: 250px; /* 로고와 메뉴 사이의 간격 조정 */
-}
+    .toggle-text {
+        display: inline-block;
+        width: 150px; /* 너비를 충분히 늘립니다. */
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap; /* 한 줄로 유지 */
+        transition: opacity 0.5s ease-in-out; /* 부드러운 전환 효과 */
+        font-size: 20px; /* 글자 크기 설정 */
+    }
+    
+    .logo {
+        margin-right: 250px; /* 로고와 메뉴 사이의 간격 조정 */
+    }
 
-.logo img {
-    height: 100px; /* 로고 이미지의 높이 설정 */
-    /* 다른 스타일링을 추가로 필요한 경우 여기에 추가 */
-}
-        
+    .logo img {
+        height: 100px; /* 로고 이미지의 높이 설정 */
+        /* 다른 스타일링을 추가로 필요한 경우 여기에 추가 */
+    }
   </style>
 </head>
 <body>

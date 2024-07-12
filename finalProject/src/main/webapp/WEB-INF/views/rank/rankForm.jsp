@@ -252,7 +252,7 @@ h1 em {
                     <c:set var="toiletNo" value="${toilet.toiletNo}" />
                 </c:if>
             </c:forEach>
-            <div class="rank-item" onclick="openRankingModal(${toiletNo})">
+            <div class="rank-item" onclick="openRankingModal()">
                 <div class="rank">${status.index + 1}위</div>
                 <div class="toilet-name">${toiletName}</div>
                 <div class="toilet-rating">
@@ -269,6 +269,19 @@ h1 em {
 	<jsp:include page="../common/footer.jsp" />
 
 </body>
+
+
+
+<script>
+	function openRankingModal() {
+		
+		
+		
+	}
+
+
+</script>
+
 
 
 

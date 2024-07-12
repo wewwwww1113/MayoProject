@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.springProject.rank.model.vo.Rank;
+import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
 import com.kh.springProject.review.model.vo.ReviewStar;
 
 @Repository
@@ -21,5 +22,7 @@ public class RankDao {
 		// TODO Auto-generated method stub
 		return (ArrayList)sqlSession.selectList("rankMapper.avgStar") ;
 	}
+	
+
 
 }

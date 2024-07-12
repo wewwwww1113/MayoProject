@@ -28,8 +28,7 @@
 	order by AVG(STAR) desc
 	</select>
 	
-	
-	
+
 	
 	
 	

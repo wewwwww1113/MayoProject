@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내가 쓴 리뷰</title>
+    <title>내가 작성한 글</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;500&display=swap');
 
@@ -105,6 +105,15 @@
 
         table th {
             background-color: #f2f2f2;
+        }
+
+        table a {
+            color: #333; /* 링크 색상 설정 */
+            text-decoration: none;
+        }
+
+        table a:hover {
+            text-decoration: underline;
         }
 
         .pagination {
@@ -210,7 +219,7 @@
         <div class="profile">
             <p>${loginUser.memberNick}</p>
         </div>
-       <a href="${pageContext.request.contextPath}/mypage.me">로그인 정보</a>
+        <a href="${pageContext.request.contextPath}/mypage.me">로그인 정보</a>
         <a href="${pageContext.request.contextPath}/scrap.me">즐겨찾기</a>
         <a href="${pageContext.request.contextPath}/update.me">내 정보 수정</a>
         <a href="${pageContext.request.contextPath}/myReviews.me">내가 쓴 리뷰</a>
@@ -221,40 +230,38 @@
 
     <div class="container">
         <div class="content">
-            <h2><c:out value="${loginUser.memberNick}"/>님이 쓴 리뷰</h2>
+            <h2><c:out value="${loginUser.memberNick}"/>님이 작성한 글</h2>
             <div class="search-box">
-                <form action="${pageContext.request.contextPath}/myReviews.me" method="get">
+                <form action="${pageContext.request.contextPath}/myPosts.me" method="get">
                     <select name="searchType">
-                        <option value="toiletName">화장실 이름</option>
-                        <option value="reviewContent">내용</option>
+                        <option value="boardTitle">제목</option>
+                        <option value="boardContent">내용</option>
                     </select>
                     <input type="text" name="searchKeyword" placeholder="검색어" value="${searchKeyword}">
                     <button type="submit">검색</button>
                 </form>
             </div>
-            <form id="deleteForm" action="${pageContext.request.contextPath}/deleteReview.me" method="post" onsubmit="return checkSelection()">
-                <button type="button" class="delete-button" onclick="deleteSelected()">리뷰 삭제</button>
+            <form id="deleteForm" action="${pageContext.request.contextPath}/deletePost.me" method="post" onsubmit="return checkSelection()">
+                <button type="button" class="delete-button" onclick="deleteSelected()">글 삭제</button>
                 <table>
                     <thead>
                         <tr>
                             <th><input type="checkbox" onclick="toggleSelectAll(this)"></th>
-                            <th>화장실 이름</th>
-                            <th>내용</th>
+                            <th>제목</th>
                             <th>작성일</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="review" items="${reviewList}">
+                        <c:forEach var="post" items="${postList}">
                             <tr>
-                                <td><input type="checkbox" name="selectedReviews" value="${review.reviewReplyKey}"></td>
-                                <td>${review.toiletName}</td>
-                                <td>${review.content}</td>
-                                <td>${review.createTime}</td>
+                                <td><input type="checkbox" name="selectedPosts" value="${post.boardNo}"></td>
+                                <td><a href="${pageContext.request.contextPath}/boardDetailView?boardNo=${post.boardNo}">${post.boardTitle}</a></td>
+                                <td>${post.createDate}</td>
                             </tr>
                         </c:forEach>
-                        <c:if test="${empty reviewList}">
+                        <c:if test="${empty postList}">
                             <tr>
-                                <td colspan="4">작성한 리뷰가 없습니다.</td>
+                                <td colspan="3">작성한 글이 없습니다.</td>
                             </tr>
                         </c:if>
                     </tbody>
@@ -262,86 +269,42 @@
             </form>
             <div class="pagination">
                 <c:if test="${pi.startPage > 1}">
-                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=1">&lt;&lt;</a>
-                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${pi.startPage - 1}">&lt;</a>
+                    <a href="${pageContext.request.contextPath}/myPosts.me?currentPage=1">&lt;&lt;</a>
+                    <a href="${pageContext.request.contextPath}/myPosts.me?currentPage=${pi.startPage - 1}">&lt;</a>
                 </c:if>
                 <c:forEach begin="${pi.startPage}" end="${pi.endPage}" var="i">
-                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${i}" class="${pi.currentPage == i ? 'active' : ''}">${i}</a>
+                    <a href="${pageContext.request.contextPath}/myPosts.me?currentPage=${i}" class="${pi.currentPage == i ? 'active' : ''}">${i}</a>
                 </c:forEach>
                 <c:if test="${pi.endPage < pi.maxPage}">
-                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${pi.endPage + 1}">&gt;</a>
-                    <a href="${pageContext.request.contextPath}/myReviews.me?currentPage=${pi.maxPage}">&gt;&gt;</a>
+                    <a href="${pageContext.request.contextPath}/myPosts.me?currentPage=${pi.endPage + 1}">&gt;</a>
+                    <a href="${pageContext.request.contextPath}/myPosts.me?currentPage=${pi.maxPage}">&gt;&gt;</a>
                 </c:if>
             </div>
         </div>
     </div>
 
-    <%@ include file="../common/footer.jsp" %>
-
-    <!-- 선택된 리뷰가 없을 때 보여주는 모달 -->
-    <div id="alertModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <p>선택된 리뷰가 없습니다.</p>
-        </div>
-    </div>
-
     <script>
         function toggleSelectAll(source) {
-            checkboxes = document.getElementsByName('selectedReviews');
-            for(var i=0, n=checkboxes.length; i<n; i++) {
+            checkboxes = document.getElementsByName('selectedPosts');
+            for (var i = 0; i < checkboxes.length; i++) {
                 checkboxes[i].checked = source.checked;
             }
         }
 
-        function deleteSelected() {
-            var checkboxes = document.getElementsByName('selectedReviews');
-            var isSelected = false;
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    isSelected = true;
-                    break;
-                }
-            }
-            if (isSelected) {
-                if (confirm("정말 삭제하시겠습니까?")) {
-                    document.getElementById('deleteForm').submit();
-                }
-            } else {
-                showModal();
-            }
-        }
-
         function checkSelection() {
-            var checkboxes = document.getElementsByName('selectedReviews');
-            var isSelected = false;
+            var checkboxes = document.getElementsByName('selectedPosts');
             for (var i = 0; i < checkboxes.length; i++) {
                 if (checkboxes[i].checked) {
-                    isSelected = true;
-                    break;
+                    return confirm('선택한 글을 삭제하시겠습니까?');
                 }
             }
-            if (!isSelected) {
-                showModal();
-                return false;
-            }
-            return true;
+            alert('삭제할 글을 선택하세요.');
+            return false;
         }
 
-        function showModal() {
-            var modal = document.getElementById("alertModal");
-            modal.style.display = "block";
-        }
-
-        function closeModal() {
-            var modal = document.getElementById("alertModal");
-            modal.style.display = "none";
-        }
-
-        window.onclick = function(event) {
-            var modal = document.getElementById("alertModal");
-            if (event.target == modal) {
-                modal.style.display = "none";
+        function deleteSelected() {
+            if (confirm('정말 삭제하시겠습니까?')) {
+                document.getElementById('deleteForm').submit();
             }
         }
     </script>

@@ -90,6 +90,11 @@
             text-align: center;
         }
 
+        .separator {
+            border-bottom: 1px solid #ccc;
+            margin: 20px 0;
+        }
+
         .scrap-list {
             list-style: none;
             padding: 0;
@@ -117,7 +122,13 @@
             font-size: 14px;
         }
 
-        .scrap-item button {
+        .scrap-item .delete-button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .scrap-item .delete-button {
             padding: 5px 10px;
             background-color: #f44336;
             color: white;
@@ -125,20 +136,11 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-bottom: 5px;
         }
 
-        .scrap-item button:hover {
+        .scrap-item .delete-button:hover {
             background-color: #d32f2f;
-        }
-        
-          .starReview {
-            font-size: 36px; /* 원하는 크기로 조정 */
-            cursor: pointer;
-            transition: color 0.3s; /* 색상 변화 애니메이션 */
-        }
-
-        .starReview:hover {
-            color: gold; /* 마우스 호버 시 색상 변경 */
         }
 
         .starReview {
@@ -151,29 +153,17 @@
             color: gold; /* 마우스 호버 시 색상 변경 */
         }
 
-        /* 삭제 버튼 스타일 */
-        .delete-button {
-            font-size: 36px;
-            cursor: pointer;
-            transition: color 0.3s;
-            color: gold;
-            background-color: white;
-            border: none;
-        }
-
-        .delete-button:hover {
-            color: gold;
-        }
-
         .footer {
             position: relative;
             z-index: 1;
-            
-            
         }
-        
-        
-        
+
+        .no-favorites-message {
+            text-align: center;
+            font-size: 18px;
+            color: #777;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -181,7 +171,7 @@
         <div class="profile">
             <p>${loginUser.memberNick}</p>
         </div>
-       <a href="${pageContext.request.contextPath}/mypage.me">로그인 정보</a>
+        <a href="${pageContext.request.contextPath}/mypage.me">로그인 정보</a>
         <a href="${pageContext.request.contextPath}/scrap.me">즐겨찾기</a>
         <a href="${pageContext.request.contextPath}/update.me">내 정보 수정</a>
         <a href="${pageContext.request.contextPath}/myReviews.me">내가 쓴 리뷰</a>
@@ -189,29 +179,41 @@
         <a href="${pageContext.request.contextPath}/statistics.me">통계</a>
         <a href="${pageContext.request.contextPath}/deleteMember.me">회원탈퇴</a>
     </div>
-     <div class="container">
+    <div class="container">
         <div class="content">
             <h2>Favorites List</h2>
-            <ul class="scrap-list">
-                <c:forEach var="scrap" items="${scrapList}">
-                    <li class="scrap-item">
-                        <div>
-                            <h3>${scrap.toiletName}</h3>
-                            <p>${scrap.toiletAddress}</p>
-                        </div>
-                        <form action="${pageContext.request.contextPath}/v1/review/reply/deleteScrap" method="post" onsubmit="return confirmDelete()">
-                            <input type="hidden" name="scrapNo" value="${scrap.scrapNo}">
-                            <button type="submit" class="delete-button">&#x2605;</button>
-                        </form>
-                    </li>
-                </c:forEach>
-            </ul>
+            <div class="separator"></div>
+            <c:choose>
+                <c:when test="${empty scrapList}">
+                    <p class="no-favorites-message">즐겨찾기 된 화장실이 없습니다.</p>
+                </c:when>
+                <c:otherwise>
+                    <ul class="scrap-list">
+                        <c:forEach var="scrap" items="${scrapList}">
+                            <li class="scrap-item">
+                                <div>
+                                    <h3>${scrap.toiletName}</h3>
+                                    <p>${scrap.toiletAddress}</p>
+                                </div>
+                                <div class="delete-button-container">
+                                    <button type="button" class="delete-button" onclick="confirmDelete(${scrap.scrapNo})">삭제하기</button>
+                                    <form id="deleteForm-${scrap.scrapNo}" action="${pageContext.request.contextPath}/v1/review/reply/deleteScrap" method="post" style="display:none;">
+                                        <input type="hidden" name="scrapNo" value="${scrap.scrapNo}">
+                                    </form>
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 
     <script>
-        function confirmDelete() {
-            return confirm("정말 즐겨찾기에서 삭제하시겠습니까?");
+        function confirmDelete(scrapNo) {
+            if (confirm("정말 즐겨찾기에서 삭제하시겠습니까?")) {
+                document.getElementById('deleteForm-' + scrapNo).submit();
+            }
         }
     </script>
 

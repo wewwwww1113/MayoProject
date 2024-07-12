@@ -25,13 +25,13 @@
 ## 구현 기능
 
 - 회원가입 & 로그인
-- 프로필 수정
-- 관리자 페이지
-- 지도 게시판 (현재 위치 찾기)
-- 화장실 게시판
+- 마이페이지
+- 지도 API (현재 위치 찾기)
+- 리뷰 게시판
+- 랭킹 게시판
 - 채팅/자유 게시판
-- Q&A 게시판
-- 결제 페이지
+- 고객센터
+- 결제 시스템
 
 ## 기술 스택
 
@@ -41,16 +41,22 @@
 - **CSS**
 - **JavaScript**
 - **Ajax**
+- **jQuery**
 
 #### Backend
 
 - **JSP & Servlet**
 - **Oracle** (Database)
+- **Spring**
+- **Maven**
 
 ## 기타
 
 - **API**
   - Google Maps API
+  - NAVER LOGIN API
+  - GOOGLE LOGIN API
+  - PortOne API (결제)
   - 전국 공중화장실 표준 데이터 (공공데이터포털)
 
 ## 협업 도구

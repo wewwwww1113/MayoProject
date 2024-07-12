@@ -111,8 +111,8 @@
             padding: 10px;
             text-decoration: none;
             color: #fff;
-            background-color: #28a745;
-            border: 1px solid #28a745;
+            background-color: #212529;
+            border: 1px solid #212529;
             border-radius: 3px;
             transition: background-color 0.3s ease;
         }
@@ -125,6 +125,30 @@
         .checkout-btn:active {
             background-color: #218838;
             border-color: #218838;
+            transform: translateY(1px);
+        }
+        .return-btn {
+            display: block;
+            width: 120px;
+            margin: 10px auto;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: red;
+            border: 1px solid #6c757d;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .return-btn:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+
+        .return-btn:active {
+            background-color: #5a6268;
+            border-color: #5a6268;
             transform: translateY(1px);
         }
     </style>
@@ -155,8 +179,9 @@
             </div>
         </c:forEach>
     </div>
-
     <button type="submit" class="checkout-btn">결제페이지로 가기</button>
+	<a href="#" class="return-btn" onclick="history.back();">상점으로 돌아가기</a>
+    
     </form>
 </div>
 

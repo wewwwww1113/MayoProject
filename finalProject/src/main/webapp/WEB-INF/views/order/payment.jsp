@@ -30,18 +30,30 @@
         li {
             margin-bottom: 10px;
         }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
+        
+        .return-btn {
+            display: block;
+            width: 120px;
+            margin: 10px auto;
             text-align: center;
-            transition: background-color 0.3s;
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: red;
+            border: 1px solid #6c757d;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
         }
-        .button:hover {
-            background-color: #0056b3;
+
+        .return-btn:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+
+        .return-btn:active {
+            background-color: #5a6268;
+            border-color: #5a6268;
+            transform: translateY(1px);
         }
     </style>
 </head>
@@ -69,7 +81,7 @@
         <h3>위와 같이 주문하셨습니다.</h3>
         <h2>총 가격 : ${order.amount}</h2>
         
-        <a href="/main-page" class="button">메인 페이지로 이동</a>
+        <a href="${pageContext.request.contextPath}" class="return-btn">메인 페이지로 이동</a>
     </div>
     <%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

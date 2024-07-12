@@ -69,12 +69,12 @@
 
 ## 🧻 기타
 
-- **API**
-  - Google Maps API
-  - NAVER LOGIN API
-  - GOOGLE LOGIN API
-  - PortOne API (결제)
-  - 전국 공중화장실 표준 데이터 (공공데이터포털)
+**API**
+- Google Maps API
+- NAVER LOGIN API
+- GOOGLE LOGIN API
+- PortOne API (결제)
+- 전국 공중화장실 표준 데이터 (공공데이터포털)
 
 <br>
 

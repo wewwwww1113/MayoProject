@@ -92,8 +92,8 @@
             padding: 8px 12px;
             text-decoration: none;
             color: #fff;
-            background-color: #007bff;
-            border: 1px solid #007bff;
+            background-color: #212529;
+            border: 1px solid #212529;
             border-radius: 3px;
             transition: background-color 0.3s ease;
         }
@@ -124,8 +124,8 @@
         }
 
         .new-store-btn {
-            background-color: #28a745;
-            border-color: #28a745;
+            background-color: #212529;
+            border-color: #212529;
         }
 
         .new-store-btn:hover {
@@ -140,8 +140,8 @@
         }
 
         .cart-btn {
-            background-color: #ffc107;
-            border-color: #ffc107;
+            background-color: #212529;
+            border-color: #212529;
         }
 
         .cart-btn:hover {
@@ -154,9 +154,73 @@
             border-color: #d39e00;
             transform: translateY(1px);
         }
+        .return-btn {
+            display: block;
+            width: 120px;
+            margin: 10px auto;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: red;
+            border: 1px solid #6c757d;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .return-btn:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+
+        .return-btn:active {
+            background-color: #5a6268;
+            border-color: #5a6268;
+            transform: translateY(1px);
+        }
+        .nine h1 {
+            text-align: center;
+            font-size: 50px;
+            text-transform: uppercase;
+            color: #222;
+            letter-spacing: 1px;
+            font-family: "Playfair Display", serif;
+            font-weight: 400;
+        }
+        .nine h1 span {
+            margin-top: 5px;
+            font-size: 15px;
+            color: #444;
+            word-spacing: 1px;
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: "Raleway", sans-serif;
+            font-weight: 500;
+            display: grid;
+            grid-template-columns: 1fr max-content 1fr;
+            grid-template-rows: 27px 0;
+            grid-gap: 20px;
+            align-items: center;
+        }
+        .nine h1 span:after, .nine h1 span:before {
+            content: " ";
+            display: block;
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid #ccc;
+            height: 5px;
+            background-color: #f8f8f8;
+        }
     </style>
 </head>
 <body>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+	<br>
+	<div class="nine">
+		<h1>
+			STORE <span> 똥싸개 상점 </span>
+		</h1>
+	</div>
 <script>
     var msg = "<%= alertMsg %>";
 
@@ -183,9 +247,7 @@
         }
     }
 </script>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <div class="container">
-    <h2>똥싸개 상점</h2>
     <div class="product-grid">
         <c:forEach items="${list}" var="store">
             <div class="product-card">
@@ -212,13 +274,15 @@
                 <a href="list.ct" class="cart-btn">장바구니로 가기</a>
             </c:if>
             <c:if test="${loginUser.memberId ne 'admin'}">
-                <a href="list.ct"  class="cart-btn">장바구니로 가기</a>
+                <a href="javascript:void(0);" onclick="showLoginAlert();" class="cart-btn">장바구니로 가기</a>
             </c:if>
         </c:when>
         <c:otherwise>
             <a href="javascript:void(0);" onclick="showLoginAlert();" class="cart-btn">장바구니로 가기</a>
         </c:otherwise>
     </c:choose>
+        <a href="#" class="return-btn" onclick="history.back();">메인화면으로 돌아가기</a>
+    
 </div>
 <script>
     function showLoginAlert() {

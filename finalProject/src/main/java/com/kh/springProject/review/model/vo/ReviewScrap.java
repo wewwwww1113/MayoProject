@@ -12,5 +12,7 @@ public class ReviewScrap {
 	private int scrapNo;
 	private int memberNo;
 	private int toiletNo;
+	private String toiletName;
+    private String toiletAddress;
 
 }

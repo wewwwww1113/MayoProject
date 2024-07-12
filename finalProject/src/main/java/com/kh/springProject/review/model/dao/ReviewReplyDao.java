@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
 import com.kh.springProject.review.model.vo.ReviewReplyVO;
+import com.kh.springProject.review.model.vo.ReviewScrap;
 
 @Repository
 public class ReviewReplyDao {
@@ -78,8 +79,17 @@ public class ReviewReplyDao {
 			// TODO Auto-generated method stub
 			return sqlSessionTemplate.selectList("reviewMapper.searchReviewsByUserKey1", searchParams);
 		}
+		
+		 public List<ReviewScrap> getScrapListByMemberNo(int memberNo) {
+		        List<ReviewScrap> scraps = sqlSessionTemplate.selectList("reviewMapper.getScrapListByMemberNo", memberNo);
+		        System.out.println("Dao Scrap List: " + scraps);
+		        return scraps;
+		    }
 
-	
+		    // 즐겨찾기 삭제
+		    public int deleteScrap(int scrapNo) {
+		        return sqlSessionTemplate.delete("reviewMapper.deleteScrap", scrapNo);
+		    }
 
 
 

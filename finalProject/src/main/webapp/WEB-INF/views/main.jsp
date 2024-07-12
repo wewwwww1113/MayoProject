@@ -8,7 +8,7 @@
 </head>
 <body>
     <%@include file="/WEB-INF/views/common/header.jsp" %>
-	<%@include file="/WEB-INF/views/map/testView.jsp"%>
+	<%@include file="/WEB-INF/views/common/center.jsp" %>
     <%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

@@ -29,17 +29,15 @@
         }
 
         .product-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+            gap: 1%;
         }
 
         .product-card {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            width: 30%;
-            margin: 1%;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
@@ -181,6 +179,6 @@ function deleteCart(cartId) {
     }
 }
 </script>
-
+<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

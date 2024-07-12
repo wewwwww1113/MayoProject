@@ -225,5 +225,6 @@
         alert("로그인 후 이용해 주세요.");
     }
 </script>
+<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

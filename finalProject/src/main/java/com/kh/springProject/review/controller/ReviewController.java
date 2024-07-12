@@ -357,8 +357,6 @@ public class ReviewController {
 		@RequestMapping("insertReply.re")
 		public int insertReply(Reply r) {
 			
-			System.out.println(r);
-			
 			int result = reviewService.insertReply(r);
 			
 			return result;
@@ -382,15 +380,12 @@ public class ReviewController {
 		    
 		    int result = reviewService.postLikeReview(like);
 		    model.addAttribute("result", result);
-		    
-		    System.out.println("누적 좋아요 횟수 : " + result);
-		    
+		  
 		    int person = reviewService.personLike(like);
 		   
 		    model.addAttribute("person",person);
 		    
-		    System.out.println("유저가 누른 개인 좋아요 횟수  :" +person);
-		    
+		   
 		    
 		    
 		    

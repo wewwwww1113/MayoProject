@@ -200,17 +200,19 @@
                                 <p>개방 시간: `+toiletOpen+`</p>
                             </div>
                         `;
-                        const contentString2 = `
-                            <div>
-                                <h1>`+toiletName+`</h1>
-                                <p>`+toiletAddress+`</p>
-                                <p>개방 시간: `+toiletOpen+`</p>
-                                <p>좌변기 종류: `+toiletSeat+`</p>
-                                <p>비상벨 유무: `+toiletSafeBell+`</p>
-                                <p>기저귀 교환대 유무: `+toiletDiaper+`</p>
-                                <p>최근 업데이트 일자: `+toiletUpdate+`</p>
-                            </div>
-                        `;
+                         const contentString2 = `
+						    <div style="font-family: Arial, sans-serif;background-color: #f0f0f0; padding: 20px;border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); ">
+						        <h1 align="center" style="font-size: 25px; margin-bottom: 10px;">📍` + toiletName + `📍</h1>
+						        <p align="center">`+toiletAddress +`</p>
+						        <hr>
+						        <p>⏰  개방 시간: ` + toiletOpen + `</p>
+						        <p>🚽 좌변기 종류: ` + toiletSeat + `</p>
+						        <p>🚨 비상벨 유무: ` + toiletSafeBell + `</p>
+						        <p>🚼 기저귀 교환대 유무: ` + toiletDiaper + `</p>
+						        <p>🔄 최근 업데이트 일자: ` + toiletUpdate + `</p>
+						    </div>
+						`;
+
 						console.log(contentString);
                         infoWindow.setContent(contentString);
                         infoWindow.open(map, toiletMarker);

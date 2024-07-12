@@ -124,11 +124,13 @@
   <header>
   
   <div class="logo">
-        <img src="../review/img/mayo.jpg">
-    </div>
+		<a href="${pageContext.request.contextPath}">
+		<img src="${pageContext.request.contextPath}/resources/uploadFiles/mayo.jpg" alt="Mayo Image">
+  </div>
     <nav>
         <ul>
-            <li><a href="list.ma">MAP</a></li>
+            <li><a href="${pageContext.request.contextPath}/map">MAP</a></li>
+            <li><a href="list.st">STORE</a></li>
             <li><a href="test.re">REVIEW</a></li>
             <li><a href="rank.ra">RANK</a></li>
             <li><a href="list.fr">BOARD</a></li>

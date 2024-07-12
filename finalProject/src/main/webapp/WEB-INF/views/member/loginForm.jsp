@@ -13,12 +13,11 @@
         
         body {
             font-family: 'Playfair Display', serif;
-            background-color: #ffffff; /* 센터와 같은 배경색 */
+              
             margin: 0;
             padding-top: 80px; /* 헤더 높이만큼 패딩 추가 */
         }
         .container {
-            background-color: #f5f5f5; /* 부드러운 회색 배경 */
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -120,7 +119,27 @@
         }
         
         
-     body, ul, li, h1 {
+    ul, li, h1 {
+     	
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+     a {
+        color: #FFFFFF; /* 기본 글자 색상 흰색 */
+        text-decoration: none; /* 모든 a 태그에 밑줄 없애기 */
+        transition: color 0.3s ease, background-color 0.3s ease; /* 부드러운 전환 효과 */
+    }
+
+    /* 글자 호버 */
+    a:hover {
+        color: black; 
+        text-decoration: none; /* hover 상태에서도 밑줄 없애기 */
+    }
+    
+    
+      body, ul, li, h1 {
         margin: 0;
         padding: 0;
         list-style: none;

@@ -757,7 +757,7 @@ button {
                 },
                 error: function(error) {
                     console.log(error);
-                    alert("로그인 후 이용해주세요." + error);
+                    alert("로그인 후 이용해주세요.");
                 }
             });
         }

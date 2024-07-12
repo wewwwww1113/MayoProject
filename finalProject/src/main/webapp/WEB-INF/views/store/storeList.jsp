@@ -212,7 +212,7 @@
                 <a href="list.ct" class="cart-btn">장바구니로 가기</a>
             </c:if>
             <c:if test="${loginUser.memberId ne 'admin'}">
-                <a href="javascript:void(0);" onclick="showLoginAlert();" class="cart-btn">장바구니로 가기</a>
+                <a href="list.ct"  class="cart-btn">장바구니로 가기</a>
             </c:if>
         </c:when>
         <c:otherwise>
@@ -225,5 +225,6 @@
         alert("로그인 후 이용해 주세요.");
     }
 </script>
+<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

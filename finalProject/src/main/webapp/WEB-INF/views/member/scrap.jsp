@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../common/header.jsp" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,15 +9,13 @@
     <title>Favorites</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;500&display=swap');
-
         body {
-            background-color: #f5f5f5;
+            background-color: #F5F5F5;
             font-family: 'Raleway', sans-serif;
             margin: 0;
             padding: 0;
             padding-bottom: 60px; /* 추가: 푸터를 침범하지 않도록 하기 위해 */
         }
-
         .header {
             position: fixed;
             top: 0;
@@ -29,15 +26,13 @@
             text-align: center;
             z-index: 1000;
         }
-
         .header a {
             color: white;
             margin: 0 20px;
             text-decoration: none;
         }
-
         .sidebar {
-            background-color: #ffffff;
+            background-color: #FFFFFF;
             color: #333;
             width: 220px;
             height: calc(100vh - 80px); /* 헤더 높이만큼 빼줌 */
@@ -50,7 +45,6 @@
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
         }
-
         .sidebar a {
             color: #333;
             text-decoration: none;
@@ -59,12 +53,10 @@
             font-size: 16px;
             transition: background-color 0.3s ease, padding-left 0.3s ease;
         }
-
         .sidebar a:hover {
-            background-color: #f0f0f0;
+            background-color: #F0F0F0;
             padding-left: 10px;
         }
-
         .container {
             margin-left: 240px;
             padding: 20px;
@@ -72,7 +64,6 @@
             box-sizing: border-box;
             min-height: calc(100vh - 80px); /* 헤더 높이만큼 빼줌 */
         }
-
         .content {
             background-color: white;
             padding: 40px;
@@ -82,24 +73,20 @@
             margin: 20px auto;
             font-family: 'Playfair Display', serif;
         }
-
         .content h2 {
             font-size: 36px;
             color: #333;
             margin-bottom: 20px;
             text-align: center;
         }
-
         .separator {
             border-bottom: 1px solid #ccc;
             margin: 20px 0;
         }
-
         .scrap-list {
             list-style: none;
             padding: 0;
         }
-
         .scrap-item {
             display: flex;
             justify-content: space-between;
@@ -107,30 +94,25 @@
             padding: 10px;
             border-bottom: 1px solid #ccc;
         }
-
         .scrap-item:last-child {
             border-bottom: none;
         }
-
         .scrap-item h3 {
             margin: 0;
             font-size: 18px;
         }
-
         .scrap-item p {
             margin: 5px 0 0;
             font-size: 14px;
         }
-
         .scrap-item .delete-button-container {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
         .scrap-item .delete-button {
             padding: 5px 10px;
-            background-color: #f44336;
+            background-color: #F44336;
             color: white;
             border: none;
             border-radius: 5px;
@@ -138,26 +120,21 @@
             transition: background-color 0.3s ease;
             margin-bottom: 5px;
         }
-
         .scrap-item .delete-button:hover {
-            background-color: #d32f2f;
+            background-color: #D32F2F;
         }
-
         .starReview {
             font-size: 36px; /* 원하는 크기로 조정 */
             cursor: pointer;
             transition: color 0.3s; /* 색상 변화 애니메이션 */
         }
-
         .starReview:hover {
             color: gold; /* 마우스 호버 시 색상 변경 */
         }
-
         .footer {
             position: relative;
             z-index: 1;
         }
-
         .no-favorites-message {
             text-align: center;
             font-size: 18px;
@@ -208,7 +185,6 @@
             </c:choose>
         </div>
     </div>
-
     <script>
         function confirmDelete(scrapNo) {
             if (confirm("정말 즐겨찾기에서 삭제하시겠습니까?")) {
@@ -216,7 +192,6 @@
             }
         }
     </script>
-
     <%@ include file="../common/footer.jsp" %>
 </body>
 </html>

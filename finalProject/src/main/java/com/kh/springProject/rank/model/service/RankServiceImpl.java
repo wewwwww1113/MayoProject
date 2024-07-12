@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.springProject.rank.model.dao.RankDao;
 import com.kh.springProject.rank.model.vo.Rank;
+import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
 import com.kh.springProject.review.model.vo.ReviewStar;
 
 @Service
@@ -28,12 +29,11 @@ public class RankServiceImpl implements RankService{
 		return rankDao.selectAllStars(sqlSession,rs);
 	}
 
-	//평균 별점조회
-
 	@Override
 	public ArrayList<Rank> avgStar() {
 		// TODO Auto-generated method stub
 		return rankDao.selectAvgStar(sqlSession);
 	}
+
 
 }

@@ -298,6 +298,7 @@ USING DUAL
         FROM REVIEW_REPLY rr
         JOIN TOILET t ON rr.TOILET_NO = t.TOILET_NO
         WHERE rr.USER_KEY = #{userKey}
+        ORDER BY CREATE_TIME DESC
         <if test="toiletName != null and toiletName != ''">
             AND t.TOILET_NAME LIKE '%' || #{toiletName} || '%'
         </if>

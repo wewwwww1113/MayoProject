@@ -2,7 +2,6 @@ package com.kh.springProject.freeBoard.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,20 +93,20 @@ public class FreeBoardServiceImp implements FreeBoardService {
 		return fboardDao.boardInsert(sqlSession);
 	}
 
+
+
 	@Override
-	public int listCountByCategory(int categoryNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<freeBoard> searchBoard(String type, String searchContent) {
+		  return fboardDao.searchBoard(sqlSession,type, searchContent);
 	}
 
 	@Override
-    public List<freeBoard> searchPostsByUserKey(Map<String, Object> searchParams) {
-        return fboardDao.searchPostsByUserKey(sqlSession, searchParams);
-    }
+	public int getSearchCount(String searchOption, String searchContent) {
+		// TODO Auto-generated method stub
+		return fboardDao.getSearchCount(sqlSession,searchOption,searchContent);
+	}
 
-    @Override
-    public int deletePostsByKey(List<Integer> postKeys) {
-        return fboardDao.deletePostsByKey(sqlSession, postKeys);
-    }
+	
+
 
 }

@@ -2,7 +2,6 @@ package com.kh.springProject.freeBoard.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.freeBoard.model.vo.Category;
@@ -36,11 +35,13 @@ public interface FreeBoardService {
 
 	ArrayList<freeBoard> orderByCategory(int categoryNo, PageInfo pi);
 
-	int listCountByCategory(int categoryNo);
-	
-	 List<freeBoard> searchPostsByUserKey(Map<String, Object> searchParams);
 
-	    int deletePostsByKey(List<Integer> postKeys);
+	List<freeBoard> searchBoard(String type, String searchContent);
+
+	int getSearchCount(String searchOption, String searchContent);
+
+
+
 
 
 }

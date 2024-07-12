@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -34,9 +35,6 @@ public class FreeBoardController {
 
 	@Autowired
 	private FreeBoardService fbService;
-	
-	 @Autowired
-	 private FreeBoardService freeBoardService;
 
 	@RequestMapping("/list.fr")
 	public String boardList(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
@@ -77,15 +75,9 @@ public class FreeBoardController {
 		// 조회수 증가가 제대로 이루어졌다면 상세조회
 		if (result > 0) {
 			freeBoard b = fbService.selectBoard(boardNo);
-//			mv.addObject("b",b);
-//			mv.setViewName("board/boardDetailView");
-			// 이어쓰기 (메소드체이닝) - view 정보 등록을 마지막에 해야함
 			mv.addObject("b", b).setViewName("freeboard/boardDetailView");
 
 		} else {
-			// 조회수 증가가 제대로 이루어지지 않았다면 에러메세지
-//			mv.addObject("errorMsg", "상세조회 실패");
-//			mv.setViewName("common/errorPage");
 			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
 		}
 
@@ -273,44 +265,66 @@ public class FreeBoardController {
 
 	}
 
-	
 	@RequestMapping("category.fr")
-	public String orderByCategory( @RequestParam("categoryNo") int categoryNo,
-	                              @RequestParam(value = "currentPage", defaultValue = "1") int currentPage, 
-	                              Model model) {
+	public String orderByCategory(@RequestParam("categoryNo") int categoryNo,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, Model model) {
 
-	    // Get the total count of the list for the specified category
-	    int listCount = fbService.cListCount(categoryNo);
-	    int pageLimit = 10;
-	    int boardLimit = 5;
+		// Get the total count of the list for the specified category
+		int listCount = fbService.cListCount(categoryNo);
+		int pageLimit = 10;
+		int boardLimit = 5;
 
-	    // Create PageInfo object with pagination details
-	    PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
-	    // Get the list of posts for the selected category and pagination info
-	    ArrayList<freeBoard> list = fbService.orderByCategory(categoryNo, pi);
+		ArrayList<freeBoard> list = fbService.orderByCategory(categoryNo, pi);
 
-	    // Debugging: Print out list and categoryNo for debugging purposes
-	    System.out.println("List size: " + list.size());
-	    System.out.println("CategoryNo: " + categoryNo);
+		if (list != null) {
+			model.addAttribute("list", list);
+		} else {
+			System.out.println("List is null or empty.");
+		}
 
-	    // Save data to model if list is not null
-	    if (list != null) {
-	        model.addAttribute("list", list);
-	    } else {
-	        // Handle case where list is null (optional)
-	        // model.addAttribute("list", new ArrayList<freeBoard>());
-	        System.out.println("List is null or empty.");
-	    }
+		model.addAttribute("pi", pi);
+		model.addAttribute("CategoryNo", categoryNo);
 
-	    model.addAttribute("pi", pi);
-	    model.addAttribute("CategoryNo", categoryNo);
-
-	    // Forward to the view
-	    return "freeboard/boardListView"; 
+		return "freeboard/boardListView";
 	}
-	
-	
-	
-	
+
+	@RequestMapping("/search.fr")
+    public String searchBoard(@RequestParam("searchOption") String searchOption,
+                              @RequestParam("searchContent") String searchContent,
+                              @RequestParam("currentPage") int currentPage,
+                              Model model) {
+		
+		
+	     int listCount = fbService.getSearchCount(searchOption, searchContent);
+		int pageLimit = 10;
+		int boardLimit = 5;
+		
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+		model.addAttribute("pi", pi);
+		
+		String type;
+        switch (searchOption) {
+            case "writer":
+                type = "BOARD_WRITER";
+                break;
+            case "title":
+                type = "BOARD_TITLE";
+                break;
+             default:
+                type = "BOARD_WRITER";
+        }
+
+        List<freeBoard> list = fbService.searchBoard(type, searchContent);
+        System.out.println(list);
+        model.addAttribute("list", list);
+        model.addAttribute("currentPage", currentPage);
+        return "freeboard/boardListView";
+        
+        
+    }
+
 }

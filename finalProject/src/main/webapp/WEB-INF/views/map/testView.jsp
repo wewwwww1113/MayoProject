@@ -59,6 +59,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaPxCr1XL1mqEFAUAz8fUCSAOHhTMfrNU&libraries=places&callback=initMap" async defer></script>
 </head>
 <body>
+<%@include file="/WEB-INF/views/common/header.jsp" %>
     <div class="map-container">
     <div id="map"></div>
 
@@ -243,5 +244,6 @@
             infoWindow.open(map);
         }
     </script>
+    <%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

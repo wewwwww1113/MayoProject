@@ -71,5 +71,6 @@
         
         <a href="/main-page" class="button">메인 페이지로 이동</a>
     </div>
+    <%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

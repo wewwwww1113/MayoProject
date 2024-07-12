@@ -124,8 +124,9 @@
   <header>
   
   <div class="logo">
-        <img src="../review/img/mayo.jpg">
-    </div>
+		<a href="${pageContext.request.contextPath}">
+		<img src="${pageContext.request.contextPath}/resources/uploadFiles/mayo.jpg" alt="Mayo Image">
+  </div>
     <nav>
         <ul>
             <li><a href="${pageContext.request.contextPath}/map">MAP</a></li>

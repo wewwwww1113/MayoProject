@@ -4,172 +4,160 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="freeMapper">
 
+    <!-- Result map definition for freeBoard -->
+    <resultMap id="freeboardResultSet" type="com.kh.springProject.freeBoard.model.vo.freeBoard">
+        <result column="BOARD_NO" property="boardNo"/>
+        <result column="BOARD_TITLE" property="boardTitle"/>
+        <result column="BOARD_WRITER" property="boardWriter"/>
+        <result column="BOARD_CONTENT" property="boardContent"/>
+        <result column="ORIGIN_NAME" property="originName"/>
+        <result column="CHANGE_NAME" property="changeName"/>
+        <result column="COUNT" property="count"/>
+        <result column="CREATE_DATE" property="createDate"/>
+        <result column="STATUS" property="status"/>
+        <result column="CATEGORY_NO" property="categoryNo"/>
+    </resultMap>
 
-	<resultMap type="freeBoard" id="freeboardResultSet">
-		<result column="Board_NO" property="boardNo" />
-		<result column="Category_NO" property="categoryNo" />
-		<result column="BOARD_TITLE" property="boardTitle" />
-		<result column="BOARD_WRITER" property="boardWriter" />
-		<result column="BOARD_CONTENT" property="boardContent" />
-		<result column="ORIGIN_NAME" property="originName" />
-		<result column="CHANGE_NAME" property="changeName" />
-		<result column="COUNT" property="count" />
-		<result column="CREATE_DATE" property="createDate" />
-		<result column="status" property="status" />
-	</resultMap>
+    <select id="listCount" resultType="int">
+        SELECT COUNT(*)
+        FROM FREEBOARD
+        WHERE STATUS='Y'
+    </select>
 
+    <select id="selectList" resultMap="freeboardResultSet">
+        SELECT FB.BOARD_NO,
+               FB.BOARD_TITLE,
+               FB.BOARD_WRITER,
+               BC.CATEGORY_NAME AS categoryName,
+               FB.COUNT,
+               FB.CREATE_DATE,
+               FB.ORIGIN_NAME
+        FROM FREEBOARD FB
+        JOIN BOARD_CATEGORY BC ON FB.CATEGORY_NO = BC.CATEGORY_NO
+        WHERE FB.STATUS = 'Y'
+        ORDER BY FB.CREATE_DATE DESC
+    </select>
 
+    <update id="increaseCount" parameterType="int">
+        UPDATE FREEBOARD
+        SET COUNT = COUNT + 1
+        WHERE BOARD_NO = #{boardNo}
+        AND STATUS = 'Y'
+    </update>
 
+    <select id="selectBoard" parameterType="int" resultMap="freeboardResultSet">
+        SELECT BOARD_NO,
+               BOARD_TITLE,
+               BOARD_CONTENT,
+               BOARD_WRITER,
+               CREATE_DATE,
+               ORIGIN_NAME,
+               CHANGE_NAME,
+               COUNT,
+               STATUS,
+               CATEGORY_NO
+        FROM FREEBOARD
+        WHERE BOARD_NO = #{boardNo}
+        AND STATUS = 'Y'
+    </select>
 
-	<select id="listCount" resultType="_int">
-		SELECT COUNT(*)
-		FROM FREEBOARD
-		WHERE STATUS='Y'
-	</select>
+    <insert id="insertBoard" parameterType="freeBoard">
+        INSERT INTO FREEBOARD (BOARD_NO, BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, CATEGORY_NO)
+        VALUES (SEQ_BNO.NEXTVAL, #{boardTitle}, #{boardWriter}, #{boardContent}, #{originName}, #{changeName}, #{categoryNo})
+    </insert>
 
-	<select id="selectList" resultMap="freeboardResultSet">
-		SELECT FB.BOARD_NO
-		,FB.BOARD_TITLE
-		,FB.BOARD_WRITER
-		,BC.CATEGORY_NAME AS categoryName
-		,FB.COUNT
-		,FB.CREATE_DATE
-		,FB.ORIGIN_NAME
-		FROM FREEBOARD FB
-		JOIN BOARD_CATEGORY BC ON FB.CATEGORY_NO = BC.CATEGORY_NO
-		WHERE FB.STATUS = 'Y'
-		ORDER BY FB.CREATE_DATE DESC
-	</select>
+    <update id="updateBoard" parameterType="freeBoard">
+        UPDATE FREEBOARD
+        SET BOARD_TITLE = #{boardTitle},
+            BOARD_CONTENT = #{boardContent},
+            ORIGIN_NAME = #{originName},
+            CHANGE_NAME = #{changeName}
+        WHERE BOARD_NO = #{boardNo}
+        AND STATUS = 'Y'
+    </update>
 
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM FREEBOARD
+        WHERE BOARD_NO = #{boardNo}
+        AND STATUS = 'Y'
+    </delete>
 
-	<update id="increaseCount" parameterType="_int">
-		UPDATE FREEBOARD
-		SET
-		COUNT = COUNT+1
-		WHERE BOARD_NO = #{boardNo}
-		AND STATUS = 'Y'
-	</update>
+    <!-- 댓글 목록 조회 -->
+    <select id="replyList" resultType="fbReply" parameterType="int">
+        SELECT REPLY_NO replyNo,
+               REPLY_CONTENT replyContent,
+               REPLY_WRITER replyWriter,
+               CREATE_DATE createDate
+        FROM FBREPLY
+        WHERE REF_BNO = #{boardNo}
+        AND STATUS = 'Y'
+        ORDER BY CREATE_DATE DESC
+    </select>
 
-	<select id="selectBoard" parameterType="_int"
-		resultMap="freeboardResultSet">
-		SELECT BOARD_NO
-		,BOARD_TITLE
-		,BOARD_CONTENT
-		,BOARD_WRITER
-		,CREATE_DATE
-		,ORIGIN_NAME
-		,CHANGE_NAME
-		,COUNT
-		FROM FREEBOARD
-		WHERE BOARD_NO
-		= #{boardNo}
-		AND STATUS = 'Y'
-	</select>
+    <insert id="insertReply" parameterType="fbReply">
+        INSERT INTO FBREPLY (REPLY_NO, REPLY_CONTENT, REF_BNO, REPLY_WRITER)
+        VALUES (SEQ_RNO.NEXTVAL, #{replyContent}, #{refBno}, #{replyWriter})
+    </insert>
 
+    <select id="cListCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM FREEBOARD
+        WHERE CATEGORY_NO = #{categoryNo}
+    </select>
 
-	<insert id="insertBoard" parameterType="freeBoard">
-		INSERT INTO
-		FREEBOARD(BOARD_NO
-		,BOARD_TITLE
-		,BOARD_WRITER
-		,BOARD_CONTENT
-		,ORIGIN_NAME
-		,CHANGE_NAME
-		,CATEGORY_NO
-		)
-		VALUES (SEQ_BNO.NEXTVAL
-		,#{boardTitle}
-		,#{boardWriter}
-		,#{boardContent}
-		,#{originName}
-		,#{changeName}
-		,#{categoryNo})
+    <select id="orderByCategory" parameterType="int" resultMap="freeboardResultSet">
+        SELECT FB.BOARD_NO,
+               BC.CATEGORY_NAME AS categoryName,
+               FB.BOARD_TITLE,
+               FB.BOARD_WRITER,
+               FB.COUNT,
+               FB.CREATE_DATE,
+               FB.ORIGIN_NAME
+        FROM FREEBOARD FB
+        JOIN BOARD_CATEGORY BC ON FB.CATEGORY_NO = BC.CATEGORY_NO
+        WHERE FB.STATUS = 'Y'
+        AND FB.CATEGORY_NO = #{categoryNo}
+        ORDER BY FB.CREATE_DATE DESC
+    </select>
 
-	</insert>
+    <select id="boardInsert" resultType="Category">
+        SELECT CATEGORY_NO categoryNo,
+               CATEGORY_NAME categoryName
+        FROM BOARD_CATEGORY
+    </select>
 
-	<update id="updateBoard" parameterType="freeBoard">
-		UPDATE FREEBOARD
-		SET
-		BOARD_TITLE = #{boardTitle}
-		,BOARD_CONTENT = #{boardContent}
-		,ORIGIN_NAME = #{originName}
-		,CHANGE_NAME = #{changeName}
-		WHERE BOARD_NO
-		= #{boardNo}
-		AND STATUS = 'Y'
-	</update>
+    <!-- 검색 기능 추가 -->
+   <select id="searchPostsByUserKey" parameterType="map" resultMap="freeboardResultSet">
+    SELECT BOARD_NO,
+           BOARD_TITLE,
+           BOARD_WRITER,
+           BOARD_CONTENT,
+           ORIGIN_NAME,
+           CHANGE_NAME,
+           COUNT,
+           CREATE_DATE,
+           STATUS,
+           CATEGORY_NO
+    FROM FREEBOARD
+    WHERE BOARD_WRITER = #{userKey, jdbcType=VARCHAR}
+    AND STATUS = 'Y'
+    <if test="boardTitle != null and boardTitle != ''">
+        AND BOARD_TITLE LIKE '%' || #{boardTitle, jdbcType=VARCHAR} || '%'
+    </if>
+    <if test="boardContent != null and boardContent != ''">
+        AND BOARD_CONTENT LIKE '%' || #{boardContent, jdbcType=VARCHAR} || '%'
+    </if>
+</select>
 
-	<delete id="deleteBoard" parameterType="_int">
-		DELETE FROM
-		FREEBOARD
-		WHERE BOARD_NO = #{boardNo}
-		AND STATUS='Y'
-	</delete>
-
-
-	<!-- 댓글 목록 조회 -->
-	<select id="replyList" resultType="fbReply" parameterType="_int">
-		<!-- resultType을 사용하기 위해 필드명과 컬럼명 일치시켜주기 -->
-		SELECT REPLY_NO replyNo
-		,REPLY_CONTENT replyContent
-		,REPLY_WRITER
-		replyWriter
-		,CREATE_DATE createDate
-		FROM FBREPLY
-		WHERE REF_BNO =
-		#{boardNo}
-		AND STATUS ='Y'
-		ORDER
-		BY CREATE_DATE DESC
-	</select>
-
-	<insert id="insertReply" parameterType="fbReply">
-		INSERT INTO FBREPLY
-		(REPLY_NO
-		,REPLY_CONTENT
-		,REF_BNO
-		,REPLY_WRITER)
-		VALUES (SEQ_RNO.NEXTVAL
-		,#{replyContent}
-		,#{refBno}
-		,#{replyWriter})
-	</insert>
-
-	<select id="cListCount" parameterType="int" resultType="int">
-		SELECT
-		COUNT(*)
-		FROM freeBoard
-		WHERE category_no = #{categoryNo}
-	</select>
-
-
-
-
-	<select id="orderByCategory" parameterType="int"
-		resultType="freeBoard">
-		
-		SELECT FB.BOARD_NO
-		,BC.CATEGORY_NAME AS categoryName
-		,FB.BOARD_TITLE
-		,FB.BOARD_WRITER
-     	,FB.COUNT
-		,FB.CREATE_DATE
-		,FB.ORIGIN_NAME
-		FROM FREEBOARD FB
-		JOIN BOARD_CATEGORY BC ON FB.CATEGORY_NO = BC.CATEGORY_NO
-		WHERE FB.STATUS = 'Y'
-		AND FB.CATEGORY_NO = #{categoryNo}
-		ORDER BY FB.CREATE_DATE DESC
-	</select>
-
-
-	<select id="boardInsert" resultType="Category">
-		SELECT CATEGORY_NO
-		categoryNo, CATEGORY_NAME categoryName
-
-		FROM BOARD_CATEGORY
-	</select>
-
-
+    <!-- 글 삭제 -->
+    <delete id="deletePostsByKey" parameterType="list">
+    DELETE FROM FREEBOARD
+    WHERE BOARD_NO IN
+    <foreach item="boardNo" collection="list" open="(" separator="," close=")">
+        #{boardNo}
+    </foreach>
+    AND STATUS = 'Y'
+</delete>
+    
 
 </mapper>

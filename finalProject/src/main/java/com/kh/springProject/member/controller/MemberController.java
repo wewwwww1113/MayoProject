@@ -40,6 +40,8 @@ import org.slf4j.LoggerFactory;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.common.template.Pagination;
+import com.kh.springProject.freeBoard.model.service.FreeBoardService;
+import com.kh.springProject.freeBoard.model.vo.freeBoard;
 import com.kh.springProject.member.model.service.MemberService;
 import com.kh.springProject.member.model.vo.Member;
 import com.kh.springProject.review.model.service.ReviewReplyService;
@@ -66,6 +68,9 @@ public class MemberController {
     
     @Autowired
     private ReviewReplyService reviewReplyService;
+    
+    @Autowired
+    private FreeBoardService freeBoardService;
     
 
     
@@ -409,6 +414,71 @@ public class MemberController {
     public String scrap() {
         return "member/scrap";
     }
+    
+    @GetMapping("/myPosts.me")
+    public String myPosts(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                          @RequestParam(value = "searchType", required = false) String searchType,
+                          @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+                          Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/login.me";
+        }
 
-   
+        String userKey = loginUser.getMemberId(); // 수정: MemberId는 문자열
+        Map<String, Object> searchParams = new HashMap<>();
+        searchParams.put("userKey", userKey);
+        if ("boardTitle".equals(searchType)) {
+            searchParams.put("boardTitle", searchKeyword);
+        } else if ("boardContent".equals(searchType)) {
+            searchParams.put("boardContent", searchKeyword);
+        }
+
+        List<freeBoard> allPosts = freeBoardService.searchPostsByUserKey(searchParams);
+
+        int listCount = allPosts.size();
+        int pageLimit = 10;
+        int boardLimit = 10;
+
+        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+        int startRow = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+        int endRow = startRow + pi.getBoardLimit();
+        endRow = endRow > listCount ? listCount : endRow;
+
+        List<freeBoard> postList = allPosts.subList(startRow, endRow);
+
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("postList", postList);
+        model.addAttribute("pi", pi);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("searchKeyword", searchKeyword);
+
+        return "member/myWrite";
+    }
+    
+    @PostMapping("/deletePost.me")
+    public String deletePost(@RequestParam("selectedPosts") List<Integer> postKeys, HttpSession session, RedirectAttributes redirectAttributes) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/login.me";
+        }
+
+        int result = freeBoardService.deletePostsByKey(postKeys);
+
+        if (result > 0) {
+            redirectAttributes.addFlashAttribute("alertMsg", "선택한 글이 삭제되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("alertMsg", "글 삭제에 실패했습니다.");
+        }
+
+        return "redirect:/myPosts.me";
+    }
+    
+    @GetMapping("/boardDetailView")
+    public String boardDetailView(@RequestParam("boardNo") int boardNo, Model model) {
+        freeBoard board = freeBoardService.selectBoard(boardNo);
+        model.addAttribute("b", board);
+        return "freeBoard/boardDetailView";
+    }
 }

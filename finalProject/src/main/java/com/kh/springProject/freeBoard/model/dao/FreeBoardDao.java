@@ -3,6 +3,7 @@ package com.kh.springProject.freeBoard.model.dao;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -85,6 +86,15 @@ public class FreeBoardDao {
 		
 		return (ArrayList)sqlSession.selectList("freeMapper.boardInsert");
 	}
+	
+	public List<freeBoard> searchPostsByUserKey(SqlSessionTemplate sqlSession, Map<String, Object> searchParams) {
+	    return sqlSession.selectList("freeMapper.searchPostsByUserKey", searchParams);
+	}
+
+	    public int deletePostsByKey(SqlSessionTemplate sqlSession, List<Integer> postKeys) {
+	        return sqlSession.delete("freeMapper.deletePostsByKey", postKeys);
+	    }
+	
 	
 }
 

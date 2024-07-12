@@ -34,6 +34,9 @@ public class FreeBoardController {
 
 	@Autowired
 	private FreeBoardService fbService;
+	
+	 @Autowired
+	 private FreeBoardService freeBoardService;
 
 	@RequestMapping("/list.fr")
 	public String boardList(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
@@ -306,6 +309,8 @@ public class FreeBoardController {
 	    // Forward to the view
 	    return "freeboard/boardListView"; 
 	}
+	
+	
 	
 	
 }

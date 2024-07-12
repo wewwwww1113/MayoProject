@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>프로젝트 Footer</title>
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<style>
+<style> 
         /* Footer 스타일 */
         .footer {
             background-color: gray;

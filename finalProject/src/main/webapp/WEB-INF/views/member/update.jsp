@@ -171,13 +171,13 @@
         <div class="profile">
             <p>${loginUser.memberNick}</p>
         </div>
-       <a href="${pageContext.request.contextPath}/mypage.me">Login Info</a>
-        <a href="${pageContext.request.contextPath}/v1/review/reply/scrap">Favorites</a>
-        <a href="${pageContext.request.contextPath}/update.me">Update Info</a>
-        <a href="${pageContext.request.contextPath}/myReviews.me">My Reviews</a>
-        <a href="${pageContext.request.contextPath}/myPosts.me">My Posts</a>
-        <a href="${pageContext.request.contextPath}/statistics.me">Statistics</a>
-        <a href="${pageContext.request.contextPath}/deleteMember.me">Delete Account</a>
+       <a href="${pageContext.request.contextPath}/mypage.me">로그인 정보</a>
+        <a href="${pageContext.request.contextPath}/scrap.me">즐겨찾기</a>
+        <a href="${pageContext.request.contextPath}/update.me">내 정보 수정</a>
+        <a href="${pageContext.request.contextPath}/myReviews.me">내가 쓴 리뷰</a>
+        <a href="${pageContext.request.contextPath}/myPosts.me">내가 작성한 글</a>
+        <a href="${pageContext.request.contextPath}/statistics.me">통계</a>
+        <a href="${pageContext.request.contextPath}/deleteMember.me">회원탈퇴</a>
     </div>
     <div class="container">
         <div class="content">

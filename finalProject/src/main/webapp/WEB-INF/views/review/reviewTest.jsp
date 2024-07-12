@@ -15,8 +15,124 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-L25xsCO3g0t2z8C2qQSTsUk6/soHd+aRkE26HYPOYyZqJ3aJNSjQsZ7u0DSK5nXe" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <style>
+    
+    
+    
+        /* 제목 스타일 */
+        h1 {
+            position: relative;
+            padding: 0;
+            margin: 0;
+            font-family: "Raleway", sans-serif;
+            font-weight: 300;
+            font-size: 40px;
+            color: #080808;
+            transition: all 0.4s ease 0s;
+        }
+        h1 span {
+            display: block;
+            font-size: 0.5em;
+            line-height: 1.3;
+        }
+        h1 em {
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .nine h1 {
+            text-align: center;
+            font-size: 50px;
+            text-transform: uppercase;
+            color: #222;
+            letter-spacing: 1px;
+            font-family: "Playfair Display", serif;
+            font-weight: 400;
+        }
+        .nine h1 span {
+            margin-top: 5px;
+            font-size: 15px;
+            color: #444;
+            word-spacing: 1px;
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: "Raleway", sans-serif;
+            font-weight: 500;
+            display: grid;
+            grid-template-columns: 1fr max-content 1fr;
+            grid-template-rows: 27px 0;
+            grid-gap: 20px;
+            align-items: center;
+        }
+        .nine h1 span:after, .nine h1 span:before {
+            content: " ";
+            display: block;
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid #ccc;
+            height: 5px;
+            background-color: #f8f8f8;
+        }
+        
+        /**/
+        /* 전체 컨테이너 */
+    .comments-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* 댓글 컨테이너 */
+    .comment {
+        margin-bottom: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+    .comment:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 댓글 헤더 */
+    .comment-header {
+        padding: 16px;
+        background-color: #f8f8f8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* 작성자 이름 */
+    .comment-author {
+        padding: 16px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 1px; /* 이름과 내용 사이 간격 */
+    }
+
+    /* 작성일 */
+    .comment-date {
+        font-size: 14px;
+        color: #888;
+    }
+
+    /* 댓글 본문 */
+    .comment-content {
+        padding: 16px;
+        color: #555;
+        line-height: 1.6;
+    }
+        
+
         body {
             font-family: Arial, sans-serif;
+            
+            margin: 0;
+            padding: 0;
         }
 
         .like-icon {
@@ -30,15 +146,7 @@
             text-align: center;
         }
 
-        .search-bar {
-            margin: 20px 0;
-        }
-
-        .search-bar input, .search-bar button {
-            padding: 10px;
-            margin-right: 10px;
-            font-size: 16px;
-        }
+    
 
         .posts {
             display: flex;
@@ -53,7 +161,14 @@
             margin-bottom: 20px;
             padding: 10px;
             text-align: left;
-            cursor: pointer;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .post img {
@@ -73,45 +188,78 @@
             margin-bottom: 10px;
         }
 
-        .load-more {
-            margin: 20px 0;
-        }
-
-        .load-more button {
-            padding: 10px 20px;
-            font-size: 16px;
-        }
 
         /* 상세보기 모달 스타일 */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1050;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
+        display: none; /* 초기에 숨겨진 상태 */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
 
         .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 10px;
-        }
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 800px;
+        border-radius: 8px;
+        position: relative;
+    }
 
-        .modal-close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+    .modal-close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .modal-close:hover,
+    .modal-close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    /* 댓글 섹션 레이아웃 */
+    .comment-section {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    /* 댓글 목록 컨테이너 */
+    .comments-list-container {
+        flex: 1;
+        margin-right: 20px;
+    }
+
+    .comments-list {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        max-height: 200px; /* 필요에 따라 댓글 목록의 최대 높이 조정 */
+        overflow-y: auto;
+    }
+
+    /* 댓글 작성 폼 컨테이너 */
+    .comment-form-container {
+        flex: 0.7;
+    }
+
+    /* 댓글 작성 폼 스타일 */
+    .comment-form-container textarea {
+        margin-top: 10px;
+       }
+    
+    
+    
+    
+    
 
         .star {
             font-size: 30px; /* 별의 크기 조정 */
@@ -122,41 +270,125 @@
         .star:hover {
             color: gold; /* 마우스 호버 시 색상 변경 */
         }
+
+        @media (max-width: 768px) {
+            .post {
+                width: 48%;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .post {
+                width: 98%;
+                margin-bottom: 20px;
+            }
+
+            .search-bar input {
+                width: 70%;
+                margin-bottom: 10px;
+            }
+
+            .search-bar button {
+                width: 25%;
+            }
+        }
+        
+        /*검색창*/
+        
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 수평 중앙 정렬 */
+    background-color: #f0f0f0;
+    padding: 4px 8px; /* 위아래 여백 조정 */
+    border-radius: 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 700px; /* 원하는 너비로 조정 */
+    margin: 0 auto; /* 가운데 정렬을 위한 왼쪽/오른쪽 자동 마진 설정 */
+}
+
+#searchInput {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    outline: none;
+    background: none;
+}
+
+button {
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-left: 10px;
+        transition: background-color 0.3s ease;
+        width: 80px; /* 원하는 너비로 조정 */
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+.btn-rounded {
+        border-radius: 20px; /* 원하는 정도로 조정 */
+    }
+    
+    /*별 크기*/
+     .starReview {
+        font-size: 36px; /* 원하는 크기로 조정 */
+        cursor: pointer;
+        transition: color 0.3s; /* 색상 변화 애니메이션 */
+    }
+
+    .starReview:hover {
+        color: gold; /* 마우스 호버 시 색상 변경 */
+    }
+        
     </style>
 </head>
 <body>
-    <div class="container">
-        <br><br>
-        <h1>화장실 게시판</h1>
-        
-        <div>
-            <p>누적 좋아요 횟수: ${result}</p>
-            <p>유저가 누른 개인 좋아요 횟수: ${person}</p>
-        </div>
+		
+	 <br><br>
+	 
+	 
+	<div class="container">
+		<div class="nine">
+			<h1>
+				Review <span> 리뷰 게시판</span>
+			</h1>
+		</div>
 
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search (예: 강남구 길동주유소)">
-            <button type="button" onclick="filterPosts()">조회</button>
-        </div>
 
-        <div class="posts" id="postContainer">
-            <!-- 화장실 정보를 반복적으로 출력 -->
-            <c:forEach var="t" items="${t}">
-                <c:set var="district" value="${fn:substringBefore(t.toiletAddress, ' ')}" />
-                <div class="post" data-name="${t.toiletName}" data-address="${t.toiletAddress}" data-district="${district}" data-no="${t.toiletNo}" data-open="${t.toiletOpen}">
-                    <!-- 이미지와 화장실 정보 등 필요한 정보들을 출력 -->
-                    <div class="post-title">${t.toiletName}</div>
-                    <div class="post-content">${t.toiletAddress}</div>
-                </div>
-            </c:forEach>
-        </div>
 
-        <div class="load-more">
-            <button type="button" onclick="loadMorePosts()">더보기</button>
-        </div>
-    </div>
+		<div class="search-bar">
+    <input type="text" id="searchInput" placeholder="검색어를 입력해 주세요." style="width: 700px;">
+    <button class="btn btn-dark text-light btn-rounded btn-block" type="button" onclick="filterPosts()">검색</button>
+</div>
+		<br>
 
-    <!-- 1. 모달 메인페이지 -->
+		<div class="posts" id="postContainer">
+			<!-- 화장실 정보를 반복적으로 출력 -->
+			<c:forEach var="t" items="${t}">
+				<c:set var="district"
+					value="${fn:substringBefore(t.toiletAddress, ' ')}" />
+				<div class="post" data-name="${t.toiletName}"
+					data-address="${t.toiletAddress}" data-district="${district}"
+					data-no="${t.toiletNo}" data-open="${t.toiletOpen}">
+					<!-- 이미지와 화장실 정보 등 필요한 정보들을 출력 -->
+					<div class="post-title">${t.toiletName}</div>
+					<div class="post-content">${t.toiletAddress}</div>
+				</div>
+			</c:forEach>
+		</div>
+
+	</div>
+
+	<!-- 1. 모달 메인페이지 -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -183,50 +415,41 @@
                 <input type="hidden" id="ratingInput" value="0">
                 <div align="center">
                     <br>
-                    <button onclick="saveRating()">평점 남기기</button>
+                    <button class='btn btn-dark text-light'  onclick="saveRating()" style='width: 150px; height : 50px;'>평점 남기기</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 3. 이미지 업로드 모달 -->
-    <div id="uploadModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeUploadModal()">&times;</span>
-            <div id="uploadModalBody">
-                <h4 align="center">이미지 업로드</h4>
-                <div align="center">
-                    <input type="file" id="uploadInput" accept="image/*" onchange="previewImage(event)">
-                </div>
-                <div align="center">
-                    <br>
-                    <img id="uploadPreview" src="#" alt="이미지 미리보기" style="max-width: 100%; display: none;">
-                    <br>
-                    <br>
-                    <button onclick="saveImage()">저장</button>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 
-    <!-- 4. 리뷰 작성 모달 -->
+    <!-- 3. 리뷰 작성 모달 -->
     <div id="reviewModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeReviewModal()">&times;</span>
-            <div id="reviewModalBody">
-                <h4 align="center">댓글 목록</h4>
-                <div id="commentsList">
-                    <!-- 댓글 목록이 여기에 표시됩니다 -->
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeReviewModal()">&times;</span>
+        <div id="reviewModalBody" class="modal-body">
+            <div class="comment-section">
+                <div class="comments-list-container">
+                    <h4 align="center"><strong>댓글 목록</strong></h4>
+                    <div id="commentsList" class="comments-list">
+                        <!-- 댓글 목록이 여기에 표시됩니다 -->
+                    </div>
                 </div>
-                
-                <hr>
-                <h4 align="center">댓글 작성</h4>
-                닉네임: ${loginUser.memberId }
-                <textarea id="commentText" rows="3" placeholder="댓글을 작성하세요" style="width: 100%;"></textarea>
-                <button onclick="submitComment()">댓글 작성</button>
+
+                <div class="comment-form-container">
+                    <h4 align="center"><strong>댓글 작성</strong></h4>
+                    <hr>
+                    <strong>${loginUser.memberNick }</strong>
+                    <textarea id="commentText" rows="3" placeholder="댓글을 작성하세요" style="width: 100%;"></textarea>
+                    <button class='btn btn-dark text-light' onclick="submitComment()" style='width: 150px; height : 50px;'>댓글 작성</button>
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+
+
 
     <script>
         // 모달 메인창
@@ -238,12 +461,19 @@
 
             var openTime = open ? open : '정보 없음';
 
-            modalBody.innerHTML 
-                = "<h2>" + name + "</h2><p>위치: " + address + "</p><p>개방 시간: " + openTime 
-                + "</p><br><button class='btn btn-primary' onclick=\"openRatingModal(" + toiletNo + ")\">평점 남기기</button>"
-                + " <button class='btn btn-info' onclick=\"openReviewModal(" + toiletNo + ")\">리뷰 작성</button>"
-                + "<span class='like-icon' onclick='toggleLike()'>🤍</span>"
-                + " <span class='star' onclick='scrap(" + toiletNo + ");'>☆</span>";
+            modalBody.innerHTML = "<h2 style='font-size: 30px; margin-bottom: 10px; text-align: center;'>" + name + "</h2>"
+            + "<p style='font-size: 16px; margin-bottom: 10px; text-align: center;'> " + address + "</p>"
+            + "<p style='font-size: 16px; margin-bottom: 20px; text-align: center;'> " + openTime + "</p>"
+            + "<div style='display: flex; justify-content: center; align-items: center; text-align: center;'>"
+            + "<button class='btn btn-dark text-light btn-rounded' style='width: 150px; height: 50px; margin-right: 10px;' onclick=\"openRatingModal(" + toiletNo + ")\">평점 남기기</button>"
+            + "<button class='btn btn-dark text-light btn-rounded' style='width: 150px; height: 50px;' onclick=\"openReviewModal(" + toiletNo + ")\">리뷰 작성</button>"
+            + "</div>"
+            + "<div style='position: absolute; bottom: 10px; right: 10px; margin-right: 30px;'>"
+            + "<span class='like-icon' style='font-size: 36px; cursor: pointer; margin-right: 10px;' onclick='toggleLike()'>&#x1F90D;</span>"
+            + "<span class='star' style='font-size: 36px; cursor: pointer;' onclick='scrap(" + toiletNo + ");'>&#x2606;</span>"
+            + "</div>"
+            +"<br>";
+
             modal.style.display = "block";
         }
         
@@ -403,19 +633,29 @@
                 data: param,
                 success: function(data) {
                     res = data;
+                    
+                    setTimeout(function() {
+                        var commentsHtml = "";
+
+                        res.forEach(function(comment) {
+                            // 가리고자 하는 부분 처리
+                            var hiddenPart = '*'.repeat(comment.userNickName.length - 1);
+                            var maskedName = comment.userNickName.charAt(0) + hiddenPart;
+
+                            commentsHtml += '<div class="comment">' +
+                                                '<div class="comment-author"><strong>' + maskedName + '</strong></div>' +
+                                                '<div class="comment-content">' + comment.content + '</div>' +
+                                            '</div>';
+                        });
+
+                        document.getElementById('commentsList').innerHTML = commentsHtml;
+                    }, 100);
                 }
             });
-
-            setTimeout(function() {
-                var commentsHtml = "";
-
-                res.forEach(function(comment) {
-                    commentsHtml += "<p>작성자 " + comment.userNickName + "</p><p>" + comment.content + "</p>";
-                });
-                document.getElementById('commentsList').innerHTML = commentsHtml;
-            }, 10);
         }
-
+        
+        
+        
         function submitComment() {
             var commentText = document.getElementById('commentText').value;
             var toiletNo = document.querySelector('.modal').getAttribute('data-no');
@@ -467,15 +707,16 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    if (isLiked) {
-                        alert('이미 좋아요를 누르셨습니다.');
-                    } else {
+                    if (!isLiked) {
                         likeIcon.classList.add('liked');
                         likeIcon.innerHTML = '❤️';
                         alert('좋아요가 등록되었습니다.');
-                        likeIcon.style.pointerEvents = 'none';
+                    } else {
+                        likeIcon.classList.remove('liked');
+                        likeIcon.innerHTML = '🤍';
+                        alert('좋아요가 취소되었습니다.');
                     }
-                    isLiked = !isLiked;
+                    isLiked = !isLiked; // 좋아요 상태 반전
                 },
                 error: function(error) {
                     console.error('Error:', error);

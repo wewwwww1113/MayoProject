@@ -435,7 +435,7 @@ public class ReviewController {
 			int toiletNo	= Integer.parseInt(paramMap.get("toiletNo").toString());
 			int starCnt		= Integer.parseInt(paramMap.get("starCnt").toString());
 			reviewService.updateStar(memberNo, toiletNo, starCnt);			
-			map.put("msg", "평점이 수정되었습니다.");
+			map.put("msg", "평점이 등록되었습니다. (●'◡'●)");
 
 			return map;
 		}

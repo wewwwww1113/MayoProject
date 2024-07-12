@@ -20,11 +20,12 @@
 		
 	</select>
 	
-	<select id="avgStar" resultMap="rankResultSet">
-	SELECT AVG(STAR)
+	<select id="avgStar"   resultType="com.kh.springProject.rank.model.vo.Rank">
+	SELECT toilet_no toiletNo
+	, AVG(STAR) starAvg
 	FROM review_star
-	WHERE toilet_no = #{toiletNo}
-	
+	group by toilet_no
+	order by AVG(STAR) desc
 	</select>
 	
 	
@@ -33,4 +34,4 @@
 	
 	
 	
-</mapper>
+</mapper>	

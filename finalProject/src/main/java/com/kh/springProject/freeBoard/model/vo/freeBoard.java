@@ -24,5 +24,10 @@ public class freeBoard {
 	private Date createDate;//	CREATE_DATE	DATE
 	private String status;//	STATUS	VARCHAR2(1 BYTE)
 	
+	private int categoryNo;
+	private String categoryName;
+	
+
+	
 
 }

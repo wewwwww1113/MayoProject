@@ -16,22 +16,32 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
     header {
+    
     background: gray;
     height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
+    
 }
 
 header a {
     color: inherit;
     text-decoration: none;
 }
-        body {
-            margin: 0;
-            padding: 0;
-        }
+        
+        a {
+        color: #FFFFFF; /* 기본 글자 색상 흰색 */
+        text-decoration: none; /* 모든 a 태그에 밑줄 없애기 */
+        transition: color 0.3s ease, background-color 0.3s ease; /* 부드러운 전환 효과 */
+    }
+
+    /* 글자 호버 */
+    a:hover {
+        color: black; 
+        text-decoration: none; /* hover 상태에서도 밑줄 없애기 */
+    }
 
         .center-content {
             max-width: 960px;
@@ -205,11 +215,378 @@ header a {
         box-shadow: 0 0 5px silver, 0 0 10px silver, 0 0 15px silver; /* 50%에서 100%까지 다시 후광 효과를 은색으로 설정 */
     }
 }
+
+#first {
+        font-size: 40px;
+        font-weight: bold;
+        margin-top: 20px;
+        animation: shine 2s infinite alternate;
+    }
+
+    @keyframes shine {
+        from {
+            color: #333;
+            text-shadow: none;
+        }
+        to {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+                         0 0 20px rgba(255, 255, 255, 0.5),
+                         0 0 30px rgba(255, 255, 255, 0.3);
+        }
+    }
+
+ /* 제목 스타일 */
+        h1 {
+            position: relative;
+            padding: 0;
+            margin: 0;
+            font-family: "Raleway", sans-serif;
+            font-weight: 300;
+            font-size: 40px;
+            color: #080808;
+            transition: all 0.4s ease 0s;
+        }
+        h1 span {
+            display: block;
+            font-size: 0.5em;
+            line-height: 1.3;
+        }
+        h1 em {
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .nine h1 {
+            text-align: center;
+            font-size: 50px;
+            text-transform: uppercase;
+            color: #222;
+            letter-spacing: 1px;
+            font-family: "Playfair Display", serif;
+            font-weight: 400;
+        }
+        .nine h1 span {
+            margin-top: 5px;
+            font-size: 15px;
+            color: #444;
+            word-spacing: 1px;
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: "Raleway", sans-serif;
+            font-weight: 500;
+            display: grid;
+            grid-template-columns: 1fr max-content 1fr;
+            grid-template-rows: 27px 0;
+            grid-gap: 20px;
+            align-items: center;
+        }
+        .nine h1 span:after, .nine h1 span:before {
+            content: " ";
+            display: block;
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid #ccc;
+            height: 5px;
+            background-color: #f8f8f8;
+        }
+        
+        /**/
+        /* 전체 컨테이너 */
+    .comments-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* 댓글 컨테이너 */
+    .comment {
+        margin-bottom: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+    .comment:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 댓글 헤더 */
+    .comment-header {
+        padding: 16px;
+        background-color: #f8f8f8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* 작성자 이름 */
+    .comment-author {
+        padding: 16px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 1px; /* 이름과 내용 사이 간격 */
+    }
+
+    /* 작성일 */
+    .comment-date {
+        font-size: 14px;
+        color: #888;
+    }
+
+    /* 댓글 본문 */
+    .comment-content {
+        padding: 16px;
+        color: #555;
+        line-height: 1.6;
+    }
+        
+
+         body, ul, li, h1 {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+     a {
+        color: #FFFFFF; /* 기본 글자 색상 흰색 */
+        text-decoration: none; /* 모든 a 태그에 밑줄 없애기 */
+        transition: color 0.3s ease, background-color 0.3s ease; /* 부드러운 전환 효과 */
+    }
+
+    /* 글자 호버 */
+    a:hover {
+        color: black; 
+        text-decoration: none; /* hover 상태에서도 밑줄 없애기 */
+    }
+    
+     body {
+        background: rgb(255, 255, 255);
+        font-family: Arial, sans-serif;
+    }
+
+        .like-icon {
+            font-size: 36px; /* Increase the size as desired */
+            cursor: pointer;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+    
+
+        .posts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .post {
+            width: 23%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            text-align: left;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .post img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .post-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .post-content {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+
+        /* 상세보기 모달 스타일 */
+        .modal {
+        display: none; /* 초기에 숨겨진 상태 */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+        .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 800px;
+        border-radius: 8px;
+        position: relative;
+    }
+
+    .modal-close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .modal-close:hover,
+    .modal-close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    /* 댓글 섹션 레이아웃 */
+    .comment-section {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    /* 댓글 목록 컨테이너 */
+    .comments-list-container {
+        flex: 1;
+        margin-right: 20px;
+    }
+
+    .comments-list {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        max-height: 200px; /* 필요에 따라 댓글 목록의 최대 높이 조정 */
+        overflow-y: auto;
+    }
+
+    /* 댓글 작성 폼 컨테이너 */
+    .comment-form-container {
+        flex: 0.7;
+    }
+
+    /* 댓글 작성 폼 스타일 */
+    .comment-form-container textarea {
+        margin-top: 10px;
+       }
+    
+    
+    
+    
+    
+
+        .star {
+            font-size: 30px; /* 별의 크기 조정 */
+            cursor: pointer;
+            transition: color 0.3s; /* 색상 변화 애니메이션 */
+        }
+
+        .star:hover {
+            color: gold; /* 마우스 호버 시 색상 변경 */
+        }
+
+        @media (max-width: 768px) {
+            .post {
+                width: 48%;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .post {
+                width: 98%;
+                margin-bottom: 20px;
+            }
+
+            .search-bar input {
+                width: 70%;
+                margin-bottom: 10px;
+            }
+
+            .search-bar button {
+                width: 25%;
+            }
+        }
+        
+        /*검색창*/
+        
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 수평 중앙 정렬 */
+    background-color: #f0f0f0;
+    padding: 4px 8px; /* 위아래 여백 조정 */
+    border-radius: 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 700px; /* 원하는 너비로 조정 */
+    margin: 0 auto; /* 가운데 정렬을 위한 왼쪽/오른쪽 자동 마진 설정 */
+}
+
+#searchInput {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    outline: none;
+    background: none;
+}
+
+button {
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-left: 10px;
+        transition: background-color 0.3s ease;
+        width: 80px; /* 원하는 너비로 조정 */
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+.btn-rounded {
+        border-radius: 20px; /* 원하는 정도로 조정 */
+    }
+    
+    /*별 크기*/
+     .starReview {
+        font-size: 36px; /* 원하는 크기로 조정 */
+        cursor: pointer;
+        transition: color 0.3s; /* 색상 변화 애니메이션 */
+    }
+
+    .starReview:hover {
+        color: gold; /* 마우스 호버 시 색상 변경 */
+    }
     </style>
 </head>
 <body>
 
-<br><br><br><br><br>
+<br>
 
 <c:choose>
     <c:when test="${empty loginUser}">
@@ -222,6 +599,12 @@ header a {
         </div>
     </c:when>
     <c:otherwise>
+<hr>
+
+<div id="first">
+ 　　　　　　　ＣＡＲＯＵＳＥＬ
+</div>
+<hr>
         <div class="image-container">
             <div>
                 <img src="resources/uploadFiles/plan1.png" alt="이미지1">
@@ -233,7 +616,14 @@ header a {
                 <img src="resources/uploadFiles/plan3.png" alt="이미지3">
             </div>
         </div>
-        <br><br><br><br><br>
+        
+        <br><br>
+        <hr>
+<div id="first">
+ 　　　　　　　ＴＯＰ ３ ＴＯＩＬＥＴ ＲＡＮＫＩＮＧ
+</div>
+<hr>
+        
         <div id="rank-list" class="rank-list">
 </div>
     </c:otherwise>
@@ -312,6 +702,6 @@ header a {
         }
     }
 </script>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br>
 </body>
 </html>

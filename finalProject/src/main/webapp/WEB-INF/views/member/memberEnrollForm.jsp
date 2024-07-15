@@ -190,7 +190,13 @@
         list-style: none;
     }
     
-     a {
+   
+    
+     body {
+        background: rgb(255, 255, 255);
+        font-family: Arial, sans-serif;
+        
+         a {
         color: #FFFFFF; /* 기본 글자 색상 흰색 */
         text-decoration: none; /* 모든 a 태그에 밑줄 없애기 */
         transition: color 0.3s ease, background-color 0.3s ease; /* 부드러운 전환 효과 */
@@ -201,10 +207,6 @@
         color: black; 
         text-decoration: none; /* hover 상태에서도 밑줄 없애기 */
     }
-    
-     body {
-        background: rgb(255, 255, 255);
-        font-family: Arial, sans-serif;
     }
         
     </style>

@@ -268,19 +268,19 @@
         </c:forEach>
     </div>
     <c:choose>
-        <c:when test="${not empty loginUser}">
-            <c:if test="${loginUser.memberId eq 'admin'}">
-                <a href="insert.st" class="new-store-btn">상품 추가</a>
-                <a href="list.ct" class="cart-btn">장바구니로 가기</a>
-            </c:if>
-            <c:if test="${loginUser.memberId ne 'admin'}">
-                <a href="javascript:void(0);" onclick="showLoginAlert();" class="cart-btn">장바구니로 가기</a>
-            </c:if>
-        </c:when>
-        <c:otherwise>
-            <a href="javascript:void(0);" onclick="showLoginAlert();" class="cart-btn">장바구니로 가기</a>
-        </c:otherwise>
-    </c:choose>
+    <c:when test="${not empty loginUser}">
+        <c:if test="${loginUser.memberId eq 'admin'}">
+            <a href="insert.st" class="new-store-btn">상품 추가</a>
+            <a href="list.ct" class="cart-btn">장바구니로 가기</a>
+        </c:if>
+        <c:if test="${loginUser.memberId ne 'admin'}">
+            <a href="list.ct" class="cart-btn">장바구니로 가기</a>
+        </c:if>
+    </c:when>
+    <c:otherwise>
+        <a href="javascript:void(0);" onclick="showLoginAlert();" class="cart-btn">장바구니로 가기</a>
+    </c:otherwise>
+</c:choose>
         <a href="#" class="return-btn" onclick="history.back();">메인화면으로 돌아가기</a>
     
 </div>

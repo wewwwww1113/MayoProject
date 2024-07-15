@@ -5,17 +5,17 @@
     <title>Google Maps with Geolocation and Search</title>
     <style>
         html, body {
-            height: 100%;
+            height: 93.5%;
             margin: 0;
             padding: 0;
         }
         #map {
-            height: 90%;
+            height: 100%;
             width: 70%;
         }
         .map-container {
             position: relative;
-            height: 100%;
+            height: calc(100% - 50px);
         }
         .control-container {
             position: absolute;
@@ -54,6 +54,10 @@
 		    overflow-y: auto;
 		    z-index: 1; /* 정보 패널이 제어 요소 위에 표시되도록 z-index 설정 */
 		}
+		footer {
+        position: static !important; /* 고정된 위치 제거 */
+        bottom: auto !important; /* bottom 속성 제거 */
+    }
     </style>
     <!-- Google Maps API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaPxCr1XL1mqEFAUAz8fUCSAOHhTMfrNU&libraries=places&callback=initMap" async defer></script>
@@ -246,6 +250,7 @@
             infoWindow.open(map);
         }
     </script>
-    <%@include file="/WEB-INF/views/common/footer.jsp" %>
+    
+<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

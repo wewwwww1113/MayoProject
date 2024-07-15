@@ -19,9 +19,12 @@ public interface StoreService {
 
 	int addToCart(String memberNo, int storeNo, int quantity);
 	
+	boolean isProductInCart(String memberNo, int storeNo);
+	
 	List<Cart> getCartItems(String memberNo);
 	
 	int deleteCartById(int cartId) throws Exception;
 	
 	void updateCartQuantity(int cartId, int quantity);
+	
 }

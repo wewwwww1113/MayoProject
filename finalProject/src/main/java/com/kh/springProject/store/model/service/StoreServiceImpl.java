@@ -44,10 +44,16 @@ public class StoreServiceImpl implements StoreService {
         cart.setMemberNo(memberNo);
         cart.setStoreNo(storeNo);
         cart.setQuantity(quantity);
+        System.out.println(cart);
         return storeDao.insertCart(cart);
        
     }
 
+    @Override
+    public boolean isProductInCart(String memberNo, int storeNo) {
+        return storeDao.checkProductInCart(memberNo, storeNo);
+    }
+    
     @Override
     public List<Cart> getCartItems(String memberNo) {
         return storeDao.selectCartItems(memberNo);

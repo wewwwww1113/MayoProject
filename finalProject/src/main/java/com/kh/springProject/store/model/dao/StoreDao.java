@@ -1,6 +1,7 @@
 package com.kh.springProject.store.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,14 @@ public class StoreDao {
         cart.setQuantity(quantity);
         sqlSession.update("storeMapper.updateCartQuantity", cart);
     }
-    
+ // 장바구니에 이미 있는지 확인
+    public boolean checkProductInCart(String memberNo, int storeNo) {
+        int count = sqlSession.selectOne("storeMapper.isItemInCart", 
+            Map.of("memberNo", memberNo, "storeNo", storeNo));
+        return count > 0;
+    }
+
+
+
     
 }

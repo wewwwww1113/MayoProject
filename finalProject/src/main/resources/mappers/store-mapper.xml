@@ -104,4 +104,9 @@
 	    SET quantity = #{quantity}
 	    WHERE cart_id = #{cartId}
 	</update>
+	<select id="isItemInCart" parameterType="map" resultType="int">
+        SELECT COUNT(*) 
+        FROM cart 
+        WHERE member_no = #{memberNo} AND store_no = #{storeNo}
+    </select>
 </mapper>

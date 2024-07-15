@@ -36,7 +36,7 @@
             <h2>게시글 상세보기</h2>
             <br>
 
-            <a class="btn btn-secondary" style="float:right;" href="list.fr">목록으로</a>
+            <a class="btn btn-secondary" style="float:right;" href="">목록으로</a>
             <br><br>
 
             <table id="contentArea" algin="center" class="table">
@@ -47,8 +47,6 @@
                 <tr>
                     <th>작성자</th>
                     <td>${b.boardWriter }</td>
-                    <th>조회수</th>
-                    <td>${b.count }</td>
                     <th>작성일</th>
                     <td>${b.createDate }</td>
                 </tr>

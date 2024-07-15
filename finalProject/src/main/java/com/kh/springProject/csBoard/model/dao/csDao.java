@@ -16,14 +16,4 @@ public class csDao {
 		
 	}
 
-	public int incrementViewCount(SqlSessionTemplate sqlSession,int csNo) {
-		// TODO Auto-generated method stub
-		return sqlSession.update("csMapper.incrementViewCount", csNo);
-	}
-
-	public ArrayList<csBoard> selectLodgingMain(SqlSessionTemplate sqlSession) {
-		// TODO Auto-generated method stub
-		return (ArrayList)sqlSession.selectList("csMapper.selectLodgingMain");
-	}
-
 }

@@ -183,11 +183,11 @@
             padding: 0;
             list-style: none;
         }
-        a {
-            
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+         a {
+        color: #FFFFFF; /* 기본 글자 색상 흰색 */
+        text-decoration: none; /* 모든 a 태그에 밑줄 없애기 */
+        transition: color 0.3s ease, background-color 0.3s ease; /* 부드러운 전환 효과 */
+    }
         a:hover {
             color: #0056b3;
             text-decoration: none;

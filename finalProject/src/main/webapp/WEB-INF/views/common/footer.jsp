@@ -41,9 +41,9 @@
             <a href="#">개인정보 처리방침</a> |
             <a href="#">고객센터</a> |
             <!-- 인스타그램 아이콘 -->
-            <a href="#"><i class="fab fa-instagram"></i></a> |
+            <a href="https://www.instagram.com/chamg_mayo?igsh=MXE4bzQybDBqNWR6Nw%3D%3D&utm_source=qr"><i class="fab fa-instagram"></i></a> |
             <!-- 페이스북 아이콘 -->
-            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.facebook.com/profile.php?id=61562425906999"><i class="fab fa-facebook"></i></a>
         </p>
     </div>
 </footer>

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <title>Document</title>
-  <style>
+<style>
     /* 노말라이즈 */
     body, ul, li, h1 {
         margin: 0;
@@ -31,17 +31,29 @@
     body {
         background: rgb(255, 255, 255);
         font-family: Arial, sans-serif;
+        margin: 0; /* 바디 마진을 0으로 설정 */
+        padding: 0; /* 바디 패딩을 0으로 설정 */
     }
 
     header {
-        background: gray;
-        transition: 0.3s ease-in;
-        height: 80px; /* 헤더바 높이를 50px로 설정 */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    background: gray;
+    transition: 0.3s ease-in;
+    height: 80px; /* 헤더바 높이를 80px로 설정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* 헤더를 상위 요소로 설정 */
+}
+.logo {
+    position: relative; /* 헤더 내에서 상대적 위치 설정 */
+    display: inline-block; /* 인라인 블록 요소로 설정 */
+    z-index: 1; /* 다른 요소 위에 표시되도록 설정 */
+}
 
+.logo img {
+    height: 60px; /* 원하는 높이로 설정 */
+    
+}
     nav {
         max-width: 960px;
         width: 100%;
@@ -58,7 +70,7 @@
     }
 
     nav > ul > li {
-        margin-right: 60px; /* 글자 사이의 간격을 넓히기 위해 margin-right를 50px로 변경 */
+        margin-right: 20px; /* 글자 사이의 간격을 넓히기 위해 margin-right를 50px로 변경 */
         position: relative;
         display: flex;
         align-items: center; /* 세로 중앙 정렬 */
@@ -109,16 +121,7 @@
         transition: opacity 0.5s ease-in-out; /* 부드러운 전환 효과 */
         font-size: 20px; /* 글자 크기 설정 */
     }
-    
-    .logo {
-        margin-right: 250px; /* 로고와 메뉴 사이의 간격 조정 */
-    }
-
-    .logo img {
-        height: 100px; /* 로고 이미지의 높이 설정 */
-        /* 다른 스타일링을 추가로 필요한 경우 여기에 추가 */
-    }
-  </style>
+</style>
 </head>
 <body>
   <header>

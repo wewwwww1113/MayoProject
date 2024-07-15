@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Order {
-	//응답데이터 받아놓을 VO 
 	private int orderNo;
 	private String pg; // pg : 'html5_inicis',
 	private String mcUid; // merchant_uid: "IMP"+makeMerchantUid,

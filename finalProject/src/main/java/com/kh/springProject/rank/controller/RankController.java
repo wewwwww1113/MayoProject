@@ -1,7 +1,9 @@
 package com.kh.springProject.rank.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
 
 import javax.servlet.http.HttpSession;
 
@@ -54,6 +56,25 @@ public class RankController {
 	    
 	    return mv;
 	}
+	@GetMapping("rank2.ra")
+	@ResponseBody
+	public java.util.Map<String, Object> RankList1(Map m, ReviewStar rs, HttpSession session) {
+	    // 화장실 전체조회
+	    List<Map> t = mapService.getAllToilets(m);
+	    
+	    // 별점 전체 조회
+	    List<ReviewStar> star = rankService.getAllStars(rs);
+	    
+	    // 평균 별점 조회
+	    ArrayList<Rank> avg = rankService.avgStar();
+	    java.util.Map<String, Object> response = new HashMap<>();
+	    response.put("toilets", t);
+	    response.put("stars", star);
+	    response.put("avg", avg);
+	    
+	    return response;
+	}
+
 
 
 	

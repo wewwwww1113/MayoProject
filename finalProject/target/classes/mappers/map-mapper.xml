@@ -21,14 +21,10 @@
 		<result column="TOILET_UPDATE" property="toiletUpdate"/>
 	</resultMap>
 		
-		
-		
-		
 		<select id="listCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM TOILET
 	</select>
-	
 	
 	<select id="selectAllToilets" resultMap="mapResultSet">
 		SELECT TOILET_NO
@@ -46,7 +42,6 @@
 		      ,TOILET_UPDATE
 		FROM TOILET
 		ORDER BY TOILET_NO ASC
-		
 	</select>
 	
 	<delete id="deleteAllToilets">
@@ -82,6 +77,4 @@
 	        #{TOILET_UPDATE}
 	    )
 	</insert>
-	
-	
 </mapper>

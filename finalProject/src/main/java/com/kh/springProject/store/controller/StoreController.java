@@ -97,6 +97,15 @@ public class StoreController {
         
         
         String memberNo = loginUser.getMemberNo();
+
+        // 장바구니에 이미 있는지 확인하는 메소드 호출
+        boolean isProductInCart = storeService.isProductInCart(memberNo, storeNo);
+
+        if (isProductInCart) {
+            session.setAttribute("alertMsg", "장바구니에 이미 있는 상품입니다.");
+            return "redirect:/list.st";
+        }
+        
         int result = storeService.addToCart(memberNo, storeNo, 1);  // 수량 1로 추가
 
         if (result > 0) {

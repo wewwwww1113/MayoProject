@@ -3,7 +3,6 @@ package com.kh.springProject.store.model.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.springProject.store.model.dao.StoreDao;
 import com.kh.springProject.store.model.vo.Cart;

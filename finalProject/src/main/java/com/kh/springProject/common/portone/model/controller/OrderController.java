@@ -4,23 +4,18 @@ package com.kh.springProject.common.portone.model.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.springProject.common.portone.model.service.OrderService;
 import com.kh.springProject.common.portone.model.vo.Order;
-import com.kh.springProject.member.model.vo.Member;
-import com.kh.springProject.store.model.vo.Cart;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,11 +25,6 @@ public class OrderController {
 	
 	@Autowired
     private OrderService orderService;
-	
-	/*
-	 * @RequestMapping("order.do") public String Order() { return "order/orderView";
-	 * }
-	 */
 	
 	@PostMapping("/insertPay.or")
 	@ResponseBody
@@ -62,9 +52,9 @@ public class OrderController {
 	    order.setBuyerAddr(buyerAddr);
 	    order.setPaidAt(paidAt);
 	    order.setReceiptUrl(receiptUrl); 
-	    // OrderService를 통해 주문 정보를 데이터베이스에 저장
+	    
 	    int result = orderService.insertOrder(order);
-	    // 데이터베이스에 주문 정보 저장 후, 결제 완료 페이지로 이동
+	    
 	    if (result > 0) {
 	        request.setAttribute("orderNo", order.getOrderNo()); // 주문 번호를 결제 완료 페이지로 전달
 	        return 1; // 결제 완료 페이지로 이동

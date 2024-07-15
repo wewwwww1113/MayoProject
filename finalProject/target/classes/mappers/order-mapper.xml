@@ -53,6 +53,4 @@
     <select id="selectOrder" resultMap="orderResultMap">
         SELECT * FROM ORDERS WHERE MCUID = #{mcUid}
     </select>
-
-    
 </mapper>

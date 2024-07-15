@@ -8,9 +8,10 @@ public interface csService {
 
 	ArrayList<csBoard> selectCsList(String category);
 
-	
-	
-	
+	int incrementViewCount(int csNo);
+
+	ArrayList<csBoard> selectLodgingMain();
+
 	
 	
 }

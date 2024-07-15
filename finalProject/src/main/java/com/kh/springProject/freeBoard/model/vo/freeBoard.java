@@ -27,6 +27,10 @@ public class freeBoard {
 	private int categoryNo;
 	private String categoryName;
 	
+	
+	//검색필터
+	private String type;
+	private String keyword;
 
 	
 

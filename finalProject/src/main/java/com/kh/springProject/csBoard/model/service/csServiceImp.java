@@ -23,6 +23,17 @@ public class csServiceImp implements csService {
 	public ArrayList<csBoard> selectCsList(String category) {
 		 return csDao.selectCsList(sqlSession,category);
 	}
+	public int incrementViewCount(int csNo) {
+		// TODO Auto-generated method stub
+		return csDao.incrementViewCount(sqlSession,csNo);
+	}
+	public ArrayList<csBoard> selectLodgingMain() {
+		// TODO Auto-generated method stub
+		return csDao.selectLodgingMain(sqlSession);
+	}
+	
+	
+	
 	
 	
 	

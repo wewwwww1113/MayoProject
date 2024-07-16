@@ -266,7 +266,7 @@ body {
 
             <div class="category-area">
                 <select id="categoryNo">
-                    <option value="0">전체</option>
+                    <option value="0">정렬</option>
                     <option value="1">일상</option>
                     <option value="2">질문</option>
                     <option value="3">공유</option>

@@ -95,7 +95,7 @@
 
 				<div align="center">
 					<button type="submit" class="btn btn-update">등록하기</button>
-					<button type="reset" class="btn btn-delete">취소하기</button>
+					<button type="reset" class="btn btn-delete" onclick="javascript:history.go(-1);">취소하기</button>
 				</div>
 			</form>
 

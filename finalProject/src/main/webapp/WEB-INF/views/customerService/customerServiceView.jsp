@@ -42,7 +42,7 @@ ul {
 
 /* 고객 센터 기본 영역 */
 #features {
-    
+    a
     background-color: #ffffff;
     padding: 16px;
     margin-top: 80px;
@@ -121,6 +121,7 @@ ul {
     display: flex; /* Flexbox를 사용하여 내부 요소를 정렬 */
     align-items: center; /* 내부 요소를 수직으로 가운데 정렬 */
     width: 100%;
+    heigh:100%;
        background-color: 
 #DDDDDD;
     font-family: "Raleway", sans-serif;
@@ -132,7 +133,7 @@ ul {
 }
 
 .question .count {
-    padding-left: 500px; /* 조회수와 질문 사이의 간격 조정 */
+    padding-left: 0px; /* 조회수와 질문 사이의 간격 조정 */
 }
 .answer {
       font-weight: bold;
@@ -257,6 +258,7 @@ padding:0px;
     background-color: #d9edf7;
      float: right;
 }
+
 
 
 
@@ -401,9 +403,9 @@ padding:0px;
 											for (var i = 0; i < list.length; i++) {
 												console.log(list[i].csNo); // csNo를 콘솔에 출력
 												html += '<div class="content">';
-												html += '<p class="question" data-csNo="' + list[i].csNo + '" style="cursor:pointer;">';
-												html += '<strong>질문:</strong> ' + list[i].csQuestion;
-												html += '<span class="count" style="padding-left: 150px;"> 조회수: ' + list[i].count + '</span>';
+												html += '<p class="question" data-csNo="' + list[i].csNo + '" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">';
+												html +=  list[i].csQuestion;
+												html += '<span class="count"> 조회수: ' + list[i].count + '</span>';
 												html += '</p>';
 												html += '<p class="answer" style="display:none;"><strong>답변:</strong> '
 														+ list[i].answer

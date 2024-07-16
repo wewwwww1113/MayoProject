@@ -1,8 +1,6 @@
 package com.kh.springProject.common.portone.model.controller;
 
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -110,4 +110,16 @@ public class FreeBoardServiceImp implements FreeBoardService {
         return fboardDao.deletePostsByKey(sqlSession, postKeys);
     }
 
+	@Override
+	public List<freeBoard> searchBoard(String type, String searchContent) {
+		  return fboardDao.searchBoard(sqlSession,type, searchContent);
+	}
+
+	@Override
+	public int getSearchCount(String searchOption, String searchContent) {
+		// TODO Auto-generated method stub
+		return fboardDao.getSearchCount(sqlSession,searchOption,searchContent);
+	}
+
+
 }

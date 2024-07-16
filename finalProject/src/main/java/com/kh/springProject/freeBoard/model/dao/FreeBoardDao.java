@@ -95,6 +95,40 @@ public class FreeBoardDao {
 	        return sqlSession.delete("freeMapper.deletePostsByKey", postKeys);
 	    }
 	
+		public List<freeBoard> selectSearchList(SqlSessionTemplate sqlSession, freeBoard freeBoard) {
+			// TODO Auto-generated method stub
+			return sqlSession.selectList("freeMapper.selectSearchList", freeBoard);
+		}
+
+		public List<freeBoard> searchBoard(SqlSessionTemplate sqlSession, String type, String searchContent) {
+
+			Map<String, Object> params = new HashMap<>();
+			params.put("type", type);
+			params.put("searchContent", searchContent);
+			return sqlSession.selectList("freeMapper.searchBoard", params);
+		}
+
+		public int getSearchCount(SqlSessionTemplate sqlSession, String searchOption, String searchContent) {
+			  
+			
+			String type;
+		        switch (searchOption) {
+		            case "writer":
+		                type = "BOARD_WRITER";
+		                break;
+		            case "title":
+		                type = "BOARD_TITLE";
+		                break;
+		            default:
+		                type = "BOARD_WRITER";
+		        }
+
+			return sqlSession.selectOne("freeMapper.getSearchCount", type);
+
+		}
+	    
+	    
+	    
 	
 }
 

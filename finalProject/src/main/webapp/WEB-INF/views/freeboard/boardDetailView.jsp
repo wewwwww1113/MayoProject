@@ -1,100 +1,152 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <style>
-        .content {
-            background-color:rgb(247, 245, 245);
-            width:80%;
-            margin:auto;
-        }
-        .innerOuter {
-            border:1px solid lightgray;
-            width:80%;
-            margin:auto;
-            padding:5% 10%;
-            background-color:white;
-        }
+<meta charset="UTF-8">
+<title>Document</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+.content {
+	background-color: rgb(247, 245, 245);
+	width: 80%;
+	margin: auto;
+}
+.a{
+black;}
 
-        table * {margin:5px;}
-        table {width:100%;}
-    </style>
+div.innerOuter {
+	border: 1px solid lightgray;
+	width: 80%;
+	margin-top: -20px;
+	padding: 2% 10%;
+	background-color: white;
+	
+	font-family: "Raleway", sans-serif;
+	font-weight: 300;
+    margin-left: 150px;
+}
+
+table * {
+	margin: 5px;
+}
+
+table {
+	width: 100%;
+}
+
+#h2 {
+	font-family: "Raleway", sans-serif;
+	font-size: 20px;
+}
+
+.btn-update {
+	background-color: grey;
+	color: #fff; /* 글자색 흰색 */
+	border: none; /* 테두리 없음 */
+	margin-top: -100px;
+}
+
+.btn.btn-secondary{
+    margin-top:-30px;
+}
+#contentArea{
+   margin-top:-30px;
+
+}
+
+
+
+.btn-delete {
+	background-color: black;
+	color: #fff; /* 글자색 흰색 */
+	border: none; /* 테두리 없음 */
+	margin-top: -100px;
+}
+
+ #da {
+        color: black; /* 링크 색상을 파란색으로 설정 */
+        text-decoration: none; /* 밑줄 제거 */
+    }
+
+    #da:hover {
+        text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+    }
+   
+</style>
 </head>
 <body>
-        
-    <%@include file="../common/header.jsp" %>
 
-    <div class="content">
-        <br><br>
-        <div class="innerOuter">
-            <h2>게시글 상세보기</h2>
-            <br>
+	<%@include file="../common/header.jsp"%>
 
-            <a class="btn btn-secondary" style="float:right;" href="">목록으로</a>
-            <br><br>
 
-            <table id="contentArea" algin="center" class="table">
-                <tr>
-                    <th width="100">제목</th>
-                    <td colspan="3">${b.boardTitle }</td>
-                </tr>
-                <tr>
-                    <th>작성자</th>
-                    <td>${b.boardWriter }</td>
-                    <th>작성일</th>
-                    <td>${b.createDate }</td>
-                </tr>
-                <tr>
-                    <th>첨부파일</th>
-                    <td colspan="3">
-                    	<c:choose>
-                    		<c:when test="${empty b.originName }">
+	<div class="content">
+		<br> <br>
+		<div class="innerOuter">
+			<h2>게시글</h2>
+			<br> <a class="btn btn-secondary" style="float: right;"
+				href="list.fr">목록으로</a> <br> <br>
+
+			<table id="contentArea" algin="center" class="table">
+				<tr>
+					<th width="100">제목</th>
+					<td colspan="3">${b.boardTitle }</td>
+				</tr>
+				<tr>
+					<th>작성자</th>
+					<td>${b.boardWriter }</td>
+					<th>조회수</th>
+					<td>${b.count }</td>
+					<th>작성일</th>
+					<td>${b.createDate }</td>
+				</tr>
+				<tr>
+					<th>첨부파일</th>
+					<td colspan="3"><c:choose>
+							<c:when test="${empty b.originName }">
                     			첨부파일이 없습니다.
                     		</c:when>
-                    		<c:otherwise>
-		                        <a href="${b.changeName}" download="${b.originName }">${b.originName }</a>
-                    		</c:otherwise>
-                    	</c:choose>
-                    	
-                    </td>
-                </tr>
-                <tr>
-                    <th>내용</th>
-                    <td colspan="3"></td>
-                </tr>
-                <tr>
-                    <td colspan="4"><p style="height:150px;">${b.boardContent}</p></td>
-                </tr>
-            </table>
-            <br>
+							<c:otherwise>
+								<a href="${b.changeName}"  id ="da" download="${b.originName }">${b.originName }</a>
+							</c:otherwise>
+						</c:choose></td>
+				</tr>
+				<tr>
+					<th>내용</th>
+					<td colspan="3"></td>
+				</tr>
+				<tr>
+					<td colspan="4"><p style="height: 150px;">${b.boardContent}</p></td>
+				</tr>
+			</table>
+			<br>
 
-            <div align="center">
-                <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
-                <c:if test="${loginUser.memberId eq b.boardWriter }">
-	                <a class="btn btn-primary" href="update.fr?boardNo=${b.boardNo }">수정하기</a>
-    	            <button type="button" class="btn btn-danger" id="deleteBtn">삭제하기</button>
-                </c:if>
-            </div>
-            <br><br>
-            
-            
-            
-            <!-- 만약 form태그로 작성한다면 아래와같은 모습이 될것 
+			<div align="center">
+				<!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
+				<c:if test="${loginUser.memberId eq b.boardWriter}">
+					<a class="btn btn-update" href="update.fr?boardNo=${b.boardNo}">수정하기</a>
+					<button type="button" class="btn btn-delete" id="deleteBtn">삭제하기</button>
+				</c:if>
+			</div>
+			<br> <br>
+
+
+
+			<!-- 만약 form태그로 작성한다면 아래와같은 모습이 될것 
             	 하지만 form태그를 여러번 사용하는것은 가독성이 좋지 않고 중복코드가 발생하게 된다.
             	 해당 작업을 함수로 처리하기
              -->
-<!--             <form action="delete.bo" method="post"> -->
-<%--             	<input type="hidden" value="${b.boardNo }" name="boardNo"> --%>
-<!--             	<input type="submit"> -->
-<!--             </form> -->
-            
-            <script>
+			<!--             <form action="delete.bo" method="post"> -->
+			<%--             	<input type="hidden" value="${b.boardNo }" name="boardNo"> --%>
+			<!--             	<input type="submit"> -->
+			<!--             </form> -->
+
+			<script>
             	//삭제하기 버튼을 눌렀을때 삭제 처리를 post 방식으로 진행하기
             	//mapping 주소만으로 쿼리스트링을 전달해버리면 삭제가 되어버리는 문제 발생 
             	//때문에 중요 작업들은 post방식으로 처리하여 url 노출을 피한다.
@@ -133,16 +185,16 @@
             	
             
             </script>
-            
-            
-            
 
-            <!--
+
+
+
+			<!--
             	댓글 기능 구현하기 ajax이용하여 
             	replyList 메소드명 사용하기 	
             
             -->
-            <script>
+			<script>
             	$(function(){
             		replyList();
             		
@@ -224,45 +276,47 @@
             	
             
             </script>
-            
-            
-            <table id="replyArea" class="table" align="center">
-                <thead>
-                	<c:choose>
-						<c:when test="${empty loginUser }">
-		                    <tr>
-		                        <th colspan="2">
-		                            <textarea class="form-control" cols="55" rows="2" style="resize:none; width:100%;" readonly>로그인 후 이용해주세요.</textarea>
-		                        </th>
-		                    </tr>
-						</c:when>     
-						<c:otherwise>
-							 <tr>
-		                        <th colspan="2">
-		                            <textarea class="form-control" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
-		                        </th>
-		                        <th style="vertical-align:middle"><button class="btn btn-secondary">등록하기</button></th>
-		                    </tr>
-						</c:otherwise>           	
-                	</c:choose>
-                    <tr>
-                        <td colspan="3">댓글(<span id="rcount"></span>)</td>
-                    </tr>
-                </thead>
-                <tbody>
-                   
-                </tbody>
-            </table>
-        </div>
-        <br><br>
-        
-        
-        
-        
 
-    </div>
-    
-    <jsp:include page="../common/footer.jsp" />
-    
+
+			<table id="replyArea" class="table" align="center">
+				<thead>
+					<c:choose>
+						<c:when test="${empty loginUser }">
+							<tr>
+								<th colspan="2"><textarea class="form-control" cols="55"
+										rows="2" style="resize: none; width: 100%;" readonly>로그인 후 이용해주세요.</textarea>
+								</th>
+							</tr>
+						</c:when>
+						<c:otherwise>
+							<tr>
+								<th colspan="2"><textarea class="form-control" id="content"
+										cols="55" rows="2" style="resize: none; width: 100%;"></textarea>
+								</th>
+								<th style="vertical-align: middle"><button
+										class="btn btn-secondary">등록하기</button></th>
+							</tr>
+						</c:otherwise>
+					</c:choose>
+					<tr>
+						<td colspan="3">댓글(<span id="rcount"></span>)
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+		</div>
+		<br> <br>
+
+
+
+
+
+	</div>
+
+	<jsp:include page="../common/footer.jsp" />
+
 </body>
 </html>

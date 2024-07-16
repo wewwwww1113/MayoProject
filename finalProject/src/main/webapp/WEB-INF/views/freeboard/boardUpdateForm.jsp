@@ -21,6 +21,26 @@
             padding:5% 10%;
             background-color:white;
         }
+.btn-update {
+	background-color: grey;
+	color: #fff; /* 글자색 흰색 */
+	border: none; /* 테두리 없음 */
+	margin-top: -100px;
+}
+
+.btn.btn-secondary{
+    margin-top:-30px;
+}
+#contentArea{
+   margin-top:-30px;
+
+}
+.btn-delete {
+	background-color: black;
+	color: #fff; /* 글자색 흰색 */
+	border: none; /* 테두리 없음 */
+	margin-top: -100px;
+}
 
         #updateForm>table {width:100%;}
         #updateForm>table * {margin:5px;}
@@ -68,8 +88,8 @@
                 <br>
 
                 <div align="center">
-                    <button type="submit" class="btn btn-primary">수정하기</button>
-                    <button type="button" class="btn btn-danger" onclick="javascript:history.go(-1);">이전으로</button>
+                    <button type="submit" class="btn-update">수정하기</button>
+                    <button type="button" class="btn-delete" onclick="javascript:history.go(-1);">이전으로</button>
                 </div>
             </form>
         </div>

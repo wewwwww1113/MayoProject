@@ -175,19 +175,11 @@
                         position: toiletPos,
                         map: map,
                         title: toilet.toiletName
-                        /* icon: {
-                            url: 'resources/uploadFiles/똥.jpg', // 사용자 정의 마커 이미지 경로
-                            scaledSize: new google.maps.Size(30, 30) // 이미지 크기 조정
-                        } */
-                        /* icon: {
-                            url: 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn-icons-png.freepik.com%2F256%2F2619%2F2619403.png&type=a340', // 사용자 정의 마커 이미지 경로
-                            scaledSize: new google.maps.Size(30, 30) // 이미지 크기 조정
-                        } */
                     });
 
                     // 화장실 정보를 포함한 정보창 설정
                     toiletMarker.addListener('click', () => {
-                        // 데이터 구조에 맞게 변수명을 수정하세요
+                        
                         const toiletName = toilet.toiletName || '화장실 이름 없음';
                         const toiletAddress = toilet.toiletAddress || '주소 정보 없음';
                         const toiletMhB = toilet.toiletMhB || '0';

@@ -410,7 +410,10 @@ public class MemberController {
         return "member/statistics";
     }
     
-
+    @GetMapping("scrap.me")
+    public String scrap() {
+        return "member/scrap";
+    }
     
     @GetMapping("/myPosts.me")
     public String myPosts(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
@@ -478,23 +481,4 @@ public class MemberController {
         model.addAttribute("b", board);
         return "freeBoard/boardDetailView";
     }
-    
-    
-    // 비밀번호 찾기 페이지로 이동
-    @GetMapping("/findPassword.me")
-    public String findPasswordForm() {
-        return "member/findPassword";
-    }
-
-    @PostMapping("findPassword.me")
-    public ModelAndView findPassword(@RequestParam("memberId") String memberId, 
-                                     @RequestParam("email") String email, ModelAndView mv) {
-        String tempPassword = memberService.findPassword(memberId, email);
-        mv.addObject("tempPassword", tempPassword);
-        mv.setViewName("member/showPasswordResult");
-        return mv;
-    }
-    
-    
-    
 }

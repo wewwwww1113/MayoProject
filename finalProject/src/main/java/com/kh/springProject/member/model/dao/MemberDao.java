@@ -1,6 +1,5 @@
 package com.kh.springProject.member.model.dao;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,17 +64,6 @@ public class MemberDao {
 	        return sqlSession.selectList("memberMapper.getReviewsByUser", params);
 	    }
 	    
-	    
-	    public Member findMemberByIdAndEmail(SqlSessionTemplate sqlSession, String memberId, String email) {
-	        Map<String, Object> params = new HashMap<>();
-	        params.put("memberId", memberId);
-	        params.put("email", email);
-	        return sqlSession.selectOne("memberMapper.findMemberByIdAndEmail", params);
-	    }
-
-	    public int updatePassword(SqlSessionTemplate sqlSession, Member member) {
-	        return sqlSession.update("memberMapper.updatePassword", member);
-	    }
 
 	
 

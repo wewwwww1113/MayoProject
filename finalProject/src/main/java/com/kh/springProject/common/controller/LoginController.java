@@ -55,62 +55,49 @@ public class LoginController {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(googleOAuthRequestParam, headers);
 
-        try {
-            ResponseEntity<GoogleResponse> resultEntity = restTemplate.exchange(
+        ResponseEntity<GoogleResponse> resultEntity = restTemplate.exchange(
                 "https://oauth2.googleapis.com/token",
                 HttpMethod.POST,
                 request,
                 GoogleResponse.class
-            );
+        );
 
-            if (resultEntity.getStatusCode().is2xxSuccessful()) {
-                String jwtToken = resultEntity.getBody().getIdToken();
-                System.out.println("JWT Token: " + jwtToken);
+        if (resultEntity.getStatusCode().is2xxSuccessful()) {
+            String jwtToken = resultEntity.getBody().getIdToken();
 
-                HttpHeaders infoHeaders = new HttpHeaders();
-                infoHeaders.set("Authorization", "Bearer " + jwtToken);
+            HttpHeaders infoHeaders = new HttpHeaders();
+            infoHeaders.set("Authorization", "Bearer " + jwtToken);
 
-                HttpEntity<Map<String, String>> tokenInfoRequest = new HttpEntity<>(infoHeaders);
-                ResponseEntity<GoogleInfResponse> resultEntity2 = restTemplate.exchange(
+            HttpEntity<Map<String, String>> tokenInfoRequest = new HttpEntity<>(infoHeaders);
+            ResponseEntity<GoogleInfResponse> resultEntity2 = restTemplate.exchange(
                     "https://www.googleapis.com/oauth2/v3/userinfo",
                     HttpMethod.GET,
                     tokenInfoRequest,
                     GoogleInfResponse.class
-                );
+            );
 
-                if (resultEntity2.getStatusCode().is2xxSuccessful()) {
-                    GoogleInfResponse googleInfo = resultEntity2.getBody();
-                    System.out.println("Google User Info: " + googleInfo);
+            if (resultEntity2.getStatusCode().is2xxSuccessful()) {
+                GoogleInfResponse googleInfo = resultEntity2.getBody();
+                Member member = new Member();
+                member.setEmail(googleInfo.getEmail());
+                member.setMemberNick(googleInfo.getName());
+                member.setMemberId(googleInfo.getSub());
+                member.setGender(googleInfo.getGender());
+                member.setBirthDate(googleInfo.getBirthDate());
 
-                    Member member = new Member();
-                    member.setEmail(googleInfo.getEmail());
-                    member.setMemberNick(googleInfo.getName());
-                    member.setMemberId(googleInfo.getSub());
-                    member.setGender(googleInfo.getGender());
-                    member.setBirthDate(googleInfo.getBirthDate());
-
-                    Member existingMember = memberService.selectMemberById(member.getMemberId());
-                    if (existingMember == null) {
-                        // 새로운 사용자 등록
-                        member.setMemberPwd(bcryptPasswordEncoder.encode(UUID.randomUUID().toString()));
-                        memberService.insertMember(member);
-                        session.setAttribute("loginUser", member);
-                    } else {
-                        // 기존 사용자 로그인 처리
-                        session.setAttribute("loginUser", existingMember);
-                    }
-
-                    return "redirect:/";
+                Member existingMember = memberService.selectMemberById(member.getMemberId());
+                if (existingMember == null) {
+                    // 새로운 사용자 등록
+                    member.setMemberPwd(bcryptPasswordEncoder.encode(UUID.randomUUID().toString()));
+                    memberService.insertMember(member);
+                    session.setAttribute("loginUser", member);
                 } else {
-                    System.err.println("Failed to get user info: " + resultEntity2.getStatusCode());
-                    System.err.println(resultEntity2.getBody());
+                    // 기존 사용자 로그인 처리
+                    session.setAttribute("loginUser", existingMember);
                 }
-            } else {
-                System.err.println("Failed to get token: " + resultEntity.getStatusCode());
-                System.err.println(resultEntity.getBody());
+
+                return "redirect:/";
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return "redirect:/loginFailed";

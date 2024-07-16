@@ -189,7 +189,7 @@
                     <button type="submit" class="login-button">로그인</button>
                 </form>
                 <div class="additional-links">
-                   <a href="${pageContext.request.contextPath}/findIdPwd.me">아이디 찾기</a> / <a href="findPassword.me">비밀번호 찾기</a> / <a href="${pageContext.request.contextPath}/enrollCheckForm">회원가입</a>
+                   <a href="${pageContext.request.contextPath}/findIdPwd.me">아이디 찾기</a> / <a href="findIdPwd.jsp">비밀번호 찾기</a> / <a href="${pageContext.request.contextPath}/enrollCheckForm">회원가입</a>
                 </div>
                 <div class="social-login-buttons">
                     <button class="google-login" onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?client_id=63483462058-fju3itdbk36q6m7c4pkvv3qrqoujfngc.apps.googleusercontent.com&redirect_uri=http://localhost:8080/api/v1/oauth2/google/callback&response_type=code&scope=email%20profile%20openid&access_type=offline'">

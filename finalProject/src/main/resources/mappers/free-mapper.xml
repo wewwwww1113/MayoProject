@@ -198,6 +198,40 @@
         WHERE FB.STATUS = 'Y'
         AND ${type} LIKE '%' || #{searchContent} || '%'
     </select>
+  
+  <!-- 검색 기능 추가 -->
+   <select id="searchPostsByUserKey" parameterType="map" resultMap="freeboardResultSet">
+    SELECT BOARD_NO,
+           BOARD_TITLE,
+           BOARD_WRITER,
+           BOARD_CONTENT,
+           ORIGIN_NAME,
+           CHANGE_NAME,
+           COUNT,
+           CREATE_DATE,
+           STATUS,
+           CATEGORY_NO
+    FROM FREEBOARD
+    WHERE BOARD_WRITER = #{userKey, jdbcType=VARCHAR}
+    AND STATUS = 'Y'
+    <if test="boardTitle != null and boardTitle != ''">
+        AND BOARD_TITLE LIKE '%' || #{boardTitle, jdbcType=VARCHAR} || '%'
+    </if>
+    <if test="boardContent != null and boardContent != ''">
+        AND BOARD_CONTENT LIKE '%' || #{boardContent, jdbcType=VARCHAR} || '%'
+    </if>
+</select>
+
+    <!-- 글 삭제 -->
+    <delete id="deletePostsByKey" parameterType="list">
+    DELETE FROM FREEBOARD
+    WHERE BOARD_NO IN
+    <foreach item="boardNo" collection="list" open="(" separator="," close=")">
+        #{boardNo}
+    </foreach>
+    AND STATUS = 'Y'
+</delete>
+ 
 
 
 </mapper>

@@ -43,4 +43,8 @@ public interface FreeBoardService {
 	    int deletePostsByKey(List<Integer> postKeys);
 
 
+		List<freeBoard> searchBoard(String type, String searchContent);
+
+		int getSearchCount(String searchOption, String searchContent);
+
 }

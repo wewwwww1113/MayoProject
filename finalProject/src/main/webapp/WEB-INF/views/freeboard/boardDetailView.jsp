@@ -210,39 +210,28 @@ table {
                 				replyContent : $("#content").val()
                 			},
                 			success : function(result){
-                				//dml구문 실행 후 처리된 행 수
-                				
                 				if(result>0){//성공
-                					alert("댓글작성 성공!");
+                					alert("댓글 작성 완료");
                 					replyList(); //추가된 댓글정보까지 다시 조회
                 					$("#content").val("");
                 				}else{
-                					alert("댓글작성 실패!");
+                					alert("댓글작성 실패");
                 				}
                 			},
                 			error : function(){
                 				console.log("통신오류");
                 			}
                 		});
-                		
-                		
                 	});
-            	
             	});
-            	
-            	
-            	//댓글 목록 비동기로 조회해오기
             	function replyList(){
-            		
             		$.ajax({
             			url : "replyList.fr",
             			data : {
             				boardNo : ${b.boardNo}
             			},
             			success : function(result){
-            				
             				var str = "";
-            				
             				for(var i in result){
             					str += "<tr>"
             						+"<th>"+result[i].replyWriter+"</th>"
@@ -250,10 +239,7 @@ table {
             						+"<td>"+result[i].createDate+"</td>"
             						+"</tr>";
             				}
-            				
-            				//만들어준 댓글목록 문자열 넣어주기 
             				$("#replyArea tbody").html(str);
-            				//댓글 개수 넣기
             				$("#rcount").text(result.length);
             				
             			},

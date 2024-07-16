@@ -38,6 +38,8 @@ public interface MemberService {
      
     // 내가 쓴 리뷰 관리 기능
     List<ReviewReplyVO> getReviewsByUser(String memberNo, PageInfo pi);
+    
+    String findPassword(String memberId, String email);
 	
 
 }

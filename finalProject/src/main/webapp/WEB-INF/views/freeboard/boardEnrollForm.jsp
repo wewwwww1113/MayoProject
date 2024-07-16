@@ -14,27 +14,42 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
 .content {
-	background-color: rgb(247, 245, 245);
-	width: 80%;
-	margin: auto;
+            background-color:rgb(247, 245, 245);
+            width:80%;
+            margin:auto;
+        }
+        .innerOuter {
+            border:1px solid lightgray;
+            width:80%;
+            margin:auto;
+            padding:5% 10%;
+            background-color:white;
+        }
+
+        #enrollForm>table {width:100%;}
+        #enrollForm>table * {margin:5px;}
+        
+        .btn-update {
+	background-color: grey;
+	color: #fff; /* 글자색 흰색 */
+	border: none; /* 테두리 없음 */
 }
 
-.innerOuter {
-	border: 1px solid lightgray;
-	width: 80%;
-	margin: auto;
-	padding: 5% 10%;
-	background-color: white;
+
+#contentArea{
+   margin-top:-30px;
+
 }
 
-#enrollForm>table {
-	width: 100%;
-}
 
-#enrollForm>table * {
-	margin: 5px;
+   
+
+.btn-delete {
+	background-color: black;
+	color: #fff; /* 글자색 흰색 */
+	border: none; /* 테두리 없음 */
 }
-</style>
+    </style>
 </head>
 <body>
 
@@ -79,8 +94,8 @@
     <br>
 
 				<div align="center">
-					<button type="submit" class="btn btn-primary">등록하기</button>
-					<button type="reset" class="btn btn-danger">취소하기</button>
+					<button type="submit" class="btn btn-update">등록하기</button>
+					<button type="reset" class="btn btn-delete">취소하기</button>
 				</div>
 			</form>
 

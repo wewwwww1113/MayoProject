@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="csMapper">
+
+
+
+	<resultMap type="csBoard" id="csboardResultSet">
+		<result column="CS_NO" property="csNo" />
+		<result column="CS_QUESTION" property="csQuestion" />
+		<result column="ANSWER" property="answer" />
+		<result column="CATEGORY" property="category" />
+		<result column="COUNT" property="count" />
+	</resultMap>
+
+	<select id="selectList" resultMap="csboardResultSet">
+		SELECT CS_NO
+		,CS_QUESTION,COUNT,ANSWER
+		FROM CSBOARD
+		WHERE category = #{category}
+
+
+	</select>
+
+
+
+	<update id="incrementViewCount" parameterType="int">
+		UPDATE CSBOARD
+		SET
+		COUNT = COUNT + 1
+		WHERE CS_NO = #{csNo}
+	</update>
+
+	<select id="selectLodgingMain" resultMap="csboardResultSet">
+  <![CDATA[
+        SELECT CS_NO, CS_QUESTION, ANSWER, COUNT
+        FROM (
+            SELECT
+                CS_NO,
+                CS_QUESTION,
+                ANSWER,
+                COUNT,
+                ROW_NUMBER() OVER (ORDER BY COUNT DESC) as RNUM
+            FROM CSBOARD
+        ) temp
+        WHERE RNUM <= 5
+        ]]>
+	</select>
+
+</mapper>

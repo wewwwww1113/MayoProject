@@ -1,6 +1,9 @@
 package com.kh.springProject.review.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
+import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
+import com.kh.springProject.review.model.vo.ReviewReplyVO;
 
 @Repository
 public class ReviewDao {
@@ -44,9 +49,7 @@ public class ReviewDao {
 	
 	//게시글 작성
 	public int insertReview(SqlSessionTemplate sqlSession, Review r) {
-		
-		System.out.println(1);
-		
+				
 		return sqlSession.insert("reviewMapper.insertReview", r);
 	}
 	
@@ -76,5 +79,50 @@ public class ReviewDao {
 		return sqlSession.insert("reviewMapper.insertReply",r);
 
 	}
+
+	//토탈 좋아요
+	public int insertLike(SqlSessionTemplate sqlSession, ReviewReplyLikeVO like) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("reviewMapper.postLikeReview", like);
+	}
+
+	//각 게시물
+	public int personLike(SqlSessionTemplate sqlSession, ReviewReplyLikeVO like) {
+	    return sqlSession.selectOne("reviewMapper.personLike", like);
+	}
+
+	
+	
+	//-----------------------------
+	public int scrapCheck(SqlSessionTemplate sqlSession, String memberNo, int toiletNo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("memberNo", memberNo);
+		paramMap.put("toiletNo", toiletNo);
+		return sqlSession.selectOne("reviewMapper.scrapCheck",paramMap);
+	}
+
+	public int scrap(SqlSessionTemplate sqlSession, String memberNo, int toiletNo) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("memberNo", memberNo);
+		paramMap.put("toiletNo", toiletNo);
+		return sqlSession.insert("reviewMapper.scrap",paramMap);
+	}
+
+	public int scrapCancel(SqlSessionTemplate sqlSession, String memberNo, int toiletNo) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("memberNo", memberNo);
+		paramMap.put("toiletNo", toiletNo);
+		return sqlSession.delete("reviewMapper.scrapCancel",paramMap);
+	}
+	
+	public void updateStar(SqlSessionTemplate sqlSession, String memberNo, int toiletNo, int starCnt) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("memberNo",	memberNo);
+		paramMap.put("toiletNo",	toiletNo);
+		paramMap.put("starCnt",		starCnt);
+		sqlSession.delete("reviewMapper.updateStar", paramMap);
+	}
+
 
 }

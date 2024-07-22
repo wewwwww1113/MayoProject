@@ -1,6 +1,8 @@
 package com.kh.springProject.review.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.review.model.dao.ReviewDao;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
+import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
+import com.kh.springProject.review.model.vo.ReviewReplyVO;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -90,11 +94,55 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDao.replyList(sqlSession,reviewNo);
 	}
 
-	//게시글 조회수 top5 조회
 	@Override
 	public ArrayList<Review> selectTopList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	//토탈
+	@Override
+	public int postLikeReview(ReviewReplyLikeVO like) {
+		// TODO Auto-generated method stub
+		return reviewDao.insertLike(sqlSession,like);
+	}
+
+	//각각
+	@Override
+	public int personLike(ReviewReplyLikeVO like) {
+		// TODO Auto-generated method stub
+		return reviewDao.personLike(sqlSession,like);
+	}
+
+	
+	
+	//----------------------------------------
+	
+	@Override
+	public int scrapCheck(String memberNo, int toiletNo) {
+		// TODO Auto-generated method stub
+		return reviewDao.scrapCheck(sqlSession,memberNo, toiletNo);
+	}
+
+	@Override
+	public int scrap(String memberNo, int toiletNo) {
+		// TODO Auto-generated method stub
+		return reviewDao.scrap(sqlSession,memberNo,toiletNo);
+	}
+
+	@Override
+	public int scrapCancel(String memberNo, int toiletNo) {
+		// TODO Auto-generated method stub
+		return reviewDao.scrapCancel(sqlSession,memberNo,toiletNo);
+	}
+
+	@Override
+	public void updateStar(String memberNo, int toiletNo, int starCnt) {
+		reviewDao.updateStar(sqlSession, memberNo, toiletNo, starCnt);
+	}
+
+	
+	
 
 }

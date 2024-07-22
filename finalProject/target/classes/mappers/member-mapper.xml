@@ -63,19 +63,19 @@
         )
 </insert>
 
-    <update id="updateMember" parameterType="Member">
-        UPDATE MEMBER
-           SET MEMBER_NICK = #{memberNick},
-               MEMBER_PWD = #{memberPwd},
-               GENDER = #{gender},
-               BIRTH_DATE = #{birthDate},
-               EMAIL = #{email},
-               MODIFY_DATE = SYSDATE,
-               STATUS = #{status},
-               IS_ADMIN = #{isAdmin}
-         WHERE MEMBER_ID = #{memberId}
-           AND STATUS = 'Y'
-    </update>
+    <update id="updateMember" parameterType="member">
+    UPDATE MEMBER
+    SET MEMBER_NICK = #{memberNick},
+        MEMBER_PWD = #{memberPwd},
+        GENDER = #{gender},
+        BIRTH_DATE = #{birthDate},
+        EMAIL = #{email},
+        MODIFY_DATE = SYSDATE,
+        STATUS = #{status},
+        IS_ADMIN = #{isAdmin}
+    WHERE MEMBER_ID = #{memberId}
+      AND STATUS = 'Y'
+</update>
 
      <!-- 비밀번호 확인 쿼리 -->
     <select id="checkPassword" parameterType="String" resultType="String">
@@ -89,11 +89,95 @@
     
 
     
-  <select id="findMemberId" parameterType="Member" resultType="String">
+ <select id="findMemberId" parameterType="member" resultType="string">
     SELECT MEMBER_ID
     FROM MEMBER
     WHERE MEMBER_NICK = #{memberNick}
       AND EMAIL = #{email}
 </select>
-    
+
+	<select id="selectMemberById" parameterType="String" resultMap="memberResultSet">
+    SELECT MEMBER_NO,
+           MEMBER_NICK,
+           MEMBER_ID,
+           MEMBER_PWD,
+           GENDER,
+           BIRTH_DATE,
+           EMAIL,
+           ENROLL_DATE,
+           MODIFY_DATE,
+           STATUS,
+           IS_ADMIN
+      FROM MEMBER
+     WHERE MEMBER_ID = #{memberId}
+</select>
+
+
+
+<select id="findMemberNo" resultType="String">
+    SELECT *
+    FROM MEMBER
+    WHERE MEMBER_ID = #{memberId}
+</select>
+
+
+<select id="reviewMemberId" resultType="String">
+	select *
+	from member
+	where member_id= #{memberId}
+
+</select>
+ 
+
+
+  <!-- 내가 쓴 리뷰 개수 조회 -->
+<select id="getReviewCountByUser" parameterType="string" resultType="int">
+    SELECT COUNT(*) 
+    FROM REVIEW_REPLY 
+    WHERE USER_KEY = #{memberNo}
+</select>
+
+<!-- 내가 쓴 리뷰 목록 조회 -->
+<select id="getReviewsByUser" parameterType="map" resultType="ReviewReplyVO">
+    SELECT * FROM (
+        SELECT ROWNUM AS row_num, A.* FROM (
+            SELECT USER_KEY, REVIEW_REPLY_KEY, CONTENT, CREATE_TIME, UPDATE_TIME, DEL_YN, TOILET_NO 
+            FROM REVIEW_REPLY 
+            WHERE USER_KEY = #{memberNo} 
+            ORDER BY CREATE_TIME DESC
+        ) A
+    ) WHERE row_num BETWEEN #{startRow} AND #{endRow}
+</select>
+
+
+ <!-- 이메일과 아이디로 회원 찾기 -->
+    <select id="findMemberByIdAndEmail" parameterType="map" resultMap="memberResultSet">
+        SELECT MEMBER_NO,
+               MEMBER_NICK,
+               MEMBER_ID,
+               MEMBER_PWD,
+               GENDER,
+               BIRTH_DATE,
+               EMAIL,
+               ENROLL_DATE,
+               MODIFY_DATE,
+               STATUS,
+               IS_ADMIN
+          FROM MEMBER
+         WHERE MEMBER_ID = #{memberId}
+           AND EMAIL = #{email}
+           AND STATUS = 'Y'
+    </select>
+
+    <update id="updatePassword" parameterType="Member">
+        UPDATE MEMBER 
+        SET MEMBER_PWD = #{memberPwd} 
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
+
+
+
 </mapper>
+
+

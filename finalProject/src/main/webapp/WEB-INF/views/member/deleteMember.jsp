@@ -9,96 +9,175 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 탈퇴</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;500&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
+            background-color: #f5f5f5;
+            font-family: 'Raleway', sans-serif;
             margin: 0;
-            padding-top: 60px; /* 헤더 높이만큼 패딩 추가 */
+            padding: 0;
+            padding-bottom: 60px; /* 추가: 푸터를 침범하지 않도록 하기 위해 */
         }
+
         .header {
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: #003366;
+            background-color: #333;
             color: white;
             padding: 10px 0;
             text-align: center;
             z-index: 1000;
         }
+
         .header a {
             color: white;
             margin: 0 20px;
             text-decoration: none;
         }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            margin: 100px auto 0;
-        }
-        .container h2 {
-            text-align: center;
+
+        .sidebar {
+            background-color: #ffffff;
             color: #333;
+            width: 220px;
+            height: calc(100vh - 80px); /* 헤더 높이만큼 빼줌 */
+            position: fixed;
+            top: 80px; /* 헤더 높이 */
+            left: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: 'Raleway', sans-serif;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
         }
-        .container form {
-            display: flex;
-            flex-direction: column;
+
+        .sidebar a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            margin: 30px 0; /* 사이 간격을 넓히기 위해 30px로 설정 */
+            font-size: 16px;
+            transition: background-color 0.3s ease, padding-left 0.3s ease;
         }
-        .container form label {
-            margin: 10px 0 5px;
-            font-size: 14px;
-            color: #555;
+
+        .sidebar a:hover {
+            background-color: #f0f0f0;
+            padding-left: 10px;
         }
-        .container form input {
+
+        .container {
+            margin-left: 240px;
+            padding: 20px;
+            padding-bottom: 60px; /* 푸터를 침범하지 않도록 추가 패딩 */
+            box-sizing: border-box;
+            min-height: calc(100vh - 80px); /* 헤더 높이만큼 빼줌 */
+        }
+
+        .content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .content h2 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: calc(100% - 20px);
             padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
+            margin: 0 auto;
+            display: block;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 14px;
         }
-        .container form .button-container {
+
+        .button-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 20px;
         }
-        .container form .button-container button {
+
+        .button-container button {
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             font-size: 14px;
             cursor: pointer;
         }
-        .container form .button-container .submit-button {
-            background-color: red;
-            color: white;
+
+        .submit-button {
+            background-color: #333; /* 검정색 배경 */
+            color: white; /* 흰색 글자 */
         }
-        .container form .button-container .cancel-button {
+
+        .submit-button:hover {
+            background-color: #555;
+        }
+
+        .cancel-button {
             background-color: #ffc107;
             color: white;
+        }
+
+        .cancel-button:hover {
+            background-color: #e0a800;
         }
     </style>
 </head>
 <body>
+    <div class="sidebar">
+        <div class="profile">
+            <p>${loginUser.memberNick}</p>
+        </div>
+       <a href="${pageContext.request.contextPath}/mypage.me">로그인 정보</a>
+        <a href="${pageContext.request.contextPath}/v1/review/reply/scrap.me">즐겨찾기</a>
+        <a href="${pageContext.request.contextPath}/update.me">내 정보 수정</a>
+        <a href="${pageContext.request.contextPath}/myReviews.me">내가 쓴 리뷰</a>
+        <a href="${pageContext.request.contextPath}/myPosts.me">내가 작성한 글</a>
+        <a href="${pageContext.request.contextPath}/statistics.me">통계</a>
+        <a href="${pageContext.request.contextPath}/deleteMember.me">회원탈퇴</a>
+    </div>
+
     <div class="container">
-        <h2>회원 탈퇴</h2>
-        <c:if test="${not empty error}">
-            <p style="color:red;">${error}</p>
-        </c:if>
-        <form id="deleteForm" action="${pageContext.request.contextPath}/deleteAccount.me" method="post">
-            <div class="form-group">
-                <label for="password">비밀번호</label>
-                <input type="password" id="password" name="memberPwd" placeholder="비밀번호를 입력하세요" required>
-            </div>
-            <div class="form-group">
-                <label for="confirmPassword">비밀번호 확인</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요" required>
-            </div>
-            <div class="button-container">
-                <button type="button" class="submit-button" onclick="confirmDelete()">회원 탈퇴</button>
-                <button type="button" class="cancel-button" onclick="location.href='cancel.page'">취소</button>
-            </div>
-        </form>
+        <div class="content">
+            <h2>회원 탈퇴</h2>
+            <c:if test="${not empty error}">
+                <p style="color:red;">${error}</p>
+            </c:if>
+            <form id="deleteForm" action="${pageContext.request.contextPath}/deleteAccount.me" method="post">
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" name="memberPwd" placeholder="비밀번호를 입력하세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">비밀번호 확인</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요" required>
+                </div>
+                <div class="button-container">
+                    <button type="button" class="submit-button" onclick="confirmDelete()">회원 탈퇴</button>
+                    <button type="button" class="cancel-button" onclick="location.href='cancel.page'">취소</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script>

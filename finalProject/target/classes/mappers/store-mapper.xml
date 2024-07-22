@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="storeMapper">
+	
+	<resultMap type="Store" id="storeResultSet">
+		<result column="STORE_NO" property="storeNo"/>
+		<result column="PD_NAME" property="pdName"/>
+		<result column="PD_DESCRIPTION" property="pdDescription"/>
+		<result column="PD_IMAGE" property="pdImage"/>
+		<result column="PRICE" property="price"/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
+	
+	<resultMap type="Cart" id="CartResultSet">
+        <id column="CART_ID" property="cartId"/>
+        <result column="MEMBER_NO" property="memberNo"/>
+        <result column="STORE_NO" property="storeNo"/>
+        <result column="QUANTITY" property="quantity"/>
+        <association property="store" javaType="Store">
+            <id column="store_storeNo" property="storeNo"/>
+            <result column="store_pdName" property="pdName"/>
+            <result column="store_pdDescription" property="pdDescription"/>
+            <result column="store_pdImage" property="pdImage"/>
+            <result column="store_price" property="price"/>
+            <result column="store_status" property="status"/>
+        </association>
+    </resultMap>
+	
+    <select id="selectAllStores" resultMap="storeResultSet" parameterType="String">
+        SELECT STORE_NO,
+        	   PD_NAME,
+        	   PD_DESCRIPTION,
+        	   PD_IMAGE,
+        	   PRICE,
+        	   STATUS
+        FROM STORE
+        WHERE STATUS = 'Y'
+        ORDER BY STORE_NO DESC
+    </select>
+
+    <select id="findByStoreNo" resultMap="storeResultSet" parameterType="int">
+        SELECT STORE_NO,
+        	   PD_NAME,
+        	   PD_DESCRIPTION,
+        	   PD_IMAGE,
+        	   PRICE,
+        	   STATUS
+        FROM STORE
+        WHERE STORE_NO = #{storeNo}
+    </select>
+
+    <insert id="insertStore" parameterType="Store">
+        INSERT INTO STORE (STORE_NO,
+        				   PD_NAME,
+        				   PD_DESCRIPTION,
+        				   PD_IMAGE,
+        				   PRICE,
+        				   STATUS)
+        VALUES (STORE_SEQ.NEXTVAL,
+        		#{pdName},
+        		#{pdDescription},
+        		#{pdImage},
+        		#{price},
+        		'Y')
+    </insert>
+
+    <update id="updateStore" parameterType="Store">
+        UPDATE STORE
+        SET PD_NAME = #{pdName},
+        	PD_DESCRIPTION = #{pdDescription},
+        	PD_IMAGE = #{pdImage},
+        	PRICE = #{price}
+        WHERE STORE_NO = #{storeNo}
+    </update>
+
+    <delete id="deleteStore" parameterType="int">
+        UPDATE STORE
+        SET STATUS = 'N'
+        WHERE STORE_NO = #{storeNo}
+    </delete>
+    
+    <insert id="insertCart">
+        INSERT INTO CART (CART_ID, MEMBER_NO, STORE_NO, QUANTITY)
+        VALUES (CART_SEQ.NEXTVAL, #{memberNo}, #{storeNo}, #{quantity})
+    </insert>
+    
+    <select id="selectCartByMember" parameterType="String" resultMap="CartResultSet">
+        SELECT c.CART_ID, c.MEMBER_NO, c.STORE_NO, c.QUANTITY,
+               s.STORE_NO AS store_storeNo, s.PD_NAME AS store_pdName, s.PD_DESCRIPTION AS store_pdDescription,
+               s.PD_IMAGE AS store_pdImage, s.PRICE AS store_price, s.STATUS AS store_status
+        FROM CART c
+        JOIN STORE s ON c.STORE_NO = s.STORE_NO
+        WHERE c.MEMBER_NO = #{memberNo}
+    </select>
+	<delete id="deleteCart" parameterType="int">
+        DELETE FROM CART
+        WHERE CART_ID = #{cartId}
+    </delete>
+    <update id="updateCartQuantity" parameterType="cart">
+	    UPDATE cart
+	    SET quantity = #{quantity}
+	    WHERE cart_id = #{cartId}
+	</update>
+	<select id="isItemInCart" parameterType="map" resultType="int">
+        SELECT COUNT(*) 
+        FROM cart 
+        WHERE member_no = #{memberNo} AND store_no = #{storeNo}
+    </select>
+</mapper>

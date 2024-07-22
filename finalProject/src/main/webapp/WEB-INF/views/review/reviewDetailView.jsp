@@ -144,7 +144,7 @@
                 			url : "insertReply.re",
                 			type : "post",
                 			data : {
-                				refBno : ${r.reviewNo},
+                				refRno : "${r.reviewNo}",
                 				replyWriter : "${loginUser.memberId}",
                 				replyContent : $("#content").val()
                 			},

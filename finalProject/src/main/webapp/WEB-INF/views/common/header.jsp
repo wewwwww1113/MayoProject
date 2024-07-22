@@ -8,228 +8,168 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <title>Document</title>
-  <style>
-    @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+<style>
+    /* 노말라이즈 */
+    body, ul, li, h1 {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
 
-html {
-    font-family: "Noto Sans KR", sans-serif;
-}
+    a {
+        color: #FFFFFF; /* 기본 글자 색상 흰색 */
+        text-decoration: none; /* 모든 a 태그에 밑줄 없애기 */
+        transition: color 0.3s ease, background-color 0.3s ease; /* 부드러운 전환 효과 */
+    }
 
-/* 노말라이즈 */
-body, ul, li, h1 {
-    margin:0;
-    padding:0;
-    list-style:none;
-}
+    /* 글자 호버 */
+    a:hover {
+        color: black; 
+        text-decoration: none; /* hover 상태에서도 밑줄 없애기 */
+    }
 
-a {
-    color:inherit;
-    text-decoration:none;
-}
+    body {
+        background: rgb(255, 255, 255);
+        font-family: Arial, sans-serif;
+        margin: 0; /* 바디 마진을 0으로 설정 */
+        padding: 0; /* 바디 패딩을 0으로 설정 */
+    }
 
-/* 라이브러리 */
-.con {
-    margin:0 auto;
-}
-
-.img-box > img {
-    width:100%;
-    display:block;
-}
-
-.row::after {
-    content:"";
-    display:block;
-    clear:both;
-}
-
-.cell {
-    float:left;
-    box-sizing:border-box;
-}
-
-.cell-right {
-    float:right;
-    box-sizing:border-box;
-}
-
-.margin-0-auto {
-    margin:0 auto;
-}
-
-.block {
-    display:block;
-}
-
-.inline-block {
-    display:inline-block;
-}
-
-.text-align-center {
-    text-align:center;
-}
-
-.line-height-0-ch-only {
-    line-height:0;
-}
-
-.line-height-0-ch-only > * {
-    line-height:normal;
-}
-
-.relative {
-    position:relative;
-}
-
-.absolute-left {
-    position:absolute;
-    left:0;
-}
-
-.absolute-right {
-    position:absolute;
-    right:0;
-}
-
-.absolute-middle {
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-}
-
-.width-100p {
-    width:100%;
-}
-
-.table {
-    display:table;
-}
-
-.table-cell {
-    display:table-cell;
-}
-
-.vertical-align-top {
-    vertical-align:top;
-}
-
-.vertical-align-middle {
-    vertical-align:middle;
-}
-
-.vertical-align-bottom {
-    vertical-align:bottom;
-}
-
-/* 커스텀 */
-
-.con {
-    width:1180px;
-}
-
-.con-min-width {
-    min-width:1180px;
-}
-
-/* 반응형 레이아웃 */
-/*
-.con {
-    max-width:1150px;
-}
-
-.con-min-width {
-    min-width:320px;
-
-html, body {
-    overflow-x:hidden;
-}
-*/
-
-body {background:rgb(255, 255, 255);}
-
-header {    
-    background:-webkit-linear-gradient(rgb(91, 143, 255) 50px,rgba(40, 139, 143, 0.2) 50px);
+    header {
+    background: gray;
     transition: 0.3s ease-in;
-    height:50px;
-    overflow:hidden;
+    height: 80px; /* 헤더바 높이를 80px로 설정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* 헤더를 상위 요소로 설정 */
+}
+.logo {
+    position: relative; /* 헤더 내에서 상대적 위치 설정 */
+    display: inline-block; /* 인라인 블록 요소로 설정 */
+    z-index: 1; /* 다른 요소 위에 표시되도록 설정 */
 }
 
-nav {width:960px; margin:0 auto;}
-nav > ul > li {float:left; line-height:50px; margin-right:130px; position: relative;}
-nav > ul > li ul{ width:100%; opacity:0; position: absolute; transition:0.3s 0.2s;}
-nav > ul > li ul li{white-space:nowrap;}
+.logo img {
+    height: 60px; /* 원하는 높이로 설정 */
+    
+}
+    nav {
+        max-width: 960px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-nav > ul > li:hover ul{opacity:1; }
+    nav > ul {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
 
-  </style>
+    nav > ul > li {
+        margin-right: 20px; /* 글자 사이의 간격을 넓히기 위해 margin-right를 50px로 변경 */
+        position: relative;
+        display: flex;
+        align-items: center; /* 세로 중앙 정렬 */
+        height: 50px; /* li 높이 설정 */
+    }
+
+    nav > ul > li a {
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px; /* 너비를 120px 이상으로 설정 */
+        height: 100%;
+        text-align: center;
+        white-space: nowrap; /* 줄 바꿈 방지 */
+    }
+
+    nav > ul > li ul {
+        width: 100%;
+        opacity: 0;
+        position: absolute;
+        top: 50px; /* 서브 메뉴가 올바른 위치에 나타나도록 top 값을 50px로 변경 */
+        left: 0;
+        background: white;
+        transition: opacity 0.3s 0.2s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    nav > ul > li ul li {
+        white-space: nowrap;
+        padding: 10px;
+    }
+
+    nav > ul > li:hover ul {
+        opacity: 1;
+    }
+
+    .login-menu {
+        margin-left: auto;
+    }
+
+    .toggle-text {
+        display: inline-block;
+        width: 150px; /* 너비를 충분히 늘립니다. */
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap; /* 한 줄로 유지 */
+        transition: opacity 0.5s ease-in-out; /* 부드러운 전환 효과 */
+        font-size: 20px; /* 글자 크기 설정 */
+    }
+</style>
 </head>
 <body>
   <header>
+  
+  <div class="logo">
+		<a href="${pageContext.request.contextPath}">
+		<img src="${pageContext.request.contextPath}/resources/uploadFiles/mayo.jpg" alt="Mayo Image">
+  </div>
     <nav>
-        <ul class="clearfix">
-            <li>메뉴 1
-                <ul>
-                    <li>상세 1</li>
-                    <li>상세 2</li>
-                </ul>
-            </li>
-            <li>메뉴 2
-                <ul>
-                    <li>상세 1</li>
-                    <li>상세 2</li>
-                    <li>상세 3</li>
-                    <li>상세 4</li>
-                </ul>
-            </li>
-            <li>리뷰게시판
-                <ul>
-                    <li><a href="list.re">리뷰 </a></li>
-                    <li><a href="list2.ra">랭킹</a></li>
-                    <li><a href="test.re">비동기통신 테스트</a></li>
-                </ul>
-            </li>
-            <li>메뉴 4
-                <ul>
-                    <li>상세 1</li>
-                    <li>상세 2</li>
-                    <li>상세 3</li>
-                </ul>
-            </li>
+        <ul>
+            <li><a href="${pageContext.request.contextPath}/map">MAP</a></li>
+            <li><a href="list.st">STORE</a></li>
+            <li><a href="test.re">REVIEW</a></li>
+            <li><a href="rank.ra">RANK</a></li>
+            <li><a href="list.fr">BOARD</a></li>
+            <li><a href="list.cs">SERVICE</a></li>
             <c:choose>
                 <c:when test="${not empty loginUser}">
-                    <li style="margin-left:auto;">
-                        <c:out value="${loginUser.memberNick}"/>님 환영!
-                        <ul>
-                            <li><a href="${pageContext.request.contextPath}/mypage.me">마이페이지</a></li>
-                            <li><a href="${pageContext.request.contextPath}/logout.me">로그아웃</a></li>
-                        </ul>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/mypage.me">
+                            <span id="welcomeText" class="toggle-text"><c:out value="${loginUser.memberNick}"/>님 환영!</span>
+                        </a>
                     </li>
+                    <li><a href="${pageContext.request.contextPath}/logout.me">LOGOUT</a></li>
                 </c:when>
                 <c:otherwise>
-                    <li>로그인
-                        <ul>
-                            <li><a href="${pageContext.request.contextPath}/loginForm.me">로그인하기</a></li>
-                            
-                        </ul>
-                    </li>
+                    <li class="login-menu"><a href="${pageContext.request.contextPath}/login.me">LOGIN</a></li>
                 </c:otherwise>
             </c:choose>
         </ul>
     </nav>
-</header>
+  </header>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const welcomeTextElement = document.getElementById('welcomeText');
+        const originalText = welcomeTextElement.innerHTML;
+        const alternateText = 'MYPAGE';
+        let isOriginalText = true;
 
-<script>
-  $(function(){
-    var $firstmenu = $('nav > ul > li'),
-        $header = $('header');
-    $firstmenu.mouseenter(function(){
-       $header.stop().animate({height:'300px'},200);
-    })
-    .mouseleave(function(){
-        $header.stop().animate({height:'50px'},200);
-    })
-  });
-</script>
-
+        setInterval(() => {
+            welcomeTextElement.style.opacity = 0; // 투명도 설정
+            setTimeout(() => {
+                welcomeTextElement.innerHTML = isOriginalText ? alternateText : originalText;
+                welcomeTextElement.style.opacity = 1; // 투명도 복원
+                isOriginalText = !isOriginalText;
+            }, 500); // 투명도가 변경되는 시간과 일치하게 설정
+        }, 2000);
+    });
+  </script>
 </body>
 </html>

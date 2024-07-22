@@ -1,338 +1,3 @@
-<%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Google Maps with Geolocation and Search</title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        #map {
-            height: 100%;
-            width: 100%;
-        }
-        .map-container {
-            position: relative;
-            height: 100%;
-        }
-        .control-container {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            z-index: 1;
-            padding: 0 10px;
-        }
-        .custom-map-control-button {
-            background-color: #fff;
-            border: 0;
-            border-radius: 2px;
-            box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
-            margin-left: 10px;
-            padding: 0 0.5em;
-            font: 400 18px Roboto, Arial, sans-serif;
-            overflow: hidden;
-            height: 40px;
-            cursor: pointer;
-        }
-        .custom-map-control-button:hover {
-            background: rgb(235, 235, 235);
-        }
-    </style>
-    <script async defer type="module" src="https://unpkg.com/@googlemaps/extended-component-library@0.6"></script>
-</head>
-<body>
-    <div class="map-container">
-        <div id="map"></div>
-        <div class="control-container">
-            <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
-            <button class="custom-map-control-button" id="locationButton">현재 위치 찾아볼까요~?</button>
-        </div>
-    </div>
-
-    <!-- The `defer` attribute causes the script to execute after the full HTML document has been parsed. -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaPxCr1XL1mqEFAUAz8fUCSAOHhTMfrNU&callback=initMap&v=weekly" defer></script>
-    <script>
-    let map, infoWindow;
-
-    function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 34.397, lng: 115.644 },
-            zoom: 6,
-        });
-        infoWindow = new google.maps.InfoWindow();
-
-        // 현재 위치 찾기 버튼
-        const locationButton = document.getElementById("locationButton");
-        locationButton.addEventListener("click", () => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude,
-                        };
-
-                        infoWindow.setPosition(pos);
-                        infoWindow.setContent("현재 위치입니다.");
-                        infoWindow.open(map);
-                        map.setCenter(pos);
-                    },
-                    () => {
-                        handleLocationError(true, infoWindow, map.getCenter());
-                    }
-                );
-            } else {
-                handleLocationError(false, infoWindow, map.getCenter());
-            }
-        });
-
-        // 장소 검색기능
-        const placePicker = document.querySelector('gmpx-place-picker');
-        const marker = new google.maps.Marker({ map: map });
-        const infowindow = new google.maps.InfoWindow();
-
-        placePicker.addEventListener('gmpx-placechange', () => {
-            const place = placePicker.value;
-
-            if (!place.location) {
-                window.alert("No details available for input: '" + place.name + "'");
-                infowindow.close();
-                marker.setPosition(null);
-                return;
-            }
-
-            if (place.viewport) {
-                map.fitBounds(place.viewport);
-            } else {
-                map.setCenter(place.location);
-                map.setZoom(17);
-            }
-
-            marker.setPosition(place.location);
-            infowindow.setContent(
-                `<strong>${place.displayName}</strong><br>
-                <span>${place.formattedAddress}</span>`
-            );
-            infowindow.open(map, marker);
-        });
-
-        // DB에서 데이터를 가져와서 지도에 표시
-        fetch("list.ma")
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(toilet => {
-                const toiletPos = { lat: toilet.latitude, lng: toilet.longitude };
-                const toiletMarker = new google.maps.Marker({
-                    position: toiletPos,
-                    map: map,
-                    title: toilet.toiletName
-                });
-
-                toiletMarker.addListener('click', () => {
-                    infoWindow.setContent(
-                        `<div>
-                            <h2>${toilet.toiletName}</h2>
-                            <p>${toilet.toiletAddress}</p>
-                            <p>남성 화장실: ${toilet.toiletMhB} / 여성 화장실: ${toilet.toiletWhB}</p>
-                            <p>개방 시간: ${toilet.toiletOpen}</p>
-                        </div>`
-                    );
-                    infoWindow.open(map, toiletMarker);
-                });
-            });
-        })
-        .catch(error => console.error('Error fetching toilet data:', error));
-    }
-
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(
-            browserHasGeolocation
-                ? "Error: The Geolocation service failed."
-                : "Error: Your browser doesn't support geolocation."
-        );
-        infoWindow.open(map);
-    }
-
-    window.initMap = initMap;
-</script>
-</body>
-</html>
- --%>
-<%--  <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Google Maps with Geolocation and Search</title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        #map {
-            height: 100%;
-            width: 100%;
-        }
-        .map-container {
-            position: relative;
-            height: 100%;
-        }
-        .control-container {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            z-index: 1;
-            padding: 0 10px;
-        }
-        .custom-map-control-button {
-            background-color: #fff;
-            border: 0;
-            border-radius: 2px;
-            box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
-            margin-left: 10px;
-            padding: 0 0.5em;
-            font: 400 18px Roboto, Arial, sans-serif;
-            overflow: hidden;
-            height: 40px;
-            cursor: pointer;
-        }
-        .custom-map-control-button:hover {
-            background: rgb(235, 235, 235);
-        }
-    </style>
-    <script async defer type="module" src="https://unpkg.com/@googlemaps/extended-component-library@0.6"></script>
-</head>
-<body>
-    <div class="map-container">
-        <div id="map"></div>
-        <div class="control-container">
-            <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
-            <button class="custom-map-control-button" id="locationButton">현재 위치 찾아볼까요~?</button>
-        </div>
-    </div>
-
-    <!-- The `defer` attribute causes the script to execute after the full HTML document has been parsed. -->
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaPxCr1XL1mqEFAUAz8fUCSAOHhTMfrNU&callback=initMap&libraries=&v=weekly"
-        defer></script>
-    <script>
-        let map, infoWindow;
-
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 34.397, lng: 115.644 },
-                zoom: 6,
-            });
-            infoWindow = new google.maps.InfoWindow();
-
-            // 현재 위치 찾기 버튼
-            const locationButton = document.getElementById("locationButton");
-            locationButton.addEventListener("click", () => {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const pos = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude,
-                            };
-
-                            infoWindow.setPosition(pos);
-                            infoWindow.setContent("현재 위치입니다.");
-                            infoWindow.open(map);
-                            map.setCenter(pos);
-                        },
-                        () => {
-                            handleLocationError(true, infoWindow, map.getCenter());
-                        }
-                    );
-                } else {
-                    handleLocationError(false, infoWindow, map.getCenter());
-                }
-            });
-
-            // 장소 검색기능
-            const placePicker = document.querySelector('gmpx-place-picker');
-            const marker = new google.maps.Marker({ map: map });
-            const infowindow = new google.maps.InfoWindow();
-
-            placePicker.addEventListener('gmpx-placechange', () => {
-                const place = placePicker.value;
-
-                if (!place.location) {
-                    window.alert("No details available for input: '" + place.name + "'");
-                    infowindow.close();
-                    marker.setPosition(null);
-                    return;
-                }
-
-                if (place.viewport) {
-                    map.fitBounds(place.viewport);
-                } else {
-                    map.setCenter(place.location);
-                    map.setZoom(17);
-                }
-
-                marker.setPosition(place.location);
-                infowindow.setContent(
-                    `<strong>${place.displayName}</strong><br>
-                    <span>${place.formattedAddress}</span>`
-                );
-                infowindow.open(map, marker);
-            });
-
-            // DB에서 데이터를 가져와서 지도에 표시
-            fetch("list.ma")
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(toilet => {
-                    const toiletPos = { lat: toilet.latitude, lng: toilet.longitude };
-                    const toiletMarker = new google.maps.Marker({
-                        position: toiletPos,
-                        map: map,
-                        title: toilet.toiletName
-                    });
-
-                    toiletMarker.addListener('click', () => {
-                        infoWindow.setContent(
-                            `<div>
-                                <h2>${toilet.toiletName}</h2>
-                                <p>${toilet.toiletAddress}</p>
-                                <p>남성 화장실: ${toilet.toiletMhB} / 여성 화장실: ${toilet.toiletWhB}</p>
-                                <p>개방 시간: ${toilet.toiletOpen}</p>
-                            </div>`
-                        );
-                        infoWindow.open(map, toiletMarker);
-                    });
-                });
-            })
-            .catch(error => console.error('Error fetching toilet data:', error));
-        }
-
-        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-            infoWindow.setPosition(pos);
-            infoWindow.setContent(
-                browserHasGeolocation
-                    ? "Error: The Geolocation service failed."
-                    : "Error: Your browser doesn't support geolocation."
-            );
-            infoWindow.open(map);
-        }
-
-        window.initMap = initMap;
-    </script>
-</body>
-</html> --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -340,22 +5,22 @@
     <title>Google Maps with Geolocation and Search</title>
     <style>
         html, body {
-            height: 100%;
+            height: 93.5%;
             margin: 0;
             padding: 0;
         }
         #map {
             height: 100%;
-            width: 100%;
+            width: 70%;
         }
         .map-container {
             position: relative;
-            height: 100%;
+            height: calc(100% - 50px);
         }
         .control-container {
             position: absolute;
             top: 10px;
-            left: 50%;
+            left: 25%;
             transform: translateX(-50%);
             display: flex;
             align-items: center;
@@ -377,29 +42,54 @@
         .custom-map-control-button:hover {
             background: rgb(235, 235, 235);
         }
+        .info-panel {
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    width: 30%;
+		    height: 100%;
+		    background-color: #fff;
+		    padding: 20px;
+		    box-sizing: border-box;
+		    overflow-y: auto;
+		    z-index: 1; /* 정보 패널이 제어 요소 위에 표시되도록 z-index 설정 */
+		}
+		footer {
+        position: static !important; /* 고정된 위치 제거 */
+        bottom: auto !important; /* bottom 속성 제거 */
+    }
     </style>
+    <!-- Google Maps API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaPxCr1XL1mqEFAUAz8fUCSAOHhTMfrNU&libraries=places&callback=initMap" async defer></script>
 </head>
 <body>
+<%@include file="/WEB-INF/views/common/header.jsp" %>
     <div class="map-container">
-        <div id="map"></div>
-        <div class="control-container">
-            <input type="text" id="place-input" placeholder="Enter an address" class="custom-map-control-button">
-            <button class="custom-map-control-button" id="locationButton">현재 위치 찾아볼까요~?</button>
-        </div>
+    <div id="map"></div>
+
+    <!-- 제어 요소를 포함할 div -->
+    <div class="control-container">
+        <!-- 장소 검색 입력란 -->
+        <input type="text" id="place-input" placeholder="Enter an address" class="custom-map-control-button">
+        <!-- 현재 위치 찾기 버튼 -->
+        <button class="custom-map-control-button" id="locationButton">현재 위치 찾아볼까요~?</button>
     </div>
+
+    <div id="info-panel" class="info-panel"></div>
+</div>
 
     <script>
         let map, infoWindow;
 
         function initMap() {
+            // 초기 맵 설정
             map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 34.397, lng: 115.644 },
-                zoom: 6,
+                center: { lat: 37.5, lng: 127 }, // 초기 위치는 서울로 설정
+                zoom: 12,
             });
             infoWindow = new google.maps.InfoWindow();
 
-            // 현재 위치 찾기 버튼
+            // 현재 위치 찾기 버튼 클릭 시 동작
             const locationButton = document.getElementById("locationButton");
             locationButton.addEventListener("click", () => {
                 if (navigator.geolocation) {
@@ -409,11 +99,13 @@
                                 lat: position.coords.latitude,
                                 lng: position.coords.longitude,
                             };
-
+                            
+                            // 현재 위치로 지도 중심 설정
                             infoWindow.setPosition(pos);
                             infoWindow.setContent("현재 위치입니다.");
                             infoWindow.open(map);
                             map.setCenter(pos);
+                            map.setZoom(17); // 지도 줌 레벨 조정
                         },
                         () => {
                             handleLocationError(true, infoWindow, map.getCenter());
@@ -424,10 +116,11 @@
                 }
             });
 
-            // 장소 검색기능
+            // 장소 검색 기능 설정
             const input = document.getElementById('place-input');
             const searchBox = new google.maps.places.SearchBox(input);
 
+            // 장소 검색 이벤트 처리
             searchBox.addListener('places_changed', () => {
                 const places = searchBox.getPlaces();
 
@@ -435,6 +128,7 @@
                     return;
                 }
 
+                // 검색된 장소들을 지도에 표시
                 const bounds = new google.maps.LatLngBounds();
                 places.forEach(place => {
                     if (!place.geometry || !place.geometry.location) {
@@ -446,26 +140,32 @@
                         map: map,
                         title: place.name,
                         position: place.geometry.location
+                        /* icon: {
+                            url: 'resources/uploadFiles/똥.jpg', // 사용자 정의 마커 이미지 경로
+                            scaledSize: new google.maps.Size(30, 30) // 이미지 크기 조정
+                        } */
+                        
                     });
 
+                    // 검색된 장소들에 맞게 지도 bounds 조정
                     if (place.geometry.viewport) {
                         bounds.union(place.geometry.viewport);
                     } else {
                         bounds.extend(place.geometry.location);
                     }
 
-                    const infowindow = new google.maps.InfoWindow({
-                        content: `<div><strong>${place.name}</strong><br>${place.formatted_address}</div>`
-                    });
-
+                    // 마커 클릭 시 정보창 표시
                     marker.addListener('click', () => {
-                        infowindow.open(map, marker);
+                        infoWindow.setContent(`<div><strong>${place.name}</strong><br>${place.formatted_address}</div>`);
+                        infoWindow.open(map, marker);
+                        updateInfoPanel(`<strong>${place.name}</strong><br>${place.formatted_address}`);
                     });
                 });
+
+                // 검색된 장소들에 맞게 지도 중심 및 줌 레벨 조정
                 map.fitBounds(bounds);
             });
 
-            // DB에서 데이터를 가져와서 지도에 표시
             fetch("list.ma")
             .then(response => response.json())
             .then(data => {
@@ -477,31 +177,72 @@
                         title: toilet.toiletName
                     });
 
+                    // 화장실 정보를 포함한 정보창 설정
                     toiletMarker.addListener('click', () => {
-                        infoWindow.setContent(
-                            `<div>
-                                <h2>${toilet.toiletName}</h2>
-                                <p>${toilet.toiletAddress}</p>
-                                <p>남성 화장실: ${toilet.toiletMhB} / 여성 화장실: ${toilet.toiletWhB}</p>
-                                <p>개방 시간: ${toilet.toiletOpen}</p>
-                            </div>`
-                        );
+                        
+                        const toiletName = toilet.toiletName || '화장실 이름 없음';
+                        const toiletAddress = toilet.toiletAddress || '주소 정보 없음';
+                        const toiletMhB = toilet.toiletMhB || '0';
+                        const toiletWhB = toilet.toiletWhB || '0';
+                        const toiletOpen = toilet.toiletOpen || '개방 시간 정보 없음';
+                        const toiletSeat = toilet.toiletSeat || '정보 없음';
+                        const toiletSafeBell = toilet.toiletSafeBell || '정보 없음';
+                        const toiletDiaper = toilet.toiletDiaper || '정보 없음';
+                        const toiletUpdate = toilet.toiletUpdate || '정보 없음';
+                        const contentString = `
+                            <div>
+                                <h2>`+toiletName+`</h2>
+                                <p>`+toiletAddress+`</p>
+                                <p>개방 시간: `+toiletOpen+`</p>
+                            </div>
+                        `;
+                         const contentString2 = `
+						    <div style="font-family: Arial, sans-serif;background-color: #f0f0f0; padding: 20px;border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); ">
+						        <h1 align="center" style="font-size: 25px; margin-bottom: 10px;">📍` + toiletName + `📍</h1>
+						        <p align="center">`+toiletAddress +`</p>
+						        <hr>
+						        <p>⏰  개방 시간: ` + toiletOpen + `</p>
+						        <p>🚽 좌변기 종류: ` + toiletSeat + `</p>
+						        <p>🚨 비상벨 유무: ` + toiletSafeBell + `</p>
+						        <p>🚼 기저귀 교환대 유무: ` + toiletDiaper + `</p>
+						        <p>🔄 최근 업데이트 일자: ` + toiletUpdate + `</p>
+						    </div>
+						`;
+
+						console.log(contentString);
+                        infoWindow.setContent(contentString);
                         infoWindow.open(map, toiletMarker);
+                        updateInfoPanel(contentString2);
                     });
                 });
             })
             .catch(error => console.error('Error fetching toilet data:', error));
         }
+	
+     // 정보 패널 업데이트 함수
+        function updateInfoPanel(content) {
+            const infoPanel = document.getElementById('info-panel');
+            infoPanel.innerHTML = content;
+        }
+     // 마커 클릭 시 정보창 및 정보 패널 업데이트
+        marker.addListener('click', () => {
+            infoWindow.setContent(`<div><strong>${place.name}</strong><br>${place.formatted_address}</div>`);
+            infoWindow.open(map, marker);
+            updateInfoPanel(`<strong>${place.name}</strong><br>${place.formatted_address}`);
+        });
 
+        // 위치 정보 오류 처리 함수
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
             infoWindow.setContent(
-                browserHasGeolocation
-                    ? "Error: The Geolocation service failed."
-                    : "Error: Your browser doesn't support geolocation."
+                browserHasGeolocation ?
+                "Error: The Geolocation service failed." :
+                "Error: Your browser doesn't support geolocation."
             );
             infoWindow.open(map);
         }
     </script>
+    
+<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

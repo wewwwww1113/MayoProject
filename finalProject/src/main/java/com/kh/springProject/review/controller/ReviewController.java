@@ -5,55 +5,92 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.AutomapConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.springProject.common.model.vo.PageInfo;
 import com.kh.springProject.common.template.Pagination;
+import com.kh.springProject.map.model.service.MapService;
+import com.kh.springProject.map.model.vo.Map;
+import com.kh.springProject.member.model.service.MemberService;
+import com.kh.springProject.member.model.vo.Member;
 import com.kh.springProject.review.model.service.ReviewService;
 import com.kh.springProject.review.model.vo.Reply;
 import com.kh.springProject.review.model.vo.Review;
+import com.kh.springProject.review.model.vo.ReviewReplyLikeVO;
+import com.kh.springProject.review.model.vo.ReviewReplyVO;
 
 import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @Controller
 public class ReviewController {
 	
 	@Autowired
 	private ReviewService reviewService;
 	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private MapService mapService;
+	
+	
+//	@GetMapping("test.re")
+//    public String findIdPwd() {
+//        return "review/reviewTest";
+//    }
+	
+	// ★★★★★★★★★★★★★★문제 해결해야 함★★★★★★★★★★★★★★★★★
+	// loginUser가 null 값으로 처리되고 있는 상황
+//	@RequestMapping(value = "test.re", method = RequestMethod.GET)
+//    public String loginMember(Member m, Model model) {
+//
+//		Member loginUser = memberService.loginMember(m);
+//        
+//		model.addAttribute("loginUser", loginUser);
+//		
+//		log.debug("Login user: {}", loginUser);
+//		
+//        System.out.println(loginUser);
+//
+//      
+//        return "review/reviewTest";
+//    }
+	// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	
 	
 	
 	
-	// 비동기 통신 테스트용
-	@GetMapping("test.re")
-	public String test() {
-		
-		return "review/reviewTest";
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping(value = "test.re", method = RequestMethod.GET)
+
+    public ModelAndView getAllToilets(Map m, ModelAndView mv) {
+    	List<Map> t = mapService.getAllToilets(m);
+    	
+    	
+    	mv.setViewName("review/reviewTest");
+    	
+    	mv.addObject("t", t);
+    	
+        return mv;
+    }
 	
 	
 	
@@ -132,7 +169,7 @@ public class ReviewController {
 	
 	
 	
-	//게시글 등록 메소ㄷ
+	//게시글 등록 메소드
 		@PostMapping("insert.re")
 		public String insertReview(Review r
 								 ,MultipartFile upfile
@@ -312,13 +349,13 @@ public class ReviewController {
 			
 			return rList;
 		}
+		
+		
 
 		//댓글작성
 		@ResponseBody
 		@RequestMapping("insertReply.re")
 		public int insertReply(Reply r) {
-			
-			System.out.println(r);
 			
 			int result = reviewService.insertReply(r);
 			
@@ -327,19 +364,92 @@ public class ReviewController {
 
 		
 		
-		
-		
-		
-		
-		
-		
-	
-	
-			
+		@PostMapping("/like")
+		public String postLike(Model model, HttpServletRequest request) {
+		    // HttpServletRequest를 통해 파라미터 추출
+		    int toiletKey = Integer.parseInt(request.getParameter("toiletKey"));
+		    int userKey = Integer.parseInt(request.getParameter("userKey"));
+		    int toiletLikeKey = Integer.parseInt(request.getParameter("toiletLikeKey"));
 
+		    ReviewReplyLikeVO like = new ReviewReplyLikeVO();
+		    like.setToiletKey(toiletKey);
+		    like.setUserKey(userKey);
+		    like.setToiletLikeKey(toiletLikeKey);
 
-	
-	
-	
+		    
+		    
+		    int result = reviewService.postLikeReview(like);
+		    model.addAttribute("result", result);
+		  
+		    int person = reviewService.personLike(like);
+		   
+		    model.addAttribute("person",person);
+		    
+		   
+		    
+		    
+		    
+		    
+		    return "review/reviewTest";
+		}
+		
+		
+		
+		
+		//---------------------------------------------------------------------------
+		
+		// 스크랩
+		@PostMapping(value="/scrap")
+		@ResponseBody
+		public HashMap<String, Object> scrap(@RequestBody HashMap<String, Object> paramMap, HttpSession session) throws Exception{
+			Member member	= (Member) session.getAttribute("loginUser");
+			HashMap<String, Object> map = new HashMap<>();
+			String memberNo = member.getMemberNo();
+			int toiletNo	= Integer.parseInt(paramMap.get("toiletNo").toString());
+			int count		= reviewService.scrapCheck(memberNo, toiletNo);
+			if (count == 0) {
+				reviewService.scrap(memberNo, toiletNo);
+				map.put("msg", "스크랩 완료");
+				map.put("cnt", 1);
+			}else {
+				reviewService.scrapCancel(memberNo, toiletNo);
+				map.put("msg", "스크랩 취소");
+				map.put("cnt", 0);
+			}
 
+			return map;
+		}
+		
+		// 평점 Update
+		@PostMapping(value="/updateStar")
+		@ResponseBody
+		public HashMap<String, Object> updateStar(@RequestBody HashMap<String, Object> paramMap, HttpSession session) throws Exception{
+			Member member	= (Member) session.getAttribute("loginUser");
+			HashMap<String, Object> map = new HashMap<>();
+			String memberNo = member.getMemberNo();
+			int toiletNo	= Integer.parseInt(paramMap.get("toiletNo").toString());
+			int starCnt		= Integer.parseInt(paramMap.get("starCnt").toString());
+			reviewService.updateStar(memberNo, toiletNo, starCnt);			
+			map.put("msg", "평점이 등록되었습니다. (●'◡'●)");
+
+			return map;
+		}
+		
+		
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }

@@ -16,7 +16,7 @@
 		<result column="status" property="status"/>
 	</resultMap>
 		
-		
+	
 		
 		
 		<select id="listCount" resultType="_int">
@@ -118,5 +118,213 @@
 	</insert>
 	
 	
+	<!--  댓글 작성 -->
+	<insert id="test" parameterType="map">
+		INSERT INTO REVIEW_REPLY(review_reply_key
+									,USER_KEY
+									, CONTENT
+									, TOILET_NO
+									, CREATE_TIME
+									, UPDATE_TIME
+									, DEL_YN) VALUES 
+		(REVIEW_REPLY_SEQ.NEXTVAL
+		,#{memberNo} <!--  -->
+		, #{content}
+		,#{toiletNo}
+		, (SELECT SYSDATE FROM DUAL)
+		,(SELECT SYSDATE FROM DUAL)
+		,'N')
+	</insert>
+	
+	<select id="test2" resultType="ReviewReplyVO" parameterType="_int">
+		SELECT 
+		    rr.USER_KEY as userKey,
+		    m.MEMBER_NICK as userNickName ,
+		    rr.REVIEW_REPLY_KEY as reviewReplyKey,
+		    rr.content as CONTENT,
+		    rr.CREATE_TIME as createTime,
+		    rr.UPDATE_TIME as updateTime,
+		    rr.DEL_YN as delYn,
+		    rr.TOILET_NO as toiletNo
+		FROM 
+		    REVIEW_REPLY rr
+		JOIN 
+		    member m ON m.member_no = rr.USER_KEY
+		WHERE 
+		    rr.TOILET_NO = #{toiletNo}
+		    AND rr.DEL_YN = 'N'
+		order by rr.review_reply_key asc
+	</select>
+
+	
+	
+	<insert id="postLikeReview" parameterType="map">
+		insert into TOILET_LIKE(TOILET_LIKE_KEY
+											,USER_KEY
+											,TOILET_KEY) 
+								values(TOILET_LIKE_SEQ.NEXTVAL
+								,#{userKey}
+								,#{toiletKey})
+	
+	</insert>
+	
+	
+<resultMap type="ReviewReplyLikeVO" id="reviewLike">
+	<result column="TOILET_LIKE_KEY" property="toiletLikeKey" />
+	<result column="USER_KEY" property="userKey" />
+	<result column="TOILET_KEY" property="toiletKey" />
+</resultMap>
+
+
+	<select id="personLike" resultType="java.lang.Integer" parameterType="ReviewReplyLikeVO">
+    SELECT COUNT(TOILET_LIKE_KEY)
+    FROM TOILET_LIKE
+    WHERE TOILET_KEY = #{toiletKey} AND USER_KEY = #{userKey}
+</select>
+
+
+
+
+<!-- 스크랩 기능 -->
+<insert id="scrap">
+insert into REVIEW_SCRAP (SCRAP_NO ,MEMBER_NO , TOILET_NO) 
+values ((SELECT NVL(MAX(SCRAP_NO), 0) + 1 FROM REVIEW_SCRAP),#{memberNo},#{toiletNo})
+</insert>
+
+<!-- 스크랩 취소 -->
+<delete id="scrapCancel">
+delete from REVIEW_SCRAP where TOILET_NO = #{toiletNo} AND MEMBER_NO = #{memberNo}
+</delete>
+
+<!-- 게시글의 스크랩 수 -->
+<select id="scrapCount" resultType="int">
+select count(*) from REVIEW_SCRAP where TOILET_NO = #{toiletNO}
+</select>
+
+<!-- 중복방지 -->
+<select id="scrapCheck" resultType="int">
+select count(*) from REVIEW_SCRAP where TOILET_NO = #{toiletNo} and MEMBER_NO = #{memberNo}
+</select>
+
+<!-- 평점 수정 -->
+<update id="updateStar">
+MERGE INTO REVIEW_STAR s
+USING DUAL
+   on (s.MEMBER_NO = #{memberNo} AND s.TOILET_NO = #{toiletNo})
+ WHEN MATCHED THEN
+ 	  UPDATE SET
+ 	  s.STAR = #{starCnt}
+ WHEN NOT MATCHED THEN
+ 	  INSERT (s.MEMBER_NO, s.STAR, s.TOILET_NO)
+ 	  VALUES (#{memberNo}, #{starCnt}, #{toiletNo})
+</update>
+
+  <!-- ReviewReplyVO에 대한 resultMap 정의 -->
+    <resultMap id="reviewReplyResultSet" type="com.kh.springProject.review.model.vo.ReviewReplyVO">
+        <result column="USER_KEY" property="userKey"/>
+        <result column="REVIEW_REPLY_KEY" property="reviewReplyKey"/>
+        <result column="CONTENT" property="content"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
+        <result column="DEL_YN" property="delYn"/>
+        <result column="TOILET_NO" property="toiletNo"/>
+        <result column="TOILET_NAME" property="toiletName"/>
+    </resultMap>
+    
+    <select id="getReviewsByUserKey" parameterType="int" resultMap="reviewReplyResultSet">
+        SELECT 
+            rr.USER_KEY,
+            rr.REVIEW_REPLY_KEY,
+            rr.CONTENT,
+            rr.CREATE_TIME,
+            rr.UPDATE_TIME,
+            rr.DEL_YN,
+            rr.TOILET_NO,
+            t.TOILET_NAME
+        FROM REVIEW_REPLY rr
+        JOIN TOILET t ON rr.TOILET_NO = t.TOILET_NO
+        WHERE rr.USER_KEY = #{userKey}
+    </select>
+    
+    <!-- 검색 기능 추가 -->
+    <select id="searchReviewsByUserKey" parameterType="map" resultMap="reviewReplyResultSet">
+        SELECT 
+            rr.USER_KEY,
+            rr.REVIEW_REPLY_KEY,
+            rr.CONTENT,
+            rr.CREATE_TIME,
+            rr.UPDATE_TIME,
+            rr.DEL_YN,
+            rr.TOILET_NO,
+            t.TOILET_NAME
+        FROM REVIEW_REPLY rr
+        JOIN TOILET t ON rr.TOILET_NO = t.TOILET_NO
+        WHERE rr.USER_KEY = #{userKey}
+        <if test="toiletName != null and toiletName != ''">
+            AND t.TOILET_NAME LIKE '%' || #{toiletName} || '%'
+        </if>
+        <if test="reviewContent != null and reviewContent != ''">
+            AND rr.CONTENT LIKE '%' || #{reviewContent} || '%'
+        </if>
+        AND rr.DEL_YN = 'N'
+    </select>
+      <!-- 리뷰 삭제 -->
+    <delete id="deleteReviewByKey" parameterType="int">
+        DELETE FROM REVIEW_REPLY
+        WHERE REVIEW_REPLY_KEY = #{reviewReplyKey}
+    </delete>
+     <!-- 리뷰 일괄 삭제 -->
+    <delete id="deleteReviewsByKey" parameterType="list">
+        DELETE FROM REVIEW_REPLY
+        WHERE REVIEW_REPLY_KEY IN
+        <foreach item="reviewReplyKey" collection="list" open="(" separator="," close=")">
+            #{reviewReplyKey}
+        </foreach>
+    </delete>
+	
+	
+	
+	<!-- 리뷰게시판용 검색 기능 추가 -->
+    <select id="searchReviewsByUserKey1" parameterType="map" resultMap="reviewReplyResultSet">
+        SELECT 
+            rr.USER_KEY,
+            rr.REVIEW_REPLY_KEY,
+            rr.CONTENT,
+            rr.CREATE_TIME,
+            rr.UPDATE_TIME,
+            rr.DEL_YN,
+            rr.TOILET_NO,
+            t.TOILET_NAME
+        FROM REVIEW_REPLY rr
+        JOIN TOILET t ON rr.TOILET_NO = t.TOILET_NO
+        WHERE rr.USER_KEY = #{userKey}
+        ORDER BY CREATE_TIME DESC
+        <if test="toiletName != null and toiletName != ''">
+            AND t.TOILET_NAME LIKE '%' || #{toiletName} || '%'
+        </if>
+        <if test="reviewContent != null and reviewContent != ''">
+            AND rr.CONTENT LIKE '%' || #{reviewContent} || '%'
+        </if>
+        AND rr.DEL_YN = 'N'
+    </select>
+	
+	<resultMap id="reviewScrapResultMap" type="com.kh.springProject.review.model.vo.ReviewScrap">
+    <result column="SCRAP_NO" property="scrapNo"/>
+    <result column="MEMBER_NO" property="memberNo"/>
+    <result column="TOILET_NO" property="toiletNo"/>
+    <result column="TOILET_NAME" property="toiletName"/>
+    <result column="TOILET_ADDRESS" property="toiletAddress"/>
+</resultMap>
+
+<select id="getScrapListByMemberNo" parameterType="int" resultMap="reviewScrapResultMap">
+    SELECT S.SCRAP_NO, S.MEMBER_NO, S.TOILET_NO, T.TOILET_NAME, T.TOILET_ADDRESS
+    FROM REVIEW_SCRAP S
+    JOIN TOILET T ON S.TOILET_NO = T.TOILET_NO
+    WHERE S.MEMBER_NO = #{memberNo}
+</select>
+
+<delete id="deleteScrap" parameterType="int">
+    DELETE FROM REVIEW_SCRAP WHERE SCRAP_NO = #{scrapNo}
+</delete>
 	
 </mapper>

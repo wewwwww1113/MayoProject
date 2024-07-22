@@ -20,6 +20,7 @@
 		<org.springframework-version>5.3.35</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
+		<spring-boot-version>2.5.0</spring-boot-version>
 	</properties>
 	
 	<!-- 
@@ -266,9 +267,68 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 		
-		
-		<!--  -->
-		    
+
+	       
+	    <dependency>
+	        <groupId>org.apache.poi</groupId>
+	        <artifactId>poi-ooxml</artifactId>
+	        <version>5.0.0</version>
+	    </dependency>
+	  
+	  	<!-- 스케쥴러에 필요한 것들 -->
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter</artifactId>
+	        <version>${spring-boot-version}</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-data-jpa</artifactId>
+	        <version>${spring-boot-version}</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.mybatis.spring.boot</groupId>
+	        <artifactId>mybatis-spring-boot-starter</artifactId>
+	        <version>2.1.4</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.apache.poi</groupId>
+	        <artifactId>poi-ooxml</artifactId>
+	        <version>5.0.0</version>
+	    </dependency>
+	    
+   		<!-- 스케줄러 필요한것들 끝 -->
+	
+		<!-- 네이버 -->
+		<dependency>
+		<groupId>com.github.scribejava</groupId>
+		<artifactId>scribejava-core</artifactId>
+		<version>8.3.3</version>
+		</dependency>
+		<dependency>
+    <groupId>com.github.scribejava</groupId>
+	    <artifactId>scribejava-core</artifactId>
+	    <version>8.3.3</version>
+	</dependency>
+	
+
+	<!-- sql jdbc -->
+	<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.23</version>
+</dependency>
+
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>4.0.1</version>
+    <scope>provided</scope>
+</dependency>
+
+
+			
+
 	</dependencies>
     <build>
         <plugins>

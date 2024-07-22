@@ -150,32 +150,6 @@
 </select>
 
 
- <!-- 이메일과 아이디로 회원 찾기 -->
-    <select id="findMemberByIdAndEmail" parameterType="map" resultMap="memberResultSet">
-        SELECT MEMBER_NO,
-               MEMBER_NICK,
-               MEMBER_ID,
-               MEMBER_PWD,
-               GENDER,
-               BIRTH_DATE,
-               EMAIL,
-               ENROLL_DATE,
-               MODIFY_DATE,
-               STATUS,
-               IS_ADMIN
-          FROM MEMBER
-         WHERE MEMBER_ID = #{memberId}
-           AND EMAIL = #{email}
-           AND STATUS = 'Y'
-    </select>
-
-    <update id="updatePassword" parameterType="Member">
-        UPDATE MEMBER 
-        SET MEMBER_PWD = #{memberPwd} 
-        WHERE MEMBER_ID = #{memberId}
-    </update>
-
-
 
 
 </mapper>

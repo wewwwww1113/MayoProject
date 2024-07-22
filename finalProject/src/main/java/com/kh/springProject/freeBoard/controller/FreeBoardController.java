@@ -63,7 +63,7 @@ public class FreeBoardController {
 		model.addAttribute("list", list);
 		model.addAttribute("categoryNo", categoryNo);
 
-	
+		System.out.println(list);
 
 		return "freeboard/boardListView";
 	}
@@ -266,7 +266,7 @@ public class FreeBoardController {
 	@RequestMapping("insertReply.fr")
 	public int insertReply(fbReply r) {
 
-		
+		System.out.println(r);
 
 		int result = fbService.insertReply(r);
 

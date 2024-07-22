@@ -3,11 +3,9 @@ package com.kh.springProject.member.model.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +25,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     private SqlSessionTemplate sqlSession;
-    
-    @Autowired
-    private BCryptPasswordEncoder bcryptPasswordEncoder;
-
 
     @Override
     public Member loginMember(Member m) {
@@ -88,24 +82,7 @@ public class MemberServiceImpl implements MemberService {
 	        return memberDao.getReviewsByUser(sqlSession, params);
 	    }
 	    
-	   
-	    @Override
-	    public String findPassword(String memberId, String email) {
-	        Member member = memberDao.findMemberByIdAndEmail(sqlSession, memberId, email);
-	        if (member == null) {
-	            return null;
-	        }
 
-	        // 임시 비밀번호 생성
-	        String tempPassword = UUID.randomUUID().toString().substring(0, 8);
-	        String encPassword = bcryptPasswordEncoder.encode(tempPassword);
-
-	        // 비밀번호 업데이트
-	        member.setMemberPwd(encPassword);
-	        memberDao.updatePassword(sqlSession, member);
-
-	        return tempPassword;
-	    }
 
 	
 

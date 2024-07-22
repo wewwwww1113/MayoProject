@@ -16,6 +16,7 @@
 		
 		<typeAlias type="com.kh.springProject.review.model.vo.Review" alias="Review"/>
  		<typeAlias type="com.kh.springProject.review.model.vo.Reply" alias="Reply"/>
+
  		<typeAlias type="com.kh.springProject.review.model.vo.ReviewStar" alias="ReviewStar"/>
  		
  		
@@ -27,6 +28,7 @@
  		<typeAlias type="com.kh.springProject.store.model.vo.Store" alias="Store"/>
  		<typeAlias type="com.kh.springProject.store.model.vo.Cart" alias="Cart"/>
  		<typeAlias type="com.kh.springProject.common.portone.model.vo.Order" alias="Order"/>
+
  	</typeAliases>
  	
  	
